@@ -13,11 +13,12 @@
         {
             $movies = new Movies_Modelo();
             $error = "";
-            require_once("Vista/Catalogue_Vista.php");
     
             $movies = $movies->get_movies();
     
             console_log($movies);
+
+            require_once("Vista/Catalogue_Vista.php");
         }
     }
 ?>

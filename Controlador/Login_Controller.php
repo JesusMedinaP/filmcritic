@@ -9,8 +9,6 @@
 
         $ocupaciones = $login->get_ocupations();
 
-        console_log($ocupaciones);
-
         require_once("Vista/Login_Vista.php");
     }
 
