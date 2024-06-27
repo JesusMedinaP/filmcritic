@@ -31,7 +31,7 @@
         </form>
     </div>
 
-    <div class="form_wrapper" id="registerForm">
+    <div class="form_wrapper" id="registerForm" enctype="multipart/form-data">
     <h3 class="form_title">Registrarse</h3>
     
         <form action="" method="POST">
@@ -47,13 +47,13 @@
         <div class="input_field" style="height: 100%;">            
             <fieldset>
                 <legend>Sexo:</legend>
-                <div class="sex_input">
-                    <input type="radio" id="Male" name="sex_register" value="M">
+                <div class="gender_input">
+                    <input type="radio" id="Male" name="gender_register" value="M">
                     <label for="Male">Hombre</label>
                 </div>
 
-                <div class="sex_input">
-                    <input type="radio" id="Female" name="sex_register" value="F">
+                <div class="gender_input">
+                    <input type="radio" id="Female" name="gender_register" value="F">
                     <label for="Female">Mujer</label>
                 </div>
             </fieldset>
@@ -76,7 +76,7 @@
         </div>
 
         <div class="input_field">            
-            <input type="file" id="pic_register" name="pic_register" accept="image/png, image/jpeg">
+            <input type="file" id="pic_register" name="pic_register" accept="image/png, image/jpeg, image/jpg">
         </div>
                 
         <input type="submit" id="register" name="register" value="Registrarse" class="form_button">

@@ -41,5 +41,10 @@ class Users_Modelo
 
         return $this->ocupations;
     }
+
+    public function register()
+    {
+
+    }
 }
 ?>

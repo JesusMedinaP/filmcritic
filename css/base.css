@@ -53,14 +53,15 @@ form{
     padding-left: 10px;
 }
 
-.sex_input{
+.gender_input{
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     justify-content: flex-end;
+    column-gap: 10px;
 }
 
-.sex_input input{
+.gender_input input {
     width: fit-content;
 }
 
