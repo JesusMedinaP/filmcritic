@@ -42,9 +42,17 @@ class Users_Modelo
         return $this->ocupations;
     }
 
-    public function register()
+    public function register($name, $age, $gender, $ocupation, $pic, $password)
     {
+        $sql = "INSERT INTO users(name, edad, sex, ocupacion, pic, passwd) VALUES (?, ?, ?, ?, ?, ?)";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("sissss", $name, $age, $gender, $ocupation, $pic, $password);
 
+        if($consulta->execute()){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
 ?>

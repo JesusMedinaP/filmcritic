@@ -31,10 +31,10 @@
         </form>
     </div>
 
-    <div class="form_wrapper" id="registerForm" enctype="multipart/form-data">
+    <div class="form_wrapper" id="registerForm">
     <h3 class="form_title">Registrarse</h3>
     
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
 
         <div class="input_field">            
             <input type="text" id="username_register" name="username_register" required placeholder="Nombre de usuario:" autocomplete="on">
