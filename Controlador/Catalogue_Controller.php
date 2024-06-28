@@ -18,6 +18,9 @@
     
             console_log($movies);
 
+            console_log("SESSION");
+            console_log($_SESSION);
+
             require_once("Vista/Catalogue_Vista.php");
         }
     }

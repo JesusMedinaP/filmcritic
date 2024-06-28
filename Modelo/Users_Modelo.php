@@ -54,5 +54,21 @@ class Users_Modelo
             return false;
         }
     }
+
+    public function login($name, $password)
+    {
+        $sql = "SELECT * FROM users WHERE name = ? AND passwd = ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("ss", $name, $password);
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        if($result->num_rows == 1){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
 }
 ?>

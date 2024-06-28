@@ -18,6 +18,20 @@
     if (isset($_POST['login'])) {
         console_log("POST LOGIN");
         console_log($_POST);
+
+        $user = new Users_Modelo();
+
+        $nombre = isset($_POST['username_login']) ? $_POST['username_login'] : '';
+        $password = isset($_POST['password_login']) ? md5($_POST['password_login']) : '';
+
+        if($user->login($nombre, $password)){
+            $_SESSION['user'] = $nombre;
+            header('Location: index.php');
+            exit();
+        }else{
+            $error = "Nombre de usuario o contraseña incorrectos";
+            console_log($error);
+        }
     }
 
 
