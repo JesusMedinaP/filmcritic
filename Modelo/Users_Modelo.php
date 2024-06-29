@@ -64,6 +64,9 @@ class Users_Modelo
         $result = $consulta->get_result();
 
         if($result->num_rows == 1){
+            $row = $result->fetch_assoc();
+            $_SESSION['user_name'] = $row['name'];
+            $_SESSION['user_id'] = $row['id'];
             return true;
         }else{
             return false;

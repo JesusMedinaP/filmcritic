@@ -25,7 +25,6 @@
         $password = isset($_POST['password_login']) ? md5($_POST['password_login']) : '';
 
         if($user->login($nombre, $password)){
-            $_SESSION['user'] = $nombre;
             header('Location: index.php');
             exit();
         }else{
