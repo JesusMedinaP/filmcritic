@@ -24,7 +24,7 @@
         <?php foreach ($movies as $movie)
         { ?>
             <div class="movie">
-                <img src="<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>"     />
+                <img src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>"     />
                 <h3 class="movie_title_date"> <?php echo $movie['title'] ?> - <?php echo $movie['date'] ?></h3>
                 <p class="movie_description"> <?php echo $movie['desc'] ?></p>
                 <a href="<?php echo $movie['url_imdb'] ?>" target="_blank" class="movie_link">IMDB</a>
