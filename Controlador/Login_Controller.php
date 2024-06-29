@@ -11,6 +11,12 @@
         console_log("SESSION");
         console_log( $_SESSION);
 
+        if(isset($_SESSION['user_id']))
+        {
+            header("Location: index.php");
+            exit();
+        }
+
         require_once("Vista/Login_Vista.php");
     }
 
