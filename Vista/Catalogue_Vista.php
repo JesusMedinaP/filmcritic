@@ -14,6 +14,26 @@
     <?php }else{ ?>
         <a href="index.php?controlador=login">Ir al Login</a>
     <?php } ?>
+
+    <?php
+    console_log($movies);
+    if(!empty($movies))
+    { ?>
+    
+    <div class="movies_container">
+        <?php foreach ($movies as $movie)
+        { ?>
+            <div class="movie">
+                <img src="<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>"     />
+                <h3 class="movie_title_date"> <?php echo $movie['title'] ?> - <?php echo $movie['date'] ?></h3>
+                <p class="movie_description"> <?php echo $movie['desc'] ?></p>
+                <a href="<?php echo $movie['url_imdb'] ?>" target="_blank" class="movie_link">IMDB</a>
+            </div>
+        <?php 
+        } ?>
+    </div>
+    <?php } ?> 
+
     
 </body>
 </html>

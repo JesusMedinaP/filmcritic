@@ -15,8 +15,6 @@
             $error = "";
     
             $movies = $movies->get_movies();
-    
-            console_log($movies);
 
             console_log("SESSION");
             console_log($_SESSION);
@@ -26,8 +24,10 @@
 
         function desconectar()
         {
+        session_unset();
         session_destroy();
         header("Location: index.php");
+        exit();
         }
     }
 ?>
