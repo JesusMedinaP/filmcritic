@@ -23,6 +23,25 @@
     if(!empty($movies))
     { ?>
     
+    <div class="filters_container">
+        <div class="search_bar">
+            
+        </div>
+        <div class="filters">
+
+        </div>
+    </div>
+
+    <div class="pagination_links">
+        <?php if ($page > 1): ?>
+                <a href="?page=<?php echo $page - 1; ?>">Anterior</a>
+            <?php endif; ?>
+            
+            <?php if (count($movies) === $limit): ?>
+                <a href="?page=<?php echo $page + 1; ?>">Siguiente</a>
+            <?php endif;
+        ?>
+    </div>
     <div class="movies_container">
         <?php foreach ($movies as $movie)
         { ?>
@@ -41,7 +60,9 @@
         <?php 
         } ?>
     </div>
-    <?php } ?> 
+    <?php
+        }else echo 'No hay películas en la base de datos o ha habido algún problema al conectarse'; 
+    ?>
 
 </body>
 </html>

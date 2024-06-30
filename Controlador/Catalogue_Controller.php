@@ -11,10 +11,14 @@
 
         function home()
         {
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $limit = 20;
+            $offset = ($page - 1) * $limit;
+
             $movies = new Movies_Modelo();
             $error = "";
     
-            $movies = $movies->get_movies();
+            $movies = $movies->get_movies($offset, $limit);
 
             console_log("SESSION");
             console_log($_SESSION);

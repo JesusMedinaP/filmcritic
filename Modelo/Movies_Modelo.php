@@ -11,12 +11,15 @@ class Movies_Modelo
 
     }
 
-    public function get_movies()
+    public function get_movies($offset, $limit = 20)
     {
-        $sql = "SELECT * FROM movie LIMIT 40";
-        $consulta = $this->db->query($sql);
+        $sql = "SELECT * FROM movie LIMIT ?, ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("ii", $offset, $limit);
+        $consulta->execute();
+        $result = $consulta->get_result();
 
-        while($registro = $consulta->fetch_assoc())
+        while($registro = $result->fetch_assoc())
         {
             $this->movies[] = $registro;
         }

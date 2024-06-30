@@ -1,3 +1,23 @@
+.filters_container{
+
+}
+
+.search_bar{
+
+}
+
+.filters{
+    
+}
+
+.pagination_links{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+    padding: 10px 0px;
+}
+
 .movies_container{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
