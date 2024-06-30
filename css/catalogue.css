@@ -1,0 +1,45 @@
+.movies_container{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.movie{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px;
+    border-radius: var(--form-radius);
+    background: #ccc;
+}
+
+.movie_picture{
+    max-height: 280px;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.movie_title{
+    font-size: 20px;
+}
+
+.movie_date{
+    font-size: 18px;
+}
+
+.movie_title, .movie_date{
+    align-self: center;
+}
+
+.movie_description{
+    font-size: 16px;
+}
+
+.movie_link{
+    color: blue;
+    text-decoration: none;
+    align-self: center;
+}

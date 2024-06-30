@@ -13,7 +13,7 @@ class Movies_Modelo
 
     public function get_movies()
     {
-        $sql = "SELECT * FROM movie LIMIT 20";
+        $sql = "SELECT * FROM movie LIMIT 40";
         $consulta = $this->db->query($sql);
 
         while($registro = $consulta->fetch_assoc())
