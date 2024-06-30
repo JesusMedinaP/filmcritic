@@ -8,6 +8,8 @@
     <link rel="stylesheet" type="text/css" href="css/catalogue.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
+
+    <script src="https://kit.fontawesome.com/6ef29524c6.js" crossorigin="anonymous"></script>
 </head>
 <body>   
     <h1>Estoy en el Catálogo</h1>
@@ -19,13 +21,20 @@
     <?php } ?>
 
     <?php
-    console_log($movies);
-    if(!empty($movies))
+    console_log($catalogue);
+    if(!empty($catalogue))
     { ?>
     
     <div class="filters_container">
         <div class="search_bar">
-            
+            <form method="GET" action="">
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Barra de búsqueda">
+                <button type="submit">
+                <i class="fa fa-search"></i>
+                </button>
+            </form>
+
+            <p>Total de resultados: <?php echo $total_results; ?></p>
         </div>
         <div class="filters">
 
@@ -34,16 +43,15 @@
 
     <div class="pagination_links">
         <?php if ($page > 1): ?>
-                <a href="?page=<?php echo $page - 1; ?>">Anterior</a>
-            <?php endif; ?>
-            
-            <?php if (count($movies) === $limit): ?>
-                <a href="?page=<?php echo $page + 1; ?>">Siguiente</a>
-            <?php endif;
-        ?>
+            <a href="?search=<?php echo urlencode($search); ?>&page=<?php echo $page - 1; ?>">Anterior</a>
+        <?php endif; ?>
+
+        <?php if (count($catalogue) === $limit): ?>
+            <a href="?search=<?php echo urlencode($search); ?>&page=<?php echo $page + 1; ?>">Siguiente</a>
+        <?php endif; ?>
     </div>
     <div class="movies_container">
-        <?php foreach ($movies as $movie)
+        <?php foreach ($catalogue as $movie)
         { ?>
             <div class="movie">
                 <img class="movie_picture" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>

@@ -1,9 +1,47 @@
 .filters_container{
     display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 20px 0px;
+    column-gap: 20px;
 }
 
 .search_bar{
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    padding: 0px 20px;
+    max-height: 35px;
+    height: 100%;
+    background: white;
+    padding: 10px;
+    border-radius: 25px;
+    align-content: center;
+}
 
+.search_bar form{
+    margin: 0;    
+    box-sizing: content-box;
+    border-radius: 25px;
+    border: 2px solid #ccc;
+}
+
+.search_bar input{
+    max-height: 30px;
+    height: 100%;
+    border: none;
+    border-radius: 25px;
+    padding: 0px 10px;
+}
+
+.search_bar input:focus-visible{
+    outline: none;
+}
+
+.search_bar button{
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .filters{
@@ -15,7 +53,7 @@
     flex-direction: row;
     width: 100%;
     justify-content: space-evenly;
-    padding: 10px 0px;
+    padding: 20px 0px;
 }
 
 .movies_container{

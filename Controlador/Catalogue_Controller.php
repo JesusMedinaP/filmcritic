@@ -12,13 +12,15 @@
         function home()
         {
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
             $limit = 20;
             $offset = ($page - 1) * $limit;
 
             $movies = new Movies_Modelo();
             $error = "";
     
-            $movies = $movies->get_movies($offset, $limit);
+            $catalogue = $movies->get_movies($offset, $limit, $search);
+            $total_results = $movies->get_movie_count($search);
 
             console_log("SESSION");
             console_log($_SESSION);

@@ -11,11 +11,12 @@ class Movies_Modelo
 
     }
 
-    public function get_movies($offset, $limit = 20)
+    public function get_movies($offset, $limit = 20, $search = '')
     {
-        $sql = "SELECT * FROM movie LIMIT ?, ?";
+        $sql = "SELECT * FROM movie WHERE title LIKE ? LIMIT ?, ?";
         $consulta = $this->db->prepare($sql);
-        $consulta->bind_param("ii", $offset, $limit);
+        $searchTerm = '%' . $search . '%';
+        $consulta->bind_param("sii", $searchTerm, $offset, $limit);
         $consulta->execute();
         $result = $consulta->get_result();
 
@@ -24,6 +25,17 @@ class Movies_Modelo
             $this->movies[] = $registro;
         }
         return $this->movies;
+    }
+
+    public function get_movie_count($search ='')
+    {
+        $sql = "SELECT COUNT(*) as count FROM movie WHERE title LIKE ?";
+        $consulta = $this->db->prepare($sql);
+        $searchTerm = '%' . $search . '%';
+        $consulta->bind_param("s", $searchTerm);
+        $consulta->execute();
+        $result = $consulta->get_result();
+        return $result->fetch_assoc()['count'];
     }
 }
 ?>
