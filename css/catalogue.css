@@ -7,7 +7,7 @@
     column-gap: 20px;
 }
 
-.search_bar{
+.search_bar, .filters{
     display: flex;
     align-items: center;
     column-gap: 20px;
@@ -20,14 +20,14 @@
     align-content: center;
 }
 
-.search_bar form{
+.search_bar form, .genre_filter form{
     margin: 0;    
     box-sizing: content-box;
     border-radius: 25px;
     border: 2px solid #ccc;
 }
 
-.search_bar input{
+.search_bar input, .genre_filter form select{
     max-height: 30px;
     height: 100%;
     border: none;
@@ -45,8 +45,8 @@
     cursor: pointer;
 }
 
-.filters{
-
+option{
+    font-family: 'Roboto', sans-serif;
 }
 
 .pagination_links{
