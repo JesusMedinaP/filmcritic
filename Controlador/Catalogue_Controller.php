@@ -13,17 +13,17 @@
         {
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $genre = isset($_GET['genre']) && $_GET['genre'] !== '' ? (int)$_GET['genre'] : null;
+
             $limit = 20;
             $offset = ($page - 1) * $limit;
 
             $movies = new Movies_Modelo();
             $error = "";
     
-            $catalogue = $movies->get_movies($offset, $limit, $search);
-            $total_results = $movies->get_movie_count($search);
-
-            console_log("SESSION");
-            console_log($_SESSION);
+            $catalogue = $movies->get_movies($offset, $limit, $search, $genre);
+            $total_results = $movies->get_movie_count($search, $genre);
+            $genres = $movies->get_genres();
 
             require_once("Vista/Catalogue_Vista.php");
         }

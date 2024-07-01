@@ -1,6 +1,7 @@
 .filters_container{
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 100%;
     padding: 20px 0px;
     column-gap: 20px;

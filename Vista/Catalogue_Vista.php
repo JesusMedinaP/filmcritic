@@ -21,7 +21,6 @@
     <?php } ?>
 
     <?php
-    console_log($catalogue);
     if(!empty($catalogue))
     { ?>
     
@@ -37,19 +36,38 @@
             <p>Total de resultados: <?php echo $total_results; ?></p>
         </div>
         <div class="filters">
+            <span>Filtros: </span>
+            <div class="genre_filter">
+                <!-- Formulario de Géneros -->
+                <form method="GET" action="">
+                    <select name="genre" onchange="this.form.submit()">
+                        <option value="">Todos los géneros</option>
+                        <?php foreach ($genres as $g): ?>
+                            <option value="<?php echo $g['id']; ?>" <?php if ($g['id'] == $genre) echo 'selected'; ?>>
+                                <?php echo htmlspecialchars($g['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </form>
+            </div>
 
+            <div class="rate_filter">
+
+            </div>
         </div>
     </div>
 
     <div class="pagination_links">
-        <?php if ($page > 1): ?>
-            <a href="?search=<?php echo urlencode($search); ?>&page=<?php echo $page - 1; ?>">Anterior</a>
-        <?php endif; ?>
+    <?php if ($page > 1): ?>
+        <a href="?search=<?php echo urlencode($search); ?>&genre=<?php echo urlencode($genre); ?>&page=<?php echo $page - 1; ?>">Anterior</a>
+    <?php endif; ?>
 
-        <?php if (count($catalogue) === $limit): ?>
-            <a href="?search=<?php echo urlencode($search); ?>&page=<?php echo $page + 1; ?>">Siguiente</a>
-        <?php endif; ?>
+    <?php console_log($catalogue); ?>
+    <?php if (count($catalogue) === $limit): ?>
+        <a href="?search=<?php echo urlencode($search); ?>&genre=<?php echo urlencode($genre); ?>&page=<?php echo $page + 1; ?>">Siguiente</a>
+    <?php endif; ?>
     </div>
+
     <div class="movies_container">
         <?php foreach ($catalogue as $movie)
         { ?>
