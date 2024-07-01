@@ -22,8 +22,10 @@
             $error = "";
     
             $catalogue = $movies->get_movies($offset, $limit, $search, $genre);
-            $total_results = $movies->get_movie_count($search, $genre);
+            // $total_results = $movies->get_movie_count($search, $genre);
             $genres = $movies->get_genres();
+
+            console_log($_GET);
 
             require_once("Vista/Catalogue_Vista.php");
         }
