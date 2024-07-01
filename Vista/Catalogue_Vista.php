@@ -33,7 +33,7 @@
                 </button>
             </form>
 
-           <?php /* <p>Total de resultados: <?php echo $total_results; ?></p> */ ?>
+           <?php /* <p>Total de resultados: <?php echo $total_results; ?></p> */?>
         </div>
         <div class="filters">
             <span>Filtros: </span>
@@ -72,7 +72,7 @@
         { ?>
             <div class="movie">
                 <img class="movie_picture" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
-                <h2 class="movie_title"><?php echo $movie['title'] ?></h2>
+                <h2 class="movie_title"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
                 <h3 class="movie_date">(<?php echo $movie['date'] ?>)</h3>
                 <p class="movie_score">Puntuación Media: <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
                 <p class="movie_description"> 
