@@ -62,7 +62,6 @@
         <a href="?search=<?php echo urlencode($search); ?>&genre=<?php echo urlencode($genre); ?>&page=<?php echo $page - 1; ?>">Anterior</a>
     <?php endif; ?>
 
-    <?php console_log($catalogue); ?>
     <?php if (count($catalogue) === $limit): ?>
         <a href="?search=<?php echo urlencode($search); ?>&genre=<?php echo urlencode($genre); ?>&page=<?php echo $page + 1; ?>">Siguiente</a>
     <?php endif; ?>
@@ -75,6 +74,7 @@
                 <img class="movie_picture" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
                 <h2 class="movie_title"><?php echo $movie['title'] ?></h2>
                 <h3 class="movie_date">(<?php echo $movie['date'] ?>)</h3>
+                <p class="movie_score">Puntuación Media: <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
                 <p class="movie_description"> 
                     <?php 
                         if($movie['desc'] != "") echo truncateText($movie['desc']);

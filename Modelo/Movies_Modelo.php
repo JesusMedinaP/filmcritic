@@ -28,16 +28,18 @@ class Movies_Modelo
 
     public function get_movies($offset, $limit = 20, $search = '', $genre = null)
     {
-        $sql = "SELECT DISTINCT m.* FROM movie m 
+        $sql = "SELECT m.id, m.title, m.date, m.url_imdb, m.url_pic, m.desc
+        FROM movie m
         LEFT JOIN moviegenre mg ON m.id = mg.movie_id 
         WHERE m.title LIKE ?";
         if ($genre !== null) {
-            $sql .= " AND mg.genre = ? LIMIT ?, ?";
+            $sql .= " AND mg.genre = ?";
+            $sql .= " GROUP BY m.id LIMIT ?, ?";
             $consulta = $this->db->prepare($sql);
             $searchTerm = '%' . $search . '%';
             $consulta->bind_param("siii", $searchTerm, $genre, $offset, $limit);
         } else {
-            $sql .= " LIMIT ?, ?";
+            $sql .= " GROUP BY m.id LIMIT ?, ?";
             $consulta = $this->db->prepare($sql);
             $searchTerm = '%' . $search . '%';
             $consulta->bind_param("sii", $searchTerm, $offset, $limit);
@@ -47,15 +49,47 @@ class Movies_Modelo
         $result = $consulta->get_result();
 
         $movies = [];
+        $movieIds = [];
         while ($registro = $result->fetch_assoc()) {
             $movies[] = $registro;
+            $movieIds[] = $registro['id'];
         }
+
+        if (count($movieIds) > 0) {
+            $idPlaceholders = implode(',', array_fill(0, count($movieIds), '?'));
+            $scoreSql = "SELECT id_movie, AVG(score) AS avg_score, COUNT(score) AS score_count 
+                        FROM user_score 
+                        WHERE id_movie IN ($idPlaceholders) 
+                        GROUP BY id_movie";
+            $scoreConsulta = $this->db->prepare($scoreSql);
+            $scoreConsulta->bind_param(str_repeat('i', count($movieIds)), ...$movieIds);
+            $scoreConsulta->execute();
+            $scoreResult = $scoreConsulta->get_result();
+
+            $scores = [];
+            while ($scoreRegistro = $scoreResult->fetch_assoc()) {
+                $scores[$scoreRegistro['id_movie']] = $scoreRegistro;
+            }
+
+            foreach ($movies as &$movie) {
+                $movieId = $movie['id'];
+                if (isset($scores[$movieId])) {
+                    $movie['avg_score'] = $scores[$movieId]['avg_score'];
+                    $movie['score_count'] = $scores[$movieId]['score_count'];
+                } else {
+                    $movie['avg_score'] = null;
+                    $movie['score_count'] = 0;
+                }
+            }
+        }
+
         return $movies;
     }
 
     public function get_movie_count($search ='', $genre = null)
     {
-        $sql = "SELECT COUNT(DISTINCT m.id) as count FROM movie m 
+        $sql = "SELECT COUNT(DISTINCT m.id) as count 
+        FROM movie m 
         LEFT JOIN moviegenre mg ON m.id = mg.movie_id 
         WHERE m.title LIKE ?";
         if ($genre !== null) {

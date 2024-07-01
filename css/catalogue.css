@@ -93,6 +93,14 @@ option{
     align-self: center;
 }
 
+.movie_score{
+    align-self: center;
+}
+
+.score{
+    font-weight: bold;
+}
+
 .movie_description{
     font-size: 16px;
 }
