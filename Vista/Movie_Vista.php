@@ -19,7 +19,25 @@
         <div class="movie_details">
             <h2>Título: <?php echo $movie['title'] ?></h2>
             <p class="movie_description"><?php echo $movie['desc'] ?></p>
+            <h3>Géneros:</h3>
+            <?php if($movieGenres != null) { ?>
+                <ul>
+                    <?php foreach ($movieGenres as $genre) { ?>
+                        <li><?php echo htmlspecialchars($genre); ?></li>
+                    <?php } ?>
+                </ul>
+            <?php }else echo '<p>La película no tiene ningún género asociado</p>' ?>
+
+            <h3>Comentarios:</h3>
+            <?php if($movieComments != null) { ?>
+                <ul>
+                    <?php foreach ($movieComments as $comment) { ?>
+                        <li><strong><?php echo htmlspecialchars($comment['name']); ?>:</strong> <?php echo htmlspecialchars($comment['comment']); ?></li>
+                    <?php } ?>
+                </ul>
+            <?php }else echo '<p>No se han encontado comentarios en la base de datos referentes a esta película</p>' ?>
         </div>
+
     <?php } else { ?>
         <p><?php echo $error ?></p>
     <?php } ?>
