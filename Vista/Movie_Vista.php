@@ -26,7 +26,7 @@
                         <li><?php echo htmlspecialchars($genre); ?></li>
                     <?php } ?>
                 </ul>
-            <?php }else echo '<p>La película no tiene ningún género asociado</p>' ?>
+            <?php }else echo '<p>La película no tiene ningún género asociado.</p>' ?>
 
             <h3>Comentarios:</h3>
             <?php if($movieComments != null) { ?>
@@ -35,7 +35,28 @@
                         <li><strong><?php echo htmlspecialchars($comment['name']); ?>:</strong> <?php echo htmlspecialchars($comment['comment']); ?></li>
                     <?php } ?>
                 </ul>
-            <?php }else echo '<p>No se han encontado comentarios en la base de datos referentes a esta película</p>' ?>
+            <?php }else echo '<p>No se han encontado comentarios en la base de datos referentes a esta película.</p>' ?>
+
+            <?php if($_SESSION['user_id']) { ?>
+                <h3>Puntuación recibida:</h3>
+                <?php if($movieScore != null) { ?>
+                    <p><?php echo $movieScore['score']; ?></p>
+                <?php }else echo '<p>No has puntuado la película todavía.</p>' ?>
+
+                <h3>Puntuar:</h3>
+                <form action="index.php?controlador=movie&action=submit_score" method="POST">
+                    <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
+                    <input type="number" name="score" min="1" max="5" required>
+                    <button type="submit">Enviar puntuación</button>
+                </form>
+
+                <h3>Comentar:</h3>
+                <form action="index.php?controlador=movie&action=submit_comment" method="POST">
+                    <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
+                    <textarea name="comment" rows="10" cols="50" placeholder="Escribe tu comentario" required></textarea>
+                    <button type="submit">Enviar comentario</button>
+                </form>
+            <?php } ?>
         </div>
 
     <?php } else { ?>

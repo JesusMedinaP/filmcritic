@@ -67,5 +67,35 @@ class Movie_Modelo
         return $comments;
     }
 
+    public function get_user_score($userId, $movieId)
+    {
+        $sql = "SELECT us. score FROM user_score us WHERE us.id_user = ? AND us.id_movie = ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("ii", $userId, $movieId);
+        $consulta->execute();
+
+        $result = $consulta->get_result();
+        $score = $result->fetch_assoc();
+        return $score;
+    }
+
+    public function submit_score($userId, $movieId, $score)
+    {
+        $timestamp = date('Y-m-d H:i:s');
+
+        $sql = "REPLACE INTO user_score(id_user, id_movie, score, time) VALUES (?, ?, ?, ?)";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("iiis", $userId, $movieId, $score, $timestamp);
+        $consulta->execute();
+    }
+
+    public function submit_comment($userId, $movieId, $comment)
+    {
+        $sql = "INSERT INTO moviecomments (movie_id, user_id, comment) VALUES (?, ?, ?)";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("iis", $movieId, $userId, $comment);
+        $consulta->execute();
+    }
+
 }
 ?>
