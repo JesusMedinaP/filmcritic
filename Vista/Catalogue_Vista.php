@@ -33,7 +33,7 @@
                 </button>
             </form>
 
-           <?php /* <p>Total de resultados: <?php echo $total_results; ?></p> */?>
+           <?php echo '<p>Total de resultados:' . $total_results; '</p>'?>
         </div>
         <div class="filters">
             <span>Filtros: </span>
