@@ -11,21 +11,11 @@
 
     <script src="https://kit.fontawesome.com/6ef29524c6.js" crossorigin="anonymous"></script>
 </head>
-<body>   
-    <h1>Estoy en el Catálogo</h1>
-    <?php if ($_SESSION["user_id"]) { ?>
-      <h2>He iniciado sesión</h2>
-      <a href="index.php?controlador=catalogue&action=home">Inicio</a>
-      <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
-    <?php }else{ ?>
-        <a href="index.php?controlador=login">Ir al Login</a>
-    <?php } ?>
-
-    <?php
-    if(!empty($catalogue))
-    { ?>
+<body>
     
-    <div class="filters_container">
+    <div class="navigation_bar">
+        <h1 class="title"><a href="index.php?controlador=catalogue&action=home">Pelis Review</a></h1>
+
         <div class="search_bar">
             <form method="GET" action="">
                 <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Barra de búsqueda">
@@ -34,8 +24,19 @@
                 </button>
             </form>
 
-           <?php echo '<p>Total de resultados:' . $total_results; '</p>'?>
+           <?php echo '<p>' . $total_results . ' resultados.</p>'?>
         </div>
+        <?php if ($_SESSION["user_id"]) { ?>
+          <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
+        <?php }else{ ?>
+            <a href="index.php?controlador=login">Ir al Login</a>
+        <?php } ?>
+    </div>
+    <?php
+    if(!empty($catalogue))
+    { ?>
+    
+    <div class="filters_container">
         <div class="filters">
             <span>Filtros: </span>
             <div class="genre_filter">
@@ -48,6 +49,11 @@
                                 <?php echo htmlspecialchars($g['name']); ?>
                             </option>
                         <?php endforeach; ?>
+                    </select>
+
+                    <select name="order" id="order" onchange="this.form.submit()">
+                        <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>A - Z</option>
+                        <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>Z - A</option>
                     </select>
                 </form>
             </div>

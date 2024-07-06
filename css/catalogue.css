@@ -1,10 +1,44 @@
+:root{
+    --background-color: cadetblue;
+    --background-color-secondary: #f4f4f4;
+}
+
+.navigation_bar{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    background: var(--background-color);
+}
+
+.title{
+    margin: 0;
+}
+
+.navigation_bar a {
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.navigation_bar a:visited{
+    color: white;
+}
+
 .filters_container{
     display: flex;
-    justify-content: center;
     align-items: center;
     width: 100%;
     padding: 20px 0px;
     column-gap: 20px;
+    padding-right: 20px;
+    justify-content: flex-end;
+}
+
+.filters{
+    background: var(--background-color-secondary);
 }
 
 .search_bar, .filters{
@@ -14,13 +48,32 @@
     padding: 0px 20px;
     max-height: 35px;
     height: 100%;
-    background: white;
     padding: 10px;
     border-radius: 25px;
     align-content: center;
 }
 
+.search_bar{
+    width: 100%;
+    max-width: 500px;
+}
+
+.search_bar form{
+    width: 100%;
+    max-width: 70%;
+}
+
+.search_bar form input{
+    width: 100%;
+    max-width: 90%;
+}
+
+.search_bar p{
+    color: var(--background-color-secondary);
+}
+
 .search_bar form, .genre_filter form{
+    background: white;
     margin: 0;    
     box-sizing: content-box;
     border-radius: 25px;
