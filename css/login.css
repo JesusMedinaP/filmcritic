@@ -1,3 +1,37 @@
+.navigation_bar{
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    background: var(--background-color);
+}
+
+.title{
+    margin: 0;
+    height: 45px;
+}
+
+.navigation_bar a {
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+}
+
+.navigation_bar a:visited{
+    color: white;
+}
+
+.hover_scale{
+    transition: all .2;
+}
+
+.hover_scale:hover{
+    transform: scaleY(1.2);
+    transform: scaleX(1.1);
+}
+
 .form_wrapper{
     width: 100%;
     max-width: var(--form-max-width);
@@ -9,7 +43,9 @@
 }
 
 .form_title{
-    margin-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 24px;
 }
 
 form{
@@ -20,6 +56,12 @@ form{
     padding: 20px;
     background: #ccc;
     font-size: 16px;
+}
+
+select{
+    height: 100%;
+    border-radius: 25px;
+    padding: 0px 10px;
 }
 
 .input_field{
@@ -44,6 +86,14 @@ form{
     column-gap: 10px;
 }
 
+.gender_input label{
+    font-size: 14px;
+}
+
+fieldset{
+    border-radius: 10px;
+}
+
 .gender_input input {
     width: fit-content;
 }
@@ -62,7 +112,7 @@ form{
     background: grey;
     font-size: 16px;
     background: var(--button-background);
-    padding: 5px 10px;
+    padding: 5px 20px;
     cursor: pointer;
     border: none;
     border-radius: var(--form-radius);

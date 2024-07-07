@@ -14,7 +14,7 @@
 <body>
     
     <div class="navigation_bar">
-        <h1 class="title"><a href="index.php?controlador=catalogue&action=home">Pelis Review</a></h1>
+        <h1 class="title hover_scale"><a href="index.php?controlador=catalogue&action=home">Pelis Review</a></h1>
 
         <div class="search_bar">
             <form method="GET" action="">
@@ -27,9 +27,9 @@
            <?php echo '<p>' . $total_results . ' resultados.</p>'?>
         </div>
         <?php if ($_SESSION["user_id"]) { ?>
-          <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
+          <a href="index.php?controlador=catalogue&action=desconectar" class="hover_scale">Desconectar</a>
         <?php }else{ ?>
-            <a href="index.php?controlador=login">Ir al Login</a>
+            <a href="index.php?controlador=login" class="hover_scale">Ir al Login</a>
         <?php } ?>
     </div>
     <?php
@@ -82,16 +82,16 @@
         { ?>
             <div class="movie">
                 <img class="movie_picture" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
-                <h2 class="movie_title"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
-                <h3 class="movie_date">(<?php echo $movie['date'] ?>)</h3>
-                <p class="movie_score">Puntuación Media: <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
+                <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
+                <p class="movie_score"><i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
                 <p class="movie_description"> 
                     <?php 
-                        if($movie['desc'] != "") echo truncateText($movie['desc']);
+                        if($movie['desc'] != "" && $movie['desc'] != "N/A") echo truncateText($movie['desc']);
                         else echo 'No hay descripción para esta película';
-                    ?>
+                        ?>
                     </p>
-                <a href="<?php echo $movie['url_imdb'] ?>" target="_blank" class="movie_link">IMDB</a>
+                <!--<a href="<?php echo $movie['url_imdb'] ?>" target="_blank" class="movie_link">IMDB</a>-->
+                <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
             </div>
         <?php 
         } ?>
@@ -104,7 +104,7 @@
 </html>
 
 <?php
-function truncateText($text, $maxLength = 150) {
+function truncateText($text, $maxLength = 50) {
     if (strlen($text) > $maxLength) {
         return substr($text, 0, $maxLength) . '...';
     } else {
