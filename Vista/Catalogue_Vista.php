@@ -51,6 +51,7 @@
                         <?php endforeach; ?>
                     </select>
 
+                    <!-- Orden alfabético -->
                     <select name="order" id="order" onchange="this.form.submit()">
                         <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>A - Z</option>
                         <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>Z - A</option>
@@ -65,14 +66,16 @@
     </div>
 
     <div class="pagination_links">
-    <?php if ($page > 1): ?>
-        <a href="?search=<?php echo urlencode($search); ?>&genre=<?php echo urlencode($genre); ?>&page=<?php echo $page - 1; ?>">Anterior</a>
-    <?php endif; ?>
-
-    <?php if (count($catalogue) === $limit): ?>
-        <a href="?search=<?php echo urlencode($search); ?>&genre=<?php echo urlencode($genre); ?>&page=<?php echo $page + 1; ?>">Siguiente</a>
-    <?php endif; ?>
-    </div>
+            <form method="GET" action="index.php">
+                <input type="hidden" name="controlador" value="catalogue">
+                <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                <input type="hidden" name="genre" value="<?php echo htmlspecialchars($genre); ?>">
+                <input type="hidden" name="order" value="<?php echo htmlspecialchars($order); ?>">
+                
+                <button type="submit" name="page" value="<?php echo $page - 1; ?>" <?php echo ($page <= 1) ? 'disabled' : ''; ?>>Anterior</button>
+                <button type="submit" name="page" value="<?php echo $page + 1; ?>" <?php echo (count($catalogue) < $limit) ? 'disabled' : ''; ?>>Siguiente</button>
+            </form>
+        </div>
 
     <div class="movies_container">
         <?php foreach ($catalogue as $movie)

@@ -110,6 +110,28 @@ option{
     padding: 20px 0px;
 }
 
+.pagination_links form{
+    margin: 0;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+.pagination_links button {
+    cursor: pointer;
+    text-decoration: none;
+    text-decoration: none;
+    border: 2px solid #ccc;
+    padding: 5px 20px;
+    border-radius: 25px;
+    background: var(--background-color);
+    color: var(--background-color-secondary);
+}
+
+button:disabled{
+    opacity: 0.3;
+}
+
 .movies_container{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
