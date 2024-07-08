@@ -10,7 +10,7 @@
             $error = "";
             $movieId = $_GET['id'];
             $movie = $movieModel->get_movie($movieId);
-            
+
             $movieGenres = $movieModel->get_movie_genres($movieId);
             
             $movieComments = $movieModel->get_movie_comments($movieId);

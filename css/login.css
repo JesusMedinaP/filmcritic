@@ -71,19 +71,6 @@ fieldset{
     right: 10px;
 }
 
-.form_button{
-    width: fit-content;
-    align-self: center;
-    color: white;
-    background: grey;
-    font-size: 16px;
-    background: var(--button-background);
-    padding: 5px 20px;
-    cursor: pointer;
-    border: none;
-    border-radius: var(--form-radius);
-}
-
 .input_field input[type="file"]{
     align-content: center;
 }

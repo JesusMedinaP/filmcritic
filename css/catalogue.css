@@ -95,7 +95,7 @@
 .popup a {
     display: block;
     padding: 10px;
-    color: black;
+    color: white;
     text-decoration: none;
     border-bottom: 1px solid #ccc;
 }
@@ -120,36 +120,6 @@
 
 option{
     font-family: 'Roboto', sans-serif;
-}
-
-.pagination_links{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-evenly;
-    padding: 20px 0px;
-}
-
-.pagination_links form{
-    margin: 0;
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
-}
-
-.pagination_links button {
-    cursor: pointer;
-    text-decoration: none;
-    text-decoration: none;
-    border: 2px solid var(--movie-background);
-    padding: 5px 20px;
-    border-radius: 25px;
-    background: var(--background-color);
-    color: var(--background-color-secondary);
-}
-
-button:disabled{
-    opacity: 0.3;
 }
 
 .movies_container{

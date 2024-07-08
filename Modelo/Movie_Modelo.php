@@ -13,7 +13,13 @@ class Movie_Modelo
 
     public function get_movie($id)
     {
-        $sql = "SELECT * FROM movie WHERE id = ?";
+        $sql = "SELECT m.*, 
+                       AVG(us.score) AS avg_score, 
+                       COUNT(us.score) AS score_count
+                FROM movie m
+                LEFT JOIN user_score us ON m.id = us.id_movie
+                WHERE m.id = ?
+                GROUP BY m.id";
         $consulta = $this->db->prepare($sql);
         $consulta->bind_param("i", $id);
         $consulta->execute();
