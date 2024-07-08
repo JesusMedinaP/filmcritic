@@ -1,12 +1,6 @@
 <?php 
     session_start();
 
-        // Verificar si el usuario está logueado
-    if (!isset($_SESSION['user_id'])) {
-        // Redirigir al Login si no está logueado
-        header('Location: index.php?controlador=login');
-        exit(); // Terminar la ejecución del script después de la redirección
-    }else{
         require_once("Modelo/Movies_Modelo.php");
 
         function home()
@@ -38,5 +32,4 @@
         header("Location: index.php");
         exit();
         }
-    }
 ?>

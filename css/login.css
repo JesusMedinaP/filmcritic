@@ -1,37 +1,3 @@
-.navigation_bar{
-    display: flex;
-    flex-direction: row;
-    padding: 10px;
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-    background: var(--background-color);
-}
-
-.title{
-    margin: 0;
-    height: 45px;
-}
-
-.navigation_bar a {
-    font-weight: bold;
-    text-decoration: none;
-    color: white;
-}
-
-.navigation_bar a:visited{
-    color: white;
-}
-
-.hover_scale{
-    transition: all .2;
-}
-
-.hover_scale:hover{
-    transform: scaleY(1.2);
-    transform: scaleX(1.1);
-}
-
 .form_wrapper{
     width: 100%;
     max-width: var(--form-max-width);

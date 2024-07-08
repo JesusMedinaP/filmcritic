@@ -1,12 +1,6 @@
 <?php 
     session_start();
 
-        // Verificar si el usuario está logueado
-    if (!isset($_SESSION['user_id'])) {
-        // Redirigir al Login si no está logueado
-        header('Location: index.php?controlador=login');
-        exit(); // Terminar la ejecución del script después de la redirección
-    }else{
         require_once("Modelo/Movie_Modelo.php");
 
         function home()
@@ -14,15 +8,20 @@
 
             $movieModel = new Movie_Modelo();
             $error = "";
-            $userId = $_SESSION['user_id'];
             $movieId = $_GET['id'];
             $movie = $movieModel->get_movie($movieId);
-
+            
             $movieGenres = $movieModel->get_movie_genres($movieId);
-
+            
             $movieComments = $movieModel->get_movie_comments($movieId);
-
-            $movieScore = $movieModel->get_user_score($userId, $movieId);
+            
+            if(isset($_SESSION['user_id']))
+            {
+                $userId = $_SESSION['user_id'];
+                $movieScore = $movieModel->get_user_score($userId, $movieId);
+                console_log("PUNTUACIÓN");
+                console_log($movieScore);
+            }
 
             if($movie == null){
                 $error = 'Ha habido un problema al obtener la película';
@@ -42,8 +41,6 @@
             console_log("Géneros");
             console_log($movieGenres);
 
-            console_log("PUNTUACIÓN");
-            console_log($movieScore);
 
             require_once("Vista/Movie_Vista.php");
         }
@@ -70,6 +67,4 @@
             header('Location: index.php?controlador=movie&id=' . $movieId);
         }
 
-
-    }
 ?>

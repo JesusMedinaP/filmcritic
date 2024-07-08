@@ -26,10 +26,10 @@
 
            <?php echo '<p>' . $total_results . ' resultados.</p>'?>
         </div>
-        <?php if ($_SESSION["user_id"]) { ?>
+        <?php if (isset($_SESSION["user_id"])) { ?>
           <a href="index.php?controlador=catalogue&action=desconectar" class="hover_scale">Desconectar</a>
         <?php }else{ ?>
-            <a href="index.php?controlador=login" class="hover_scale">Ir al Login</a>
+            <a href="index.php?controlador=login" class="hover_scale">Iniciar sesión</a>
         <?php } ?>
     </div>
     <?php
@@ -89,7 +89,7 @@
                         if($movie['desc'] != "" && $movie['desc'] != "N/A") echo truncateText($movie['desc']);
                         else echo 'No hay descripción para esta película';
                         ?>
-                    </p>
+                </p>
                 <!--<a href="<?php echo $movie['url_imdb'] ?>" target="_blank" class="movie_link">IMDB</a>-->
                 <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
             </div>
