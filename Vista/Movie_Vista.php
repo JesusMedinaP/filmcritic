@@ -22,11 +22,9 @@
             <div class="movie_picture_info">
                 <div class="movie_pic_score">
                     <img class="movie_picture" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
-                    <?php if(isset($_SESSION['user_id'])) { ?>
-                    <?php if($movieScore != null) { ?>
+                    <?php if($movie['score_count'] != null) { ?>
                         <span class="movie_score"><i class="fa-solid fa-star"></i> <?php echo round($movie['avg_score'], 1); ?> (<?php echo $movie['score_count'] ?> votos)</span>
-                    <?php }else echo '<p>No has puntuado la película todavía.</p>' ?>
-                    <?php } ?>
+                    <?php }else echo '<p>La película no ha sido puntuada por ningún usuario.</p>' ?>
                 </div>
                 <div class="movie_details">
                     <h2>Título: <?php echo $movie['title'] ?></h2>
@@ -91,12 +89,11 @@
                         </div>
                     <?php endforeach; ?>
                 </div>
+                <div class="pagination_links">
+                    <button id="prev_button" disabled>Anterior</button>
+                    <button id="next_button">Siguiente</button>
+                </div>
             <?php }else echo '<p>No se han encontado comentarios en la base de datos referentes a esta película.</p>' ?>
-
-            <div class="pagination_links">
-                <button id="prev_button" disabled>Anterior</button>
-                <button id="next_button">Siguiente</button>
-            </div>
 
         </div>
 
