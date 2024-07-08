@@ -26,11 +26,17 @@
 
            <?php echo '<p>' . $total_results . ' resultados.</p>'?>
         </div>
-        <?php if (isset($_SESSION["user_id"])) { ?>
-          <a href="index.php?controlador=catalogue&action=desconectar" class="hover_scale">Desconectar</a>
-        <?php }else{ ?>
-            <a href="index.php?controlador=login" class="hover_scale">Iniciar sesión</a>
-        <?php } ?>
+        <div class="user_menu">
+            <i class="fa fa-user user_icon hover_scale" onclick="togglePopup()"></i>
+            <div id="userPopup" class="popup">
+                <?php if (isset($_SESSION["user_id"])) { ?>
+                    <a href="index.php?controlador=user&action=home">Mi cuenta</a>
+                    <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
+                <?php } else { ?>
+                    <a href="index.php?controlador=login">Iniciar sesión</a>
+                <?php } ?>
+            </div>
+        </div>
     </div>
     <?php
     if(!empty($catalogue))
@@ -102,6 +108,22 @@
 
 </body>
 </html>
+
+<script>
+    function togglePopup() {
+            var popup = document.getElementById("userPopup");
+            popup.classList.toggle("active");
+        }
+        // Close the popup if clicked outside
+        window.onclick = function(event) {
+            var popup = document.getElementById("userPopup");
+            if (!event.target.matches('.user_icon')) {
+                if (popup.classList.contains('active')) {
+                    popup.classList.remove('active');
+                }
+            }
+        }
+</script>
 
 <?php
 function truncateText($text, $maxLength = 50) {
