@@ -4,6 +4,10 @@
     width: 100%;
     display: flex;
     flex-direction: column;
+    border: 2px solid grey;
+    padding: 20px;
+    border-radius: 25px;
+    background: var(--movie-background);
 }
 
 .movie_details{
@@ -24,7 +28,7 @@
 }
 
 .movie_picture{
-
+    border-radius: 15px;
 }
 
 .movie_score{
@@ -55,7 +59,21 @@
 .comment_card{
     display: flex;
     gap: 10px;
-    background: var(--movie-background);
+    background: var(--body-background);
     padding: 5px 10px;
-    border-radius: 25px;
+    border-radius: 15px;
+    border: 1px solid grey;
+}
+
+.comment_author{
+    font-weight: bold;
+}
+
+.comment_author i {
+    margin-right: 10px;
+}
+
+.movie_picture[src="movies_images/movie_placeholder.png"]{
+    width: 300px;
+    height: 400px;
 }

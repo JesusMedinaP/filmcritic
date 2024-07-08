@@ -84,7 +84,7 @@
                 <div id="comments_container" class="comments_container">
                     <?php foreach ($movieComments as $comment): ?>
                         <div class="comment_card">
-                            <p class="comment_author"><?php echo htmlspecialchars($comment['name']); ?></p>
+                            <p class="comment_author"> <i class="fa fa-user user_icon"></i><?php echo htmlspecialchars($comment['name']); ?>:</p>
                             <p><?php echo htmlspecialchars($comment['comment']); ?></p>
                         </div>
                     <?php endforeach; ?>
