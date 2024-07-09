@@ -89,5 +89,18 @@ class Users_Modelo
         }
 
     }
+
+    public function update_user($userId, $name, $age, $gender, $ocupation, $pic, $password)
+    {
+        $sql = "UPDATE users SET name = COALESCE(?, name), edad = COALESCE(?, edad), sex = COALESCE(?, sex), ocupacion = COALESCE(?, ocupacion), pic = COALESCE(?, pic), passwd = COALESCE(?, passwd) WHERE id = ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("sissssi", $name, $age, $gender, $ocupation, $pic, $password, $userId);
+
+        if($consulta->execute()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
 ?>

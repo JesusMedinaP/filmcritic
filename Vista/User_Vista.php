@@ -30,47 +30,47 @@
         </div>
         <button type="button" class="form_button" id="modificar">Modifcar datos</button>
 
-        <div class="form_wrapper" id="modifyForm">
+        <div class="form_wrapper" id="modifyForm" style="display: none;">
             <h1 class="form_title">Modificar datos</h1>
         
             <form action="" method="POST" enctype="multipart/form-data">
-
+            <input type="hidden" name="user_id" value="<?php echo $user['id'] ?>">
             <div class="input_field">            
-                <input type="text" id="username_modify" name="username_modify" required placeholder="Nombre de usuario" autocomplete="on">
+                <input type="text" id="username_modify" name="username_modify" placeholder="Nombre de usuario" autocomplete="on" value="<?php echo $user['name'] ?>">
             </div>
 
             <div class="input_field">            
-                <input type="number" id="age_modify" name="age_modify" required placeholder="Edad">
+                <input type="number" id="age_modify" name="age_modify" placeholder="Edad" value="<?php echo $user['edad'] ?>">
             </div>
 
             <div class="input_field" style="height: 100%;">            
                 <fieldset>
                     <legend>Sexo:</legend>
                     <div class="gender_input">
-                        <input type="radio" id="Male" name="gender_modify" value="M">
+                        <input type="radio" id="Male" name="gender_modify" value="M" <?php if($user['sex'] == 'M') echo 'checked'; ?>>
                         <label for="Male">Hombre</label>
                     </div>
 
                     <div class="gender_input">
-                        <input type="radio" id="Female" name="gender_modify" value="F">
+                        <input type="radio" id="Female" name="gender_modify" value="F" <?php if($user['sex'] == 'F') echo 'checked'; ?>>
                         <label for="Female">Mujer</label>
                     </div>
                 </fieldset>
             </div>
 
             <div class="input_field">            
-                <select id="ocupation_modify" name="ocupation_modify" required>
-                    <option value="" disabled selected>Selecciona tu ocupación</option>
+                <select id="ocupation_modify" name="ocupation_modify">
+                    <option value="" disabled>Selecciona tu ocupación</option>
                     <?php 
                     foreach ($ocupaciones as $ocupacion) {
-                        echo "<option value=\"$ocupacion\">$ocupacion</option>";
+                        echo "<option value=\"$ocupacion\"" . ($ocupacion == $user['ocupacion'] ? ' selected' : '') . ">$ocupacion</option>";
                     }
                     ?>
                 </select>
             </div>
 
             <div class="input_field">            
-                <input type="password" id="password_modify" name="password_modify" required placeholder="Clave de acceso">
+                <input type="password" id="password_modify" name="password_modify" placeholder="Clave de acceso">
                 <span toggle="#password_modify" class="fa fa-fw fa-eye field-icon toggle_password"></span>
             </div>
 
