@@ -24,6 +24,22 @@ class Users_Modelo
         return $this->users;
     }
 
+    public function get_user($id)
+    {
+        $sql = "SELECT * FROM users WHERE id = ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("i", $id);
+        $consulta->execute();
+    
+        $result = $consulta->get_result();
+    
+        if ($result->num_rows == 1) {
+            return $result->fetch_assoc(); // Devuelve el registro como array asociativo
+        } else {
+            return null; // Manejar el caso donde no se encontró la película
+        }
+    }
+
     public function get_ocupations()
     {
         $sql = "SELECT COLUMN_TYPE 
