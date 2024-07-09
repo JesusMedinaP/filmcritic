@@ -21,12 +21,17 @@
     <?php if ($user) { ?>
 
         <h1>Tus datos</h1>
-        <div class="user_data_container" id="user_data">
-            <span>Nombre: <?php echo $user['name'] ?></span>
-            <span>Edad: <?php echo $user['edad'] ?></span>
-            <span>Ocupación: <?php echo $user['ocupacion'] ?></span>
-            <span>Género: <?php echo $user['sex'] ?></span>
-            <span class="user_data_pic">Foto de perfil: <img src="imagenes_perfil/<?php echo $user['pic'] ?>"/></span>
+        <div class="user_data_container" id="user_data" style="display: flex;">
+            <span>Nombre: <span><?php echo $user['name'] ?></span></span>
+            <span>Edad: <span><?php echo $user['edad'] ?></span></span>
+            <span>Ocupación: <span><?php echo $user['ocupacion'] ?></span></span>
+            <span>Género: <span><?php echo $user['sex'] ?></span></span>
+            <span class="user_data_pic">Foto de perfil: 
+                <?php if($user['pic'] != null): ?>
+                <img src="imagenes_perfil/<?php echo $user['pic'] ?>"/>
+                <?php else: echo 'No tienes foto de perfil'; ?>
+                <?php endif; ?>
+            </span>
         </div>
         <button type="button" class="form_button" id="modificar">Modifcar datos</button>
 

@@ -1,12 +1,22 @@
 .user_data_container{
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    padding: 10px 20px;
+    gap: 20px;
+    padding: 20px;
     background: white;
     border: 1px solid var(--movie-background);
     border-radius: 25px;
     margin-bottom: 10px;
+    width: 100%;
+    max-width: 250px;
+}
+
+.user_data_container > span {
+    font-weight: bold;
+}
+
+.user_data_container > span > span {
+    font-weight: normal;
 }
 
 .user_data_pic{
