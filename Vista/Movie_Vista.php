@@ -71,7 +71,7 @@
                     <h3>Comentar:</h3>
                     <form action="index.php?controlador=movie&action=submit_comment" method="POST" class="comment_form">
                         <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
-                        <textarea name="comment" rows="5" cols="50" placeholder="Escribe tu comentario" required></textarea>
+                        <textarea name="comment" rows="4" cols="50" placeholder="Escribe tu comentario" required></textarea>
                         <button class="form_button" type="submit" style="align-self: flex-start;">Comentar</button>
                     </form>
                 <?php }else{ ?>

@@ -46,8 +46,14 @@
 .comment_form{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
     align-items: flex-start;
+}
+
+textarea{
+    border-radius: 15px;
+    padding: 10px;
+    border-width: 2px;
 }
 
 .comments_container{
@@ -76,4 +82,13 @@
 .movie_picture[src="movies_images/movie_placeholder.png"]{
     width: 300px;
     height: 400px;
+}
+
+input[type="number"]
+{
+    text-align: center;
+    width: 60px;
+    height: 30px;
+    border-radius: 10px;
+    border: 2px solid grey;
 }
