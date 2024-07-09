@@ -78,7 +78,7 @@
                 } else {
                     if (move_uploaded_file($_FILES["pic_modify"]["tmp_name"], $target_file)) {
                     console_log("The file ". htmlspecialchars( basename( $_FILES["pic_modify"]["name"])). " has been uploaded.");
-                    $pic = $_FILES['pic_modify']['name'];
+                    $pic = $userId . "_" . $_FILES['pic_modify']['name'];
                     } else {
                     console_log("Sorry, there was an error uploading your file.");
                     }
