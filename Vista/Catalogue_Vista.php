@@ -14,8 +14,7 @@
 <body>
     
     <div class="navigation_bar">
-        <h1 class="title hover_scale"><a href="index.php?controlador=catalogue&action=home">Pelis Review</a></h1>
-
+        <?php require_once("header.php") ?>
         <div class="search_bar">
             <form method="GET" action="">
                 <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Barra de búsqueda">
