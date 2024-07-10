@@ -40,6 +40,20 @@ class Users_Modelo
         }
     }
 
+    public function get_last_inserted_id()
+    {
+        return $this->db->insert_id;
+    }
+
+    public function update_user_pic($userId, $pic)
+    {
+        $sql = "UPDATE users SET pic = ? WHERE id = ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("si", $pic, $userId);
+
+        return $consulta->execute();
+    }
+
     public function get_ocupations()
     {
         $sql = "SELECT COLUMN_TYPE 
