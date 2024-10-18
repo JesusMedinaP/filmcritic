@@ -95,13 +95,29 @@ class Users_Modelo
 
         if($result->num_rows == 1){
             $row = $result->fetch_assoc();
+            
+            $sql = "SELECT is_admin FROM users_admin WHERE user_id = ?";
+            $consultaAdmin = $this->db->prepare($sql);
+            $consultaAdmin->bind_param("i", $row['id']);
+            $consultaAdmin->execute();
+            $resultAdmin = $consultaAdmin->get_result();
+
+            if($resultAdmin->num_rows == 1)
+            {
+                $adminRow = $resultAdmin->fetch_assoc();
+                $_SESSION['is_admin'] = $adminRow['is_admin'];
+            }else{
+                $_SESSION['is_admin'] = 0;
+            }
+            
             $_SESSION['user_name'] = $row['name'];
             $_SESSION['user_id'] = $row['id'];
+            $_SESSION['user_pic'] = $row['pic'];
+
             return true;
         }else{
             return false;
         }
-
     }
 
     public function update_user($userId, $name, $age, $gender, $ocupation, $pic, $password)

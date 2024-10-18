@@ -20,7 +20,7 @@
             $total_results = $movies->get_movie_count($search, $genre);
             $genres = $movies->get_genres();
 
-            console_log($_GET);
+            console_log($_SESSION);
 
             require_once("Vista/Catalogue_Vista.php");
         }

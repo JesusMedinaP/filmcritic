@@ -26,9 +26,9 @@ class Movies_Modelo
         return $this->genres;
     }
 
-    public function get_movies($offset, $limit = 20, $search = '', $genre = null, $order = "ASC")
+    public function get_movies($offset, $limit = 20, $search = '', $genre = null, $order = "DESC")
     {
-        $order = ($order == 'DESC') ? 'DESC' : 'ASC'; // Ensure only 'ASC' or 'DESC' is allowed
+        $order = ($order == 'DESC') ? 'ASC' : 'DESC'; // Ensure only 'ASC' or 'DESC' is allowed
         $sql = "SELECT m.id, m.title, m.date, m.url_imdb, m.url_pic, m.desc
                 FROM movie m
                 LEFT JOIN moviegenre mg ON m.id = mg.movie_id 

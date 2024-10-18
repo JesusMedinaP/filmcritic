@@ -26,10 +26,13 @@
            <?php echo '<p>' . $total_results . ' resultados.</p>'?>
         </div>
         <div class="user_menu">
-            <i class="fa fa-user user_icon hover_scale" onclick="togglePopup()"></i>
+            <?php if(isset($_SESSION['user_pic']) &&  $_SESSION['user_pic'] != "") {?>
+                    <img onclick=togglePopup() class="hover_scale user_pic" src="imagenes_perfil/<?php echo $_SESSION['user_pic'] ?>"/>
+            <?php }else echo '<i class="fa fa-user user_icon hover_scale" onclick=togglePopup()></i>' ?>
             <div id="userPopup" class="popup">
                 <?php if (isset($_SESSION["user_id"])) { ?>
                     <a href="index.php?controlador=user&action=home">Mi cuenta</a>
+                    <?php if($_SESSION['is_admin']) echo '<a href="#">Eres Admin</a>'?>
                     <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
                 <?php } else { ?>
                     <a href="index.php?controlador=login">Iniciar sesión</a>
@@ -116,7 +119,7 @@
         // Close the popup if clicked outside
         window.onclick = function(event) {
             var popup = document.getElementById("userPopup");
-            if (!event.target.matches('.user_icon')) {
+            if (!event.target.matches('.user_icon, .user_pic')) {
                 if (popup.classList.contains('active')) {
                     popup.classList.remove('active');
                 }

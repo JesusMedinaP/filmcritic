@@ -55,7 +55,7 @@
         if($user->register($nombre, $edad, $gender, $ocupacion, $pic, $password)) {
             $userId = $user->get_last_inserted_id(); // Obtenemos el ID del nuevo usuario
 
-            if (isset($_FILES['pic_register'])) {
+            if (isset($_FILES['pic_register']) && $_FILES['pic_register']['tmp_name'] != '') {
                 $target_dir = "imagenes_perfil/";
                 $imageFileType = strtolower(pathinfo($_FILES["pic_register"]["name"], PATHINFO_EXTENSION));
                 $target_file = $target_dir . $userId . '_' . basename($_FILES["pic_register"]["name"]);

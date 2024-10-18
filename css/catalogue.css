@@ -80,6 +80,13 @@
     color: white;
 }
 
+.user_pic{
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
 .popup {
     display: none;
     position: absolute;
