@@ -58,8 +58,8 @@
 
                     <!-- Orden alfabético -->
                     <select name="order" id="order" onchange="this.form.submit()">
-                        <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>A - Z</option>
-                        <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>Z - A</option>
+                        <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>ASC</option>
+                        <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>DESC</option>
                     </select>
                 </form>
             </div>

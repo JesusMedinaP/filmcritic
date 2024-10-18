@@ -36,7 +36,7 @@ class Movies_Modelo
         if ($genre !== null) {
             $sql .= " AND mg.genre = ?";
         }
-        $sql .= " GROUP BY m.id ORDER BY m.title $order LIMIT ?, ?";
+        $sql .= " GROUP BY m.id ORDER BY m.id $order LIMIT ?, ?";
 
         $consulta = $this->db->prepare($sql);
         $searchTerm = '%' . $search . '%';
