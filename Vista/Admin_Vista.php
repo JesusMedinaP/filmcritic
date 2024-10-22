@@ -32,9 +32,7 @@
             <div id="userPopup" class="popup">
                 <?php if (isset($_SESSION["user_id"])) { ?>
                     <a href="index.php?controlador=user&action=home">Mi cuenta</a>
-                    <?php if($_SESSION['is_admin']){
-                        echo '<a href="index.php?controlador=admin&action=home">Panel administración</a>';
-                    }?>
+                    <a href="index.php?controlador=catalogue&action=home">Catálogo</a>
                     <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
                 <?php } else { ?>
                     <a href="index.php?controlador=login">Iniciar sesión</a>
