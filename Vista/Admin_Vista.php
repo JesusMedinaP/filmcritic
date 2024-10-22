@@ -89,10 +89,21 @@
 
     <div class="movies_container">
         <?php foreach ($catalogue as $movie)
-        {?>
+        {
+            // Ruta de la imagen desde la base de datos
+            $imagePath = "movies_images/" . $movie['url_pic'];
+
+            // Comprobar si la imagen existe
+            if (!file_exists($imagePath) || empty($movie['url_pic'])) {
+                // Si no existe, usar imagen placeholder
+                $imagePath = "movies_images/movie_placeholder.png";
+            }
+
+            $movieJson = json_encode(array_merge($movie, ["url_pic" => $imagePath]), JSON_HEX_APOS | JSON_HEX_QUOT);
+            ?>
             <div class="movie">
-                <a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>" class="movie_picture hover_scale_minor">
-                    <img class="movie_picture hover_scale_minor" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
+                <a href="index.php?controlador=movie&id=<?php echo $movie['id'];?>" class="movie_picture hover_scale_minor">
+                <img class="movie_picture hover_scale_minor" src="<?php echo $imagePath ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
                 </a>
                 <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
                 <p class="movie_score"><i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
@@ -106,14 +117,13 @@
                 </div>
                 <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
                 <div class="actions_container">
-                <i onclick='openEditModal(<?php echo json_encode($movie); ?>)' class="fa-solid fa-pen-to-square hover_scale"></i>
+                    <i onclick='openEditModal(<?php echo $movieJson; ?>)' class="fa-solid fa-pen-to-square hover_scale"></i>
                     <i class="fa-solid fa-trash hover_scale"></i>
                 </div>
             </div>
         <?php
         } ?>
     </div>
-
 
     <!-- Modal para edición -->
     <div id="editMovieModal" class="modal">
@@ -136,7 +146,7 @@
             <input type="text" name="url_pic" id="url_pic" required>
             
             <label for="desc">Descripción</label>
-            <textarea name="desc" id="desc" rows="4" required></textarea>
+            <textarea name="desc" id="desc" rows="4" required placeholder="Añade un descripción"></textarea>
             
             <button type="submit">Guardar Cambios</button>
             </form>
