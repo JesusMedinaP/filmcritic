@@ -89,7 +89,7 @@
 
     <div class="movies_container">
         <?php foreach ($catalogue as $movie)
-        { ?>
+        {?>
             <div class="movie">
                 <a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>" class="movie_picture hover_scale_minor">
                     <img class="movie_picture hover_scale_minor" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
@@ -106,13 +106,43 @@
                 </div>
                 <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
                 <div class="actions_container">
-                    <i class="fa-solid fa-pen-to-square hover_scale"></i>
+                <i onclick='openEditModal(<?php echo json_encode($movie); ?>)' class="fa-solid fa-pen-to-square hover_scale"></i>
                     <i class="fa-solid fa-trash hover_scale"></i>
                 </div>
             </div>
         <?php
         } ?>
     </div>
+
+
+    <!-- Modal para edición -->
+    <div id="editMovieModal" class="modal">
+        <div class="modal_content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Editar Película</h2>
+            <form id="editMovieForm" method="POST" action="index.php?controlador=admin&action=update_movie">
+            <input type="hidden" name="movie_id" id="movie_id">
+            
+            <label for="title">Título</label>
+            <input type="text" name="title" id="title" required>
+            
+            <label for="date">Fecha</label>
+            <input type="date" name="date" id="date" required>
+            
+            <label for="url_imdb">URL IMDB</label>
+            <input type="url" name="url_imdb" id="url_imdb" required>
+            
+            <label for="url_pic">URL Imagen</label>
+            <input type="text" name="url_pic" id="url_pic" required>
+            
+            <label for="desc">Descripción</label>
+            <textarea name="desc" id="desc" rows="4" required></textarea>
+            
+            <button type="submit">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
     <?php
         }else echo 'No hay películas en la base de datos o ha habido algún problema al conectarse'; 
     ?>
@@ -124,14 +154,33 @@
     function togglePopup() {
             var popup = document.getElementById("userPopup");
             popup.classList.toggle("active");
-        }
-        // Close the popup if clicked outside
-        window.onclick = function(event) {
-            var popup = document.getElementById("userPopup");
-            if (!event.target.matches('.user_icon, .user_pic')) {
-                if (popup.classList.contains('active')) {
-                    popup.classList.remove('active');
-                }
+    }
+    // Close the popup if clicked outside
+    window.onclick = function(event) {
+        var popup = document.getElementById("userPopup");
+        if (!event.target.matches('.user_icon, .user_pic')) {
+            if (popup.classList.contains('active')) {
+                popup.classList.remove('active');
             }
         }
+    }
+
+    // Función para abrir el modal
+    function openEditModal(movie) {
+        console.log(movie);
+        document.getElementById('movie_id').value = movie.id;
+        document.getElementById('title').value = movie.title;
+        document.getElementById('date').value = movie.date;
+        document.getElementById('url_imdb').value = movie.url_imdb;
+        document.getElementById('url_pic').value = movie.url_pic;
+        document.getElementById('desc').value = movie.desc;
+        
+        document.getElementById('editMovieModal').style.display = "flex";
+    }
+
+    // Función para cerrar el modal
+    function closeModal() {
+        document.getElementById('editMovieModal').style.display = "none";
+    }
+
 </script>

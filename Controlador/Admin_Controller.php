@@ -32,4 +32,9 @@
         header("Location: index.php");
         exit();
         }
+
+        function update_movie($movie)
+        {
+            
+        }
 ?>
