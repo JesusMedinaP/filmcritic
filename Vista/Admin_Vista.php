@@ -130,25 +130,26 @@
         <div class="modal_content">
             <span id="closeModalButton" class="close" onclick="closeModal()">&times;</span>
             <h2>Editar Película</h2>
-            <form id="editMovieForm" method="POST" action="index.php?controlador=admin&action=update_movie">
-            <input type="hidden" name="movie_id" id="movie_id">
-            
-            <label for="title">Título</label>
-            <input type="text" name="title" id="title" required>
-            
-            <label for="date">Fecha</label>
-            <input type="date" name="date" id="date" required>
-            
-            <label for="url_imdb">URL IMDB</label>
-            <input type="url" name="url_imdb" id="url_imdb" required>
-            
-            <label for="url_pic">Imagen</label>
-            <input type="file" name="url_pic" id="url_pic" required>
-            
-            <label for="desc">Descripción</label>
-            <textarea name="desc" id="desc" rows="4" required placeholder="Añade un descripción"></textarea>
-            
-            <button type="submit">Guardar Cambios</button>
+            <form id="editMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=update_movie">
+                <input type="hidden" name="movie_id" id="movie_id">
+                <input type="hidden" name="current_url_pic" id="current_url_pic">
+                
+                <label for="title">Título</label>
+                <input type="text" name="title" id="title" required>
+                
+                <label for="date">Fecha</label>
+                <input type="date" name="date" id="date" required>
+                
+                <label for="url_imdb">URL IMDB</label>
+                <input type="url" name="url_imdb" id="url_imdb" required>
+                
+                <label for="url_pic">Imagen</label>
+                <input type="file" name="url_pic" id="url_pic">
+                
+                <label for="desc">Descripción</label>
+                <textarea name="desc" id="desc" rows="4" placeholder="Añade un descripción"></textarea>
+                
+                <button type="submit">Guardar Cambios</button>
             </form>
         </div>
     </div>
@@ -186,7 +187,7 @@
         document.getElementById('title').value = movie.title;
         document.getElementById('date').value = movie.date;
         document.getElementById('url_imdb').value = movie.url_imdb;
-        //document.getElementById('url_pic').value = movie.url_pic.split("/")[1];
+        document.getElementById('current_url_pic').value = movie.url_pic.split("/")[1];
         document.getElementById('desc').value = movie.desc;
         
         document.getElementById('editMovieModal').style.display = "flex";

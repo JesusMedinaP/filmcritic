@@ -111,5 +111,11 @@ class Movies_Modelo
         return $result->fetch_assoc()['count'];
     }
 
+    public function update_movie($id, $title, $date, $url_imdb, $url_pic, $desc) {
+        $sql = "UPDATE movie SET title = ?, date = ?, url_imdb = ?, url_pic = ?, `desc` = ? WHERE id = ?";
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([$title, $date, $url_imdb, $url_pic, $desc, $id]);
+    }
+
 }
 ?>
