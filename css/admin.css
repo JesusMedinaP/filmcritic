@@ -245,6 +245,11 @@ option{
     justify-content: center;
     align-items: center;
 }
+
+.modal_content form{
+    display: flex;
+    flex-direction: column;
+}
   
  .modal_content {
     background-color:var(--background-color-secondary);
@@ -270,21 +275,27 @@ option{
     width: 100%;
     padding: 10px;
     margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border: 2px solid var(--movie-background);
+    border-radius: 10px;
+}
+
+#url_imdb{
+    color: blue
 }
   
 .modal_content button {
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--background-color);
+    color: var(--background-color-secondary);
     padding: 10px 20px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    align-self: center;
+    width: fit-content;
 }
   
 .modal_content button:hover {
-    background-color: #45a049;
+    background-color: #45475a;
 }
   
 .close {
@@ -300,4 +311,8 @@ option{
     text-decoration: none;
     cursor: pointer;
 }
-  
+
+/* Evita que la página se desplace */
+body.no-scroll {
+    overflow: hidden;
+}

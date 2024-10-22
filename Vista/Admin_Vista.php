@@ -128,7 +128,7 @@
     <!-- Modal para edición -->
     <div id="editMovieModal" class="modal">
         <div class="modal_content">
-            <span class="close" onclick="closeModal()">&times;</span>
+            <span id="closeModalButton" class="close" onclick="closeModal()">&times;</span>
             <h2>Editar Película</h2>
             <form id="editMovieForm" method="POST" action="index.php?controlador=admin&action=update_movie">
             <input type="hidden" name="movie_id" id="movie_id">
@@ -142,8 +142,8 @@
             <label for="url_imdb">URL IMDB</label>
             <input type="url" name="url_imdb" id="url_imdb" required>
             
-            <label for="url_pic">URL Imagen</label>
-            <input type="text" name="url_pic" id="url_pic" required>
+            <label for="url_pic">Imagen</label>
+            <input type="file" name="url_pic" id="url_pic" required>
             
             <label for="desc">Descripción</label>
             <textarea name="desc" id="desc" rows="4" required placeholder="Añade un descripción"></textarea>
@@ -175,6 +175,10 @@
         }
     }
 
+    
+    // Para asegurarte de que el modal se cierra con el botón de cerrar
+    document.getElementById('closeModalButton').onclick = closeEditModal;
+
     // Función para abrir el modal
     function openEditModal(movie) {
         console.log(movie);
@@ -182,15 +186,31 @@
         document.getElementById('title').value = movie.title;
         document.getElementById('date').value = movie.date;
         document.getElementById('url_imdb').value = movie.url_imdb;
-        document.getElementById('url_pic').value = movie.url_pic;
+        //document.getElementById('url_pic').value = movie.url_pic.split("/")[1];
         document.getElementById('desc').value = movie.desc;
         
         document.getElementById('editMovieModal').style.display = "flex";
+
+        // Desactivar el scroll en la página principal
+        document.body.classList.add('no-scroll');
+
+        // Detectar si se pulsa la tecla Escape para cerrar el modal
+        document.addEventListener('keydown', closeOnEscape);
     }
 
     // Función para cerrar el modal
-    function closeModal() {
-        document.getElementById('editMovieModal').style.display = "none";
+    function closeEditModal() {
+        const modal = document.getElementById('editMovieModal');
+        modal.style.display = 'none';
+        document.body.classList.remove('no-scroll');
+        // Remover el listener de la tecla Escape
+        document.removeEventListener('keydown', closeOnEscape);
+    }
+
+    function closeOnEscape(event) {
+        if (event.key === 'Escape') {
+            closeEditModal();
+        }
     }
 
 </script>
