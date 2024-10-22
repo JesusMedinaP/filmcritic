@@ -138,20 +138,23 @@ option{
 }
 
 .movies_container{
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
     padding: 20px;
 }
 
 .movie{
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
+    flex-direction: row;
+    justify-content: flex-start;
+    column-gap: 20px;
+    align-items: center;
     padding: 15px;
+    width: 100%;
     border-radius: var(--form-radius);
     background: var(--movie-background);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .movie h2, h3, p {
@@ -159,18 +162,23 @@ option{
     margin-bottom: 5px;
 }
 
-.mvoie_picture{
-    margin-bottom: 10px;
+.movie_picture{
+    width: 150px; /* Ajusta el tamaño de la imagen para hacerla más rectangular */
+    height: 150px;
+    border-radius: 50%; /* Ajusta el radio de borde si es necesario */
+   /* margin-right: 20px; /* Añade un margen a la derecha de la imagen */
 }
 
 .movie_title{
-    font-size: 20px;
-    margin-top: 15px !important;
+    font-size: 16px;
+    /*margin-top: 15px !important;*/
+    max-width: 150px;
+    width: 100%;
 }
 
 .movie_date{
     font-size: 16px;
-    align-self: flex-end;
+    /*align-self: flex-end;*/
 }
 
 .movie_title{
@@ -194,6 +202,32 @@ option{
     font-weight: bold;
 }
 
+.movie_description_container
+{
+    max-width: 300px;
+    text-align: left;
+    width: 100%;
+
+}
+
 .movie_description{
     font-size: 16px;
+}
+
+.actions_container
+{
+    display: flex;
+    column-gap: 15px;
+}
+
+.actions_container i{
+    cursor: pointer;
+}
+
+.fa-pen-to-square{
+    color: var(--background-color);
+}
+
+.fa-trash{
+    color: red;
 }

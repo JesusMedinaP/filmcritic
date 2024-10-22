@@ -91,7 +91,9 @@
         <?php foreach ($catalogue as $movie)
         { ?>
             <div class="movie">
-                <img class="movie_picture" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
+                <a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>" class="movie_picture hover_scale_minor">
+                    <img class="movie_picture hover_scale_minor" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
+                </a>
                 <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
                 <p class="movie_score"><i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
                 <p class="movie_description"> 
@@ -100,7 +102,6 @@
                         else echo 'No hay descripción para esta película';
                         ?>
                 </p>
-                <!--<a href="<?php echo $movie['url_imdb'] ?>" target="_blank" class="movie_link">IMDB</a>-->
                 <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
             </div>
         <?php 

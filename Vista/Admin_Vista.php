@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pelis Review - Catálogo</title>
     <link rel="stylesheet" type="text/css" href="css/base.css">
-    <link rel="stylesheet" type="text/css" href="css/catalogue.css">
+    <link rel="stylesheet" type="text/css" href="css/admin.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
 
@@ -16,7 +16,8 @@
     <div class="navigation_bar">
         <?php require_once("header.php") ?>
         <div class="search_bar">
-            <form method="GET" action="">
+            <form method="GET" action="index.php">
+                <input type="hidden" name="controlador" value="admin">
                 <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Barra de búsqueda">
                 <button type="submit">
                 <i class="fa fa-search"></i>
@@ -49,7 +50,8 @@
             <span>Filtros: </span>
             <div class="genre_filter">
                 <!-- Formulario de Géneros -->
-                <form method="GET" action="">
+                <form method="GET" action="index.php">
+                    <input type="hidden" name="controlador" value="admin">
                     <select name="genre" onchange="this.form.submit()">
                         <option value="">Todos los géneros</option>
                         <?php foreach ($genres as $g): ?>
@@ -75,7 +77,7 @@
 
     <div class="pagination_links">
             <form method="GET" action="index.php">
-                <input type="hidden" name="controlador" value="catalogue">
+                <input type="hidden" name="controlador" value="admin">
                 <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
                 <input type="hidden" name="genre" value="<?php echo htmlspecialchars($genre); ?>">
                 <input type="hidden" name="order" value="<?php echo htmlspecialchars($order); ?>">
@@ -83,25 +85,32 @@
                 <button type="submit" name="page" value="<?php echo $page - 1; ?>" <?php echo ($page <= 1) ? 'disabled' : ''; ?>>Anterior</button>
                 <button type="submit" name="page" value="<?php echo $page + 1; ?>" <?php echo (count($catalogue) < $limit) ? 'disabled' : ''; ?>>Siguiente</button>
             </form>
-        </div>
+    </div>
 
     <div class="movies_container">
         <?php foreach ($catalogue as $movie)
         { ?>
             <div class="movie">
-                <img class="movie_picture" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
+                <a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>" class="movie_picture hover_scale_minor">
+                    <img class="movie_picture hover_scale_minor" src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
+                </a>
                 <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
                 <p class="movie_score"><i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
-                <p class="movie_description"> 
-                    <?php 
-                        if($movie['desc'] != "" && $movie['desc'] != "N/A") echo truncateText($movie['desc']);
-                        else echo 'No hay descripción para esta película';
-                        ?>
-                </p>
-                <!--<a href="<?php echo $movie['url_imdb'] ?>" target="_blank" class="movie_link">IMDB</a>-->
+                <div class="movie_description_container">
+                    <p class="movie_description"> 
+                        <?php 
+                            if($movie['desc'] != "" && $movie['desc'] != "N/A") echo ($movie['desc']);
+                            else echo 'No hay descripción para esta película';
+                            ?>
+                    </p>
+                </div>
                 <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
+                <div class="actions_container">
+                    <i class="fa-solid fa-pen-to-square hover_scale"></i>
+                    <i class="fa-solid fa-trash hover_scale"></i>
+                </div>
             </div>
-        <?php 
+        <?php
         } ?>
     </div>
     <?php
@@ -126,13 +135,3 @@
             }
         }
 </script>
-
-<?php
-function truncateText($text, $maxLength = 50) {
-    if (strlen($text) > $maxLength) {
-        return substr($text, 0, $maxLength) . '...';
-    } else {
-        return $text;
-    }
-}
-?>
