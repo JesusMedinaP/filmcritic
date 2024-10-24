@@ -162,6 +162,28 @@ class Movies_Modelo
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function get_deleted_movie_count($search ='', $genre = null)
+    {
+        $sql = "SELECT COUNT(DISTINCT m.id) as count 
+        FROM movie m 
+        LEFT JOIN moviegenre mg ON m.id = mg.movie_id 
+        WHERE m.title LIKE ? AND m.deleted_at IS NOT NULL";
+        if ($genre !== null) {
+            $sql .= " AND mg.genre = ?";
+            $consulta = $this->db->prepare($sql);
+            $searchTerm = '%' . $search . '%';
+            $consulta->bind_param("si", $searchTerm, $genre);
+        } else {
+            $consulta = $this->db->prepare($sql);
+            $searchTerm = '%' . $search . '%';
+            $consulta->bind_param("s", $searchTerm);
+        }
+
+        $consulta->execute();
+        $result = $consulta->get_result();
+        return $result->fetch_assoc()['count'];
+    }
+
     public function restore_movie($movie_id) {
         $query = "UPDATE movie SET deleted_at = NULL WHERE id = ?";
         $stmt = $this->db->prepare($query);

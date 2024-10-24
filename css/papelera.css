@@ -1,0 +1,41 @@
+.deleted_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 70%;
+}
+
+.deleted_table{
+    background: var(--movie-background);
+    border-radius: 10px;
+    width: 100%;
+    padding: 10px 20px;
+}
+
+.movie_picture{
+    width: 120px;
+    height: 120px;
+}
+
+.deleted_movie_info{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+th, td {
+    padding: 10px 0px;
+}
+
+.delete_actions{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 20px;
+}
+
+.delete_actions i {
+    cursor: pointer;
+}
