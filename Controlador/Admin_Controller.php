@@ -138,9 +138,26 @@
         {
             header("Location: index.php?controlador=admin&action=home");
         }else{
-            $error = "No se puedo actualizar la película";
-            require_once("Vista/Admin_Vista.php");
+            $error = "No se ha podido actualizar la película";
+            require_once "Vista/Admin_Vista.php";
         }
 
+    }
+
+    function restore_movie()
+    {
+        console_log($_GET);
+        $movieId = $_GET['movie_id'];
+
+        $movie = new Movies_Modelo();
+
+        $result = $movie->restore_movie($movieId);
+
+        if($result){
+            header("Location: index.php?controlador=admin&action=papelera");
+        }else{
+            $error = "No se ha podido restaurar la película";
+            require_once "Vista/Admin_Vista.php";
+        }
     }
 ?>

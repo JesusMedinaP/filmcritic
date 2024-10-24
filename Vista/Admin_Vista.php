@@ -130,7 +130,7 @@
     <!-- Modal para edición -->
     <div id="editMovieModal" class="modal">
         <div class="modal_content">
-            <span id="closeModalButton" class="close" onclick="closeModal()">&times;</span>
+            <span id="closeModalButton" class="close" onclick="closeEditModal()">&times;</span>
             <h2>Editar Película</h2>
             <form id="editMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=update_movie">
                 <input type="hidden" name="movie_id" id="movie_id">
@@ -173,7 +173,7 @@
             <div style="text-align: center; column-gap: 10px;">
                 <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
                 <p>¿Estás seguro de que deseas eliminar esta película?</p>
-                <div class="delete_botones">
+                <div class="delete_buttons">
                     <button id="confirmDeleteButton" class="delete-button">Eliminar</button>
                     <button onclick="closeDeleteModal()" class="cancel_button">Cancelar</button>
                 </div>
@@ -206,9 +206,6 @@
 
     // Detectar si se pulsa la tecla Escape para cerrar el modal
     window.addEventListener('keydown', closeOnEscape);
-
-    // Para asegurarte de que el modal se cierra con el botón de cerrar
-    document.getElementById('closeModalButton').onclick = closeEditModal;
 
     // Función para abrir el modal
     function openEditModal(movie) {

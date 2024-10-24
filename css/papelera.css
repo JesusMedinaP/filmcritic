@@ -29,13 +29,13 @@ th, td {
     padding: 10px 0px;
 }
 
-.delete_actions{
+.actions{
     display: flex;
     align-items: center;
     justify-content: center;
     column-gap: 20px;
 }
 
-.delete_actions i {
+.actions i {
     cursor: pointer;
 }

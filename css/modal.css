@@ -102,7 +102,7 @@ body.no-scroll {
     overflow: hidden;
 }
 
-.delete_modal {
+.delete_modal, .restore_modal, .destroy_modal {
     display: none; /* Oculto por defecto */
     position: fixed;
     z-index: 1;
@@ -115,22 +115,31 @@ body.no-scroll {
     justify-content: center;
 }
 
-.delete_modal_content {
+.delete_modal_content, .restore_modal_content, .destroy_modal_content {
     background-color: white;
     padding: 15px;
     border-radius: 10px;
     width: 300px;
 }
 
-.delete_botones{
+.delete_buttons, .restore_buttons, .destroy_buttons{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     margin-top: 20px;
 }
 
-.delete-button {
+.delete-button{
     background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.restore-button{
+    background-color: var(--background-color);
     color: white;
     border: none;
     padding: 10px 20px;

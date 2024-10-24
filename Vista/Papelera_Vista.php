@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/admin.css">
     <link rel="stylesheet" type="text/css" href="css/papelera.css">
+    <link rel="stylesheet" type="text/css" href="css/modal.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
 
@@ -89,9 +90,9 @@
                             <!--<button onclick="restoreMovie(<?php echo $movie['id']; ?>)"><i class="fa-solid fa-trash-can-arrow-up"></i></button>
                             <button onclick="deleteMoviePermanently(<?php echo $movie['id']; ?>)"><i class="fa-solid fa-circle-xmark"></i></button>
                             -->
-                            <div class="delete_actions">
-                                <i class="fa-solid fa-trash-can-arrow-up hover_scale_mayor"></i>
-                                <i class="fa-solid fa-circle-xmark hover_scale_mayor"></i>
+                            <div class="actions">
+                                <i onclick="openRestoreModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-trash-can-arrow-up hover_scale_mayor"></i>
+                                <i onclick="openDestroyModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-circle-xmark hover_scale_mayor"></i>
                             </div>
                         </td>
                     </tr>
@@ -100,6 +101,37 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Modal de confirmación para restaurar película -->
+    <div id="restoreMovieModal" class="restore_modal">
+        <div class="restore_modal_content">
+            <span id="closeRestoreModalButton" class="close" onclick="closeRestoreModal()">&times;</span>
+            <div style="text-align: center; column-gap: 10px;">
+                <h2 style="margin-top: 0px;">Confirmar Restauración</h2>
+                <p>¿Estás seguro de que deseas restaurar esta película?</p>
+                <div class="restore_buttons">
+                    <button id="confirmRestoreButton" class="restore-button">Restaurar</button>
+                    <button onclick="closeRestoreModal()" class="cancel_button">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Modal de confirmación para destruir película -->
+        <div id="destroyMovieModal" class="destroy_modal">
+        <div class="destroy_modal_content">
+            <span id="closeDestroyModalButton" class="close" onclick="closeDestroyModal()">&times;</span>
+            <div style="text-align: center; column-gap: 10px;">
+                <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
+                <p>¿Estás seguro de que deseas eliminar permanentemente esta película?</p>
+                <div class="destroy_buttons">
+                    <button id="confirmDestroyButton" class="delete-button">Restaurar</button>
+                    <button onclick="closeDestroyModal()" class="cancel_button">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 <script>
@@ -117,4 +149,65 @@
             }
         }
     }
+
+    // Detectar si se pulsa la tecla Escape para cerrar el modal
+    window.addEventListener('keydown', closeOnEscape);
+
+    function closeOnEscape(event) {
+        if (event.key === 'Escape') {
+            closeRestoreModal();
+            closeDestroyModal();
+        }
+    }
+
+    let selectedMovie;
+
+    function openRestoreModal(movieId)
+    {
+        selectedMovie = movieId;
+        console.log(selectedMovie);
+        document.getElementById("restoreMovieModal").style.display = "flex"
+        // Desactivar el scroll en la página principal
+        document.body.classList.add('no-scroll');
+    }
+
+        // Acción para confirmar la eliminación
+        document.getElementById("confirmRestoreButton").addEventListener("click", function() {
+        if (selectedMovie) {
+            // Aquí haces la petición para eliminar la película
+            window.location.href = `index.php?controlador=admin&action=restore_movie&movie_id=${selectedMovie}`;
+        }
+        closeDeleteModal();  // Cierra el modal después de la eliminación
+    });
+
+    function closeRestoreModal()
+    {
+        document.getElementById("restoreMovieModal").style.display = "none";
+        document.body.classList.remove('no-scroll');
+    }
+
+    function openDestroyModal(movieId)
+    {
+        console.log(movieId);
+        selectedMovie = movieId;
+        document.getElementById("destroyMovieModal").style.display = "flex"
+        // Desactivar el scroll en la página principal
+        document.body.classList.add('no-scroll');
+    }
+
+        // Acción para confirmar la eliminación
+        document.getElementById("confirmDestroyButton").addEventListener("click", function() {
+        if (selectedMovie) {
+            // Aquí haces la petición para eliminar la película
+            //window.location.href = `index.php?controlador=admin&action=restore_movie&movie_id=${selectedMovie}`;
+        }
+        closeDestroyModal();  // Cierra el modal después de la eliminación
+    });
+
+    function closeDestroyModal()
+    {
+        document.getElementById("destroyMovieModal").style.display = "none";
+        document.body.classList.remove('no-scroll');
+    }
+
 </script>
