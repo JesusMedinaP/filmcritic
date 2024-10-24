@@ -143,6 +143,12 @@ option{
     padding: 20px;
 }
 
+@media screen and (width < 749px) {
+    .movies_container{
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
 .movie{
     display: flex;
     flex-direction: column;

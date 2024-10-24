@@ -121,6 +121,25 @@ class Movies_Modelo
         return $result->fetch_assoc()['count'];
     }
 
+    public function insert_movie($title, $date, $url_imdb, $url_pic, $description)
+    {
+        $query = "INSERT INTO movie (title, date, url_imdb, url_pic, `desc`) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('sssss', $title, $date, $url_imdb, $url_pic, $description);
+        $stmt->execute();
+    
+        // Retornar el ID de la película insertada
+        return $stmt->insert_id;
+    }
+
+    public function insert_movie_genre($movie_id, $genre_id)
+    {
+        $query = "INSERT INTO moviegenre (movie_id, genre) VALUES (?, ?)";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $movie_id, $genre_id);
+        $stmt->execute();
+    }
+
     public function update_movie($id, $title, $date, $url_imdb, $url_pic, $desc) {
         $sql = "UPDATE movie SET title = ?, date = ?, url_imdb = ?, url_pic = ?, `desc` = ? WHERE id = ?";
         $stmt = $this->db->prepare($sql);

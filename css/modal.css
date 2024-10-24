@@ -66,20 +66,20 @@
     background-color: #45475a;
 }
 
-#genreCheckboxes{
+.genreCheckboxes{
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     gap: 20px;
     margin-top: 10px;
 }
-#genreCheckboxes div{
+.genreCheckboxes div{
     display: flex;
     column-gap: 5px;
     align-items: center;
 }
 
-#genreCheckboxes div input, #genreCheckboxes div label{
+.genreCheckboxes div input, #genreCheckboxes div label{
     margin: 0px !important;
 }
 

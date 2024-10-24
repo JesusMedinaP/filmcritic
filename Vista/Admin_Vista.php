@@ -90,6 +90,11 @@
     </div>
 
     <div class="movies_container">
+
+        <div>
+            <button onclick="openAddModal()" class="add_button hover_scale"><i class="fa-solid fa-plus"></i> Nueva película</button>
+        </div>
+
         <?php foreach ($catalogue as $movie)
         {
             // Ruta de la imagen desde la base de datos
@@ -108,7 +113,10 @@
                 <img class="movie_picture hover_scale_minor" src="<?php echo $imagePath ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
                 </a>
                 <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
-                <p class="movie_score"><i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
+                <p class="movie_score">
+                    <?php if(isset($movie['avg_score'])){ ?>
+                    <i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
+                    <?php }else echo 'No hay puntuación para esta película' ?>
                 <div class="movie_description_container">
                     <p class="movie_description"> 
                         <?php 
@@ -127,10 +135,47 @@
         } ?>
     </div>
 
+    <!-- Modal para la creación -->
+    <div id="addMovieModal" class="modal">
+        <div class="modal_content">
+            <span class="close" onclick="closeAddModal()">&times;</span>
+            <h2>Nueva Película</h2>
+            <form id="addMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=add_movie">
+
+                <label for="new_title">Título</label>
+                <input type="text" name="new_title" id="new_title" required>
+                
+                <label for="new_date">Fecha</label>
+                <input type="date" name="new_date" id="new_date" required>
+                
+                <label for="new_url_imdb">URL IMDB</label>
+                <input type="url" name="new_url_imdb" id="new_url_imdb" required>
+                
+                <label for="new_url_pic">Imagen</label>
+                <input type="file" name="new_url_pic" id="new_url_pic">
+                
+                <label for="new_desc">Descripción</label>
+                <textarea name="new_desc" id="new_desc" rows="4" placeholder="Añade un descripción"></textarea>
+
+                <label for="new_genres">Géneros</label>
+                <div id="new_genreCheckboxes" class="genreCheckboxes">
+                    <?php foreach ($genres as $genre): ?>
+                        <div>
+                            <input type="checkbox" name="new_genres[]" value="<?php echo $genre['id']; ?>" id="new_genre_<?php echo $genre['id']; ?>">
+                            <label for="new_genre_<?php echo $genre['id']; ?>"><?php echo $genre['name']; ?></label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+                
+                <button type="submit">Añadir película</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Modal para edición -->
     <div id="editMovieModal" class="modal">
         <div class="modal_content">
-            <span id="closeModalButton" class="close" onclick="closeEditModal()">&times;</span>
+            <span class="close" onclick="closeEditModal()">&times;</span>
             <h2>Editar Película</h2>
             <form id="editMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=update_movie">
                 <input type="hidden" name="movie_id" id="movie_id">
@@ -152,7 +197,7 @@
                 <textarea name="desc" id="desc" rows="4" placeholder="Añade un descripción"></textarea>
 
                 <label for="genres">Géneros</label>
-                <div id="genreCheckboxes">
+                <div id="genreCheckboxes" class="genreCheckboxes">
                     <?php foreach ($genres as $genre): ?>
                         <div>
                             <input type="checkbox" name="genres[]" value="<?php echo $genre['id']; ?>" id="genre_<?php echo $genre['id']; ?>">
@@ -206,6 +251,18 @@
 
     // Detectar si se pulsa la tecla Escape para cerrar el modal
     window.addEventListener('keydown', closeOnEscape);
+
+    function openAddModal()
+    {
+        document.getElementById("addMovieModal").style.display = "flex";
+        document.body.classList.add('no-scroll');
+    }
+
+    function closeAddModal()
+    {
+        document.getElementById("addMovieModal").style.display = "none";
+        document.body.classList.remove('no-scroll');
+    }
 
     // Función para abrir el modal
     function openEditModal(movie) {
@@ -270,6 +327,7 @@
 
     function closeOnEscape(event) {
         if (event.key === 'Escape') {
+            closeAddModal()
             closeEditModal();
             closeDeleteModal();
         }

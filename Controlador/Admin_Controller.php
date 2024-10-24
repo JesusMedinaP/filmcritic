@@ -39,7 +39,7 @@
             $genre = isset($_GET['genre']) && $_GET['genre'] !== '' ? (int)$_GET['genre'] : null;
             $order = isset($_GET['order']) ? $_GET['order'] : 'ASC';
 
-            $limit = 20;
+            $limit = 1;
             $offset = ($page - 1) * $limit;
 
             $movies = new Movies_Modelo();
@@ -62,6 +62,53 @@
         session_destroy();
         header("Location: index.php");
         exit();
+    }
+
+    function add_movie()
+    {
+        console_log("Entré en la función add_movie");
+        console_log($_POST);
+
+        // Verificar si se ha enviado el formulario
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Recibir los datos del formulario
+            $title = $_POST['new_title'];
+            $date = $_POST['new_date'];
+            $url_imdb = $_POST['new_url_imdb'];
+            $description = isset($_POST['new_desc']) ? $_POST['new_desc'] : null;
+            $genres = isset($_POST['new_genres']) ? $_POST['new_genres'] : [];
+
+            // Procesar la imagen si se ha subido
+            if (isset($_FILES['new_url_pic']) && $_FILES['new_url_pic']['error'] === 0) {
+                $uploadDir = 'movies_images/';
+                $imageName = basename($_FILES['new_url_pic']['name']);
+                $uploadFile = $uploadDir . $imageName;
+
+                // Mover el archivo subido a la carpeta de imágenes
+                if (move_uploaded_file($_FILES['new_url_pic']['tmp_name'], $uploadFile)) {
+                    $url_pic = $imageName; // Guardar el nombre de la imagen para la base de datos
+                } else {
+                    $url_pic = null; // En caso de error en la subida
+                }
+            } else {
+                $url_pic = null; // No se subió ninguna imagen
+            }
+
+            // Llamar al modelo para insertar la película
+            $moviesModel = new Movies_Modelo();
+            $movie_id = $moviesModel->insert_movie($title, $date, $url_imdb, $url_pic, $description);
+
+            // Insertar los géneros seleccionados en la tabla moviegenre
+            if ($movie_id && !empty($genres)) {
+                foreach ($genres as $genre) {
+                    $moviesModel->insert_movie_genre($movie_id, $genre);
+                }
+            }
+
+            // Redirigir a la página de administración o mostrar un mensaje de éxito
+            header('Location: index.php?controlador=admin&action=home');
+            exit();
+        }
     }
 
     function update_movie()
