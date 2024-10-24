@@ -343,3 +343,47 @@ option{
 body.no-scroll {
     overflow: hidden;
 }
+
+.delete_modal {
+    display: none; /* Oculto por defecto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    align-items: center;
+    justify-content: center;
+}
+
+.delete_modal_content {
+    background-color: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.delete_botones{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cancel_button{
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--movie-background);
+}

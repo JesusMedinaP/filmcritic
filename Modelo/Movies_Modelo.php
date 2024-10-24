@@ -32,7 +32,7 @@ class Movies_Modelo
         $sql = "SELECT m.id, m.title, m.date, m.url_imdb, m.url_pic, m.desc
                 FROM movie m
                 LEFT JOIN moviegenre mg ON m.id = mg.movie_id 
-                WHERE m.title LIKE ?";
+                WHERE m.title LIKE ? AND m.deleted_at IS NULL";
         if ($genre !== null) {
             $sql .= " AND mg.genre = ?";
         }
@@ -104,7 +104,7 @@ class Movies_Modelo
         $sql = "SELECT COUNT(DISTINCT m.id) as count 
         FROM movie m 
         LEFT JOIN moviegenre mg ON m.id = mg.movie_id 
-        WHERE m.title LIKE ?";
+        WHERE m.title LIKE ? AND m.deleted_at IS NULL";
         if ($genre !== null) {
             $sql .= " AND mg.genre = ?";
             $consulta = $this->db->prepare($sql);
@@ -145,6 +145,35 @@ class Movies_Modelo
             }
         }
         return $executed;
+    }
+
+    public function soft_delete_movie($movie_id) {
+        $query = "UPDATE movie SET deleted_at = NOW() WHERE id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $movie_id);
+        return $stmt->execute();
+    }
+
+    public function get_deleted_movies($offset, $limit) {
+        $query = "SELECT * FROM movie WHERE deleted_at IS NOT NULL LIMIT ?, ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('ii', $offset, $limit);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function restore_movie($movie_id) {
+        $query = "UPDATE movie SET deleted_at = NULL WHERE id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $movie_id);
+        return $stmt->execute();
+    }
+
+    public function delete_movie_permanently($movie_id) {
+        $query = "DELETE FROM movie WHERE id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $movie_id);
+        return $stmt->execute();
     }
 
 }

@@ -1,10 +1,10 @@
 <?php 
     session_start();
 
-        require_once("Modelo/Movies_Modelo.php");
+    require_once("Modelo/Movies_Modelo.php");
 
-        function home()
-        {
+    function home()
+    {
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
             $genre = isset($_GET['genre']) && $_GET['genre'] !== '' ? (int)$_GET['genre'] : null;
@@ -30,19 +30,41 @@
             console_log($_SESSION);
 
             require_once("Vista/Admin_Vista.php");
-        }
+    }
 
-        function desconectar()
-        {
+    function papelera()
+    {
+            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+            $search = isset($_GET['search']) ? $_GET['search'] : '';
+            $genre = isset($_GET['genre']) && $_GET['genre'] !== '' ? (int)$_GET['genre'] : null;
+            $order = isset($_GET['order']) ? $_GET['order'] : 'ASC';
+
+            $limit = 20;
+            $offset = ($page - 1) * $limit;
+
+            $movies = new Movies_Modelo();
+            $error = "";
+    
+            $deleted_movies = $movies->get_deleted_movies($offset, $limit);;
+
+            console_log($deleted_movies);
+
+            console_log($_SESSION);
+
+            require_once("Vista/Papelera_Vista.php");
+    }
+
+    function desconectar()
+    {
         session_unset();
         session_destroy();
         header("Location: index.php");
         exit();
-        }
+    }
 
-        function update_movie()
-        {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    function update_movie()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $movie_id = $_POST['movie_id'];
                 $title = $_POST['title'];
                 $date = $_POST['date'];
@@ -95,8 +117,28 @@
                 } else {
                     // Manejar el error
                     $error = "No se pudo actualizar la película.";
+                    console_log($error);
                     require_once("Vista/Admin_Vista.php");
                 }
-            }
         }
+    }
+
+    function delete_movie()
+    {
+        console_log($_GET);
+        $movieId = $_GET['movie_id'];
+        
+        $movie = new Movies_Modelo();
+
+        $result = $movie->soft_delete_movie($movieId);
+
+        if($result)
+        {
+            header("Location: index.php?controlador=admin&action=home");
+        }else{
+            $error = "No se puedo actualizar la película";
+            require_once("Vista/Admin_Vista.php");
+        }
+
+    }
 ?>

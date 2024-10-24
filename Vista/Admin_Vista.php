@@ -34,6 +34,7 @@
                 <?php if (isset($_SESSION["user_id"])) { ?>
                     <a href="index.php?controlador=user&action=home">Mi cuenta</a>
                     <a href="index.php?controlador=catalogue&action=home">Catálogo</a>
+                    <a href="index.php?controlador=admin&action=papelera">Papelera</a>
                     <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
                 <?php } else { ?>
                     <a href="index.php?controlador=login">Iniciar sesión</a>
@@ -118,7 +119,7 @@
                 <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
                 <div class="actions_container">
                     <i onclick='openEditModal(<?php echo $movieJson; ?>)' class="fa-solid fa-pen-to-square hover_scale_mayor"></i>
-                    <i class="fa-solid fa-trash hover_scale_mayor"></i>
+                    <i onclick="openDeleteModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-trash hover_scale_mayor"></i>
                 </div>
             </div>
         <?php
@@ -164,6 +165,22 @@
         </div>
     </div>
 
+    <!-- Modal de confirmación para eliminar película -->
+    <div id="deleteMovieModal" class="delete_modal">
+        <div class="delete_modal_content">
+            <span id="closeDeleteModalButton" class="close" onclick="closeDeleteModal()">&times;</span>
+            <div style="text-align: center; column-gap: 10px;">
+                <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
+                <p>¿Estás seguro de que deseas eliminar esta película?</p>
+                <div class="delete_botones">
+                    <button id="confirmDeleteButton" class="delete-button">Eliminar</button>
+                    <button onclick="closeDeleteModal()" class="cancel_button">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <?php
         }else echo 'No hay películas en la base de datos o ha habido algún problema al conectarse'; 
     ?>
@@ -186,7 +203,9 @@
         }
     }
 
-    
+    // Detectar si se pulsa la tecla Escape para cerrar el modal
+    window.addEventListener('keydown', closeOnEscape);
+
     // Para asegurarte de que el modal se cierra con el botón de cerrar
     document.getElementById('closeModalButton').onclick = closeEditModal;
 
@@ -214,8 +233,6 @@
         // Desactivar el scroll en la página principal
         document.body.classList.add('no-scroll');
 
-        // Detectar si se pulsa la tecla Escape para cerrar el modal
-        document.addEventListener('keydown', closeOnEscape);
     }
 
     // Función para cerrar el modal
@@ -227,9 +244,36 @@
         document.removeEventListener('keydown', closeOnEscape);
     }
 
+    let movieToDelete;
+
+    function openDeleteModal(movie)
+    {
+        console.log(movie);
+        movieToDelete = movie;
+        document.getElementById("deleteMovieModal").style.display = "flex"
+        // Desactivar el scroll en la página principal
+        document.body.classList.add('no-scroll');
+    }
+
+    function closeDeleteModal(){
+        document.getElementById("deleteMovieModal").style.display = "none";
+        document.body.classList.remove('no-scroll');
+    }
+
+    // Acción para confirmar la eliminación
+    document.getElementById("confirmDeleteButton").addEventListener("click", function() {
+        if (movieToDelete) {
+            // Aquí haces la petición para eliminar la película
+            window.location.href = `index.php?controlador=admin&action=delete_movie&movie_id=${movieToDelete}`;
+        }
+        closeDeleteModal();  // Cierra el modal después de la eliminación
+    });
+
+
     function closeOnEscape(event) {
         if (event.key === 'Escape') {
             closeEditModal();
+            closeDeleteModal();
         }
     }
 
