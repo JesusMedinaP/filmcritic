@@ -123,6 +123,14 @@
     transform: scale(1.1);
 }
 
+.hover_scale_mayor{
+    transition: transform 0.2s;
+}
+
+.hover_scale_mayor:hover{
+    transform: scale(1.3);
+}
+
 .hover_scale_minor{
     transition: transform 0.5s;
 }
@@ -234,6 +242,7 @@ option{
 
 /* Estilos para el modal */
 .modal {
+    overflow-y: scroll;
     display: none;
     position: fixed;
     z-index: 1;
@@ -256,7 +265,7 @@ option{
     margin: auto;
     padding: 20px;
     border: 2px solid var(--movie-background);
-    width: 50%;
+    width: 60%;
     border-radius: 25px;
 }
   
@@ -292,12 +301,30 @@ option{
     border-radius: 5px;
     align-self: center;
     width: fit-content;
+    margin-top: 20px;
 }
   
 .modal_content button:hover {
     background-color: #45475a;
 }
-  
+
+#genreCheckboxes{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 10px;
+}
+#genreCheckboxes div{
+    display: flex;
+    column-gap: 5px;
+    align-items: center;
+}
+
+#genreCheckboxes div input, #genreCheckboxes div label{
+    margin: 0px !important;
+}
+
 .close {
     position: relative;
     left: 95%;

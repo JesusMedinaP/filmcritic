@@ -88,6 +88,16 @@ class Movies_Modelo
         return $movies;
     }
 
+    public function get_movie_genre($movie_id) {
+        $query = "SELECT genre FROM moviegenre WHERE movie_id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $movie_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        return $result->fetch_all();
+    }
+
 
     public function get_movie_count($search ='', $genre = null)
     {
@@ -115,6 +125,26 @@ class Movies_Modelo
         $sql = "UPDATE movie SET title = ?, date = ?, url_imdb = ?, url_pic = ?, `desc` = ? WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$title, $date, $url_imdb, $url_pic, $desc, $id]);
+    }
+
+    function update_movie_genres($movie_id, $genres) {
+        // Eliminar géneros actuales
+        $sql = "DELETE FROM moviegenre WHERE movie_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$movie_id]);
+        $executed = true;
+    
+        // Insertar nuevos géneros
+        $sql = "INSERT INTO moviegenre (movie_id, genre) VALUES (?, ?)";
+        $stmt = $this->db->prepare($sql);
+        
+        foreach ($genres as $genre_id) {
+            if(!$stmt->execute([$movie_id, $genre_id]))
+            {
+                $executed = false;
+            }
+        }
+        return $executed;
     }
 
 }

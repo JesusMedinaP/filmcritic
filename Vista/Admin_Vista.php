@@ -117,8 +117,8 @@
                 </div>
                 <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
                 <div class="actions_container">
-                    <i onclick='openEditModal(<?php echo $movieJson; ?>)' class="fa-solid fa-pen-to-square hover_scale"></i>
-                    <i class="fa-solid fa-trash hover_scale"></i>
+                    <i onclick='openEditModal(<?php echo $movieJson; ?>)' class="fa-solid fa-pen-to-square hover_scale_mayor"></i>
+                    <i class="fa-solid fa-trash hover_scale_mayor"></i>
                 </div>
             </div>
         <?php
@@ -148,6 +148,16 @@
                 
                 <label for="desc">Descripción</label>
                 <textarea name="desc" id="desc" rows="4" placeholder="Añade un descripción"></textarea>
+
+                <label for="genres">Géneros</label>
+                <div id="genreCheckboxes">
+                    <?php foreach ($genres as $genre): ?>
+                        <div>
+                            <input type="checkbox" name="genres[]" value="<?php echo $genre['id']; ?>" id="genre_<?php echo $genre['id']; ?>">
+                            <label for="genre_<?php echo $genre['id']; ?>"><?php echo $genre['name']; ?></label>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
                 
                 <button type="submit">Guardar Cambios</button>
             </form>
@@ -189,6 +199,15 @@
         document.getElementById('url_imdb').value = movie.url_imdb;
         document.getElementById('current_url_pic').value = movie.url_pic.split("/")[1];
         document.getElementById('desc').value = movie.desc;
+
+        // Limpiar géneros previamente seleccionados
+        document.querySelectorAll('#genreCheckboxes input[type="checkbox"]').forEach(checkbox => {
+            checkbox.checked = false;
+        });
+
+        movie.genres.forEach(genreId => {
+        document.getElementById('genre_' + genreId).checked = true;
+        });
         
         document.getElementById('editMovieModal').style.display = "flex";
 

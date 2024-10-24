@@ -20,6 +20,13 @@
             $total_results = $movies->get_movie_count($search, $genre);
             $genres = $movies->get_genres();
 
+            foreach($catalogue as &$movie)
+            {
+                $movie['genres'] = $movies->get_movie_genre($movie['id']);
+            }
+
+            console_log($catalogue);
+
             console_log($_SESSION);
 
             require_once("Vista/Admin_Vista.php");
@@ -41,8 +48,8 @@
                 $date = $_POST['date'];
                 $url_imdb = $_POST['url_imdb'];
                 $desc = $_POST['desc'];
+                $genres = $_POST['genres'];  // Array de géneros seleccionados
                 console_log($_POST);
-                console_log($_FILES);
         
                 // Manejar la subida de la imagen
                 if (isset($_FILES['url_pic']) && $_FILES['url_pic']['error'] == 0) {
@@ -77,9 +84,12 @@
         
                 // Actualizar los datos de la película en la base de datos
                 $movies = new Movies_Modelo();
-                $result = $movies->update_movie($movie_id, $title, $date, $url_imdb, $url_pic, $desc);
-        
-                if ($result) {
+                $resultUpdate = $movies->update_movie($movie_id, $title, $date, $url_imdb, $url_pic, $desc);
+
+                // Actualizar géneros asociados
+                $resultGenre = $movies->update_movie_genres($movie_id, $genres);
+
+                if ($resultUpdate && $resultGenre) {
                     // Redirigir a la vista de administrador con éxito
                     header("Location: index.php?controlador=admin&action=home");
                 } else {
