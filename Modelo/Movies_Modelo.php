@@ -173,10 +173,11 @@ class Movies_Modelo
         return $stmt->execute();
     }
 
-    public function get_deleted_movies($offset, $limit) {
-        $query = "SELECT * FROM movie WHERE deleted_at IS NOT NULL LIMIT ?, ?";
+    public function get_deleted_movies($search, $offset, $limit) {
+        $query = "SELECT * FROM movie WHERE deleted_at IS NOT NULL AND title LIKE ? LIMIT ?, ?";
+        $search_param = '%' . $search . '%';
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param('ii', $offset, $limit);
+        $stmt->bind_param('sii', $search_param, $offset, $limit);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }

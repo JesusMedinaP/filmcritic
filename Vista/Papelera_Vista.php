@@ -20,6 +20,7 @@
             <div class="search_bar">
                 <form method="GET" action="index.php">
                     <input type="hidden" name="controlador" value="admin">
+                    <input type="hidden" name="action" value="papelera">
                     <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Barra de búsqueda">
                     <button type="submit">
                     <i class="fa fa-search"></i>
@@ -48,6 +49,7 @@
     <div class="pagination_links">
             <form method="GET" action="index.php">
                 <input type="hidden" name="controlador" value="admin">
+                <input type="hidden" name="action" value="papelera">
                 <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
                 <input type="hidden" name="genre" value="<?php echo htmlspecialchars($genre); ?>">
                 <input type="hidden" name="order" value="<?php echo htmlspecialchars($order); ?>">

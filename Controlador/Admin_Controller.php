@@ -45,7 +45,7 @@
             $movies = new Movies_Modelo();
             $error = "";
     
-            $deleted_movies = $movies->get_deleted_movies($offset, $limit);
+            $deleted_movies = $movies->get_deleted_movies($search, $offset, $limit);
 
             $total_results = $movies->get_deleted_movie_count($search, $genre);
 
