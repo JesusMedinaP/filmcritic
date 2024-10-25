@@ -39,7 +39,7 @@
             $genre = isset($_GET['genre']) && $_GET['genre'] !== '' ? (int)$_GET['genre'] : null;
             $order = isset($_GET['order']) ? $_GET['order'] : 'ASC';
 
-            $limit = 1;
+            $limit = 20;
             $offset = ($page - 1) * $limit;
 
             $movies = new Movies_Modelo();
@@ -204,7 +204,23 @@
             header("Location: index.php?controlador=admin&action=papelera");
         }else{
             $error = "No se ha podido restaurar la película";
-            require_once "Vista/Admin_Vista.php";
+            require_once "Vista/Papelera_Vista.php";
+        }
+    }
+
+    function destroy_movie()
+    {
+        $movieId = $_GET['movie_id'];
+
+        $movie = new Movies_Modelo();
+
+        $result = $movie->delete_movie_permanently($movieId);
+
+        if($result){
+            header("Location: index.php?controlador=admin&action=papelera");
+        }else{
+            $error = "No se ha podido restaurar la película";
+            require_once "Vista/Papelera_Vista.php";
         }
     }
 ?>

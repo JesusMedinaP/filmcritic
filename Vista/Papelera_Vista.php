@@ -199,7 +199,7 @@
         document.getElementById("confirmDestroyButton").addEventListener("click", function() {
         if (selectedMovie) {
             // Aquí haces la petición para eliminar la película
-            //window.location.href = `index.php?controlador=admin&action=restore_movie&movie_id=${selectedMovie}`;
+            window.location.href = `index.php?controlador=admin&action=destroy_movie&movie_id=${selectedMovie}`;
         }
         closeDestroyModal();  // Cierra el modal después de la eliminación
     });
