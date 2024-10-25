@@ -116,7 +116,7 @@
                 <p class="movie_score">
                     <?php if(isset($movie['avg_score'])){ ?>
                     <i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
-                    <?php }else echo 'No hay puntuación para esta película' ?>
+                    <?php }else echo '<i class="fa-solid fa-star"></i> <span class="score">0.0</span> (<span class="score">0</span> votos)</p>' ?>
                 <div class="movie_description_container">
                     <p class="movie_description"> 
                         <?php 
