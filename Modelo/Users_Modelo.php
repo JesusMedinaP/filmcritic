@@ -132,5 +132,21 @@ class Users_Modelo
             return false;
         }
     }
+
+    public function delete_user($userId)
+    {
+        $query = "DELETE FROM users WHERE id = ?";
+        $stmt = $this->db->prepare($query);
+
+        $stmt->bind_param("i", $userId);
+        $succes = $stmt->execute();
+
+        if($succes){
+            return true;
+        }else{
+            error_log("Error al eliminar al usuario con ID : " . $userId . " " . $stmt->error);
+            return false;
+        }
+    }
 }
 ?>

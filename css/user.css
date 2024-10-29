@@ -119,4 +119,21 @@ fieldset{
 
 #modifyForm{
     display: none;
-}   
+}
+
+.button_container{
+    display: flex;
+    gap: 10px;
+}
+
+.delete_button{
+    width: fit-content;
+    align-self: center;
+    color: white;
+    background: red;
+    font-size: 14px;
+    padding: 5px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: var(--form-radius);
+}

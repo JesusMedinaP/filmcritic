@@ -8,6 +8,9 @@
 
             $userModelo = new Users_Modelo();
             $error = "";
+
+            console_log("SESSION");
+            console_log($_SESSION);
             
             $userId = $_SESSION['user_id'];
             $user = $userModelo->get_user($userId);
@@ -90,6 +93,29 @@
             console_log($pic);
         
             $userModelo->update_user($userId, $name, $age, $gender, $ocupation, $pic, $password);
+        }
+
+        function destroy_user()
+        {
+            if(isset($_SESSION['user_id']))
+            {
+                $userId = $_SESSION['user_id'];
+
+                $user = new Users_Modelo();
+
+                $result = $user->delete_user($userId);
+
+                if($result){
+                    session_unset();
+                    session_destroy();
+                    header("Location: index.php");
+                    exit();
+                }else{
+                    $error = "No se ha podido eliminar al usuario";
+                    require_once "Vista/User_Vista.php";
+                }
+            }
+
         }
 
 ?>

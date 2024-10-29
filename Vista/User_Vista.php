@@ -6,6 +6,7 @@
     <title>Pelis Review - Usuario</title>
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/user.css">
+    <link rel="stylesheet" type="text/css" href="css/modal.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
 
@@ -33,7 +34,10 @@
                 <?php endif; ?>
             </span>
         </div>
-        <button type="button" class="form_button" id="modificar">Modifcar datos</button>
+        <div class="button_container">
+            <button type="button" class="form_button" id="modificar">Modifcar datos</button>
+            <button type="button" class="delete_button" id="eliminar" onclick="openDestroyModal()">Eliminar cuenta</button>
+        </div>
 
         <div class="form_wrapper" id="modifyForm" style="display: none;">
             <h1 class="form_title">Modificar datos</h1>
@@ -90,6 +94,21 @@
             </form>
         </div>
 
+        <!-- Modal de confirmación para destruir usuario -->
+        <div id="destroyUserModal" class="destroy_modal">
+            <div class="destroy_modal_content">
+                <span id="closeDestroyModalButton" class="close" onclick="closeDestroyModal()">&times;</span>
+                <div style="text-align: center; column-gap: 10px;">
+                    <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
+                    <p>¿Estás seguro de que deseas eliminar permanentemente tu cuenta?</p>
+                        <div class="destroy_buttons">
+                            <button id="confirmDestroyButton" class="delete-button">Eliminar cuenta</button>
+                            <button onclick="closeDestroyModal()" class="cancel_button">Cancelar</button>
+                        </div>
+                </div>
+            </div>
+        </div>
+
     <?php } else { ?>
         <p><?php echo $error ?></p>
     <?php } ?>
@@ -97,9 +116,10 @@
 </body>
 </html>
 
-<script>
+<script defer>
     document.addEventListener('DOMContentLoaded', function () {
         const modifyButton = document.getElementById('modificar');
+        const destroyButton = document.getElementById('eliminar');
         const cancelButton = document.getElementById('cancelar');
         const userData = document.getElementById('user_data');
         const modifyForm = document.getElementById('modifyForm');
@@ -108,10 +128,12 @@
             if (userData.style.display === 'flex') {
                 userData.style.display = 'none';
                 modifyButton.style.display = 'none';
+                destroyButton.style.display = 'none';
                 modifyForm.style.display = 'flex';
             } else {
                 userData.style.display = 'flex';
                 modifyButton.style.display = 'block';
+                destroyButton.style.display = 'block';
                 modifyForm.style.display = 'none';
             }
         }
@@ -129,4 +151,31 @@
             }
         });
     });
+
+    // Detectar si se pulsa la tecla Escape para cerrar el modal
+    window.addEventListener('keydown', closeOnEscape);
+
+    function closeOnEscape(event) {
+        if (event.key === 'Escape') {
+            closeDestroyModal();
+        }
+    }
+
+    function openDestroyModal()
+    {
+        document.getElementById("destroyUserModal").style.display = "flex"
+        // Desactivar el scroll en la página principal
+    }
+
+    // Acción para confirmar la eliminación
+    document.getElementById("confirmDestroyButton").addEventListener("click", function() {
+        // Aquí haces la petición para eliminar la película
+        window.location.href = `index.php?controlador=user&action=destroy_user`;
+    closeDestroyModal();  // Cierra el modal después de la eliminación
+    });
+
+    function closeDestroyModal()
+    {
+        document.getElementById("destroyUserModal").style.display = "none";
+    }
 </script>

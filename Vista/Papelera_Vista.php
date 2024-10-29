@@ -119,17 +119,17 @@
         </div>
     </div>
 
-        <!-- Modal de confirmación para destruir película -->
-        <div id="destroyMovieModal" class="destroy_modal">
+    <!-- Modal de confirmación para destruir película -->
+    <div id="destroyMovieModal" class="destroy_modal">
         <div class="destroy_modal_content">
             <span id="closeDestroyModalButton" class="close" onclick="closeDestroyModal()">&times;</span>
             <div style="text-align: center; column-gap: 10px;">
                 <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
                 <p>¿Estás seguro de que deseas eliminar permanentemente esta película?</p>
-                <div class="destroy_buttons">
-                    <button id="confirmDestroyButton" class="delete-button">Restaurar</button>
-                    <button onclick="closeDestroyModal()" class="cancel_button">Cancelar</button>
-                </div>
+                    <div class="destroy_buttons">
+                        <button id="confirmDestroyButton" class="delete-button">Eliminar</button>
+                        <button onclick="closeDestroyModal()" class="cancel_button">Cancelar</button>
+                    </div>
             </div>
         </div>
     </div>
