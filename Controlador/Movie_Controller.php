@@ -67,4 +67,28 @@
             header('Location: index.php?controlador=movie&id=' . $movieId);
         }
 
+        function edit_comment()
+        {
+            console_log($_POST);
+            $data = json_decode(file_get_contents('php://input'), true);
+            $commentId = $data['comment_id'];
+            $newComment = $data['comment'];
+        
+            $movie = new Movie_Modelo();
+
+            $result = $movie->update_comment($commentId, $newComment);
+            echo json_encode(['success' => $result]);
+        }
+
+        function delete_comment()
+        {
+            $data = json_decode(file_get_contents('php://input'), true);
+            $commentId = $data['comment_id'];
+
+            $movie = new Movie_Modelo();
+        
+            $result =$movie->delete_comment($commentId);
+            echo json_encode(['success' => $result]);
+        }
+
 ?>

@@ -83,9 +83,18 @@
             <?php if($movieComments != null) { ?>
                 <div id="comments_container" class="comments_container">
                     <?php foreach ($movieComments as $comment): ?>
-                        <div class="comment_card">
-                            <p class="comment_author"> <i class="fa fa-user user_icon"></i><?php echo htmlspecialchars($comment['name']); ?>:</p>
-                            <p><?php echo htmlspecialchars($comment['comment']); ?></p>
+                        <div class="comment_card" id="comment_card_<?php echo $comment['comment_id'] ?>">
+                            <p class="comment_author"> <i class="fa fa-user user_icon"></i><?php echo htmlspecialchars($comment['name']); ?>
+                            <?php if(isset($_SESSION['user_id']) && $comment['user_id'] === $_SESSION['user_id']) echo '(Tú)' ?>
+                            :
+                            </p>
+                            <p class="comment" id="comment_text_<?php echo $comment['comment_id'] ?>"><?php echo htmlspecialchars($comment['comment']); ?></p>
+                            <?php if(isset($_SESSION['user_id']) && $comment['user_id'] === $_SESSION['user_id']) { ?>
+                                <div class="comment_actions">
+                                    <i class="fa-solid fa-pencil hover_scale_mayor" onclick="editCommentInline(<?php echo $comment['comment_id']; ?>)"></i>
+                                    <i class="fa-solid fa-trash hover_scale_mayor" onclick="deleteComment(<?php echo $comment['comment_id']; ?>)"></i>
+                                </div>
+                            <?php } ?>
                         </div>
                     <?php endforeach; ?>
                 </div>
@@ -105,41 +114,99 @@
 </html>
 
 <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const comments = document.querySelectorAll('.comment_card');
-            const commentsPerPage = 4;
-            let currentPage = 1;
+    document.addEventListener('DOMContentLoaded', function () {
+        const comments = document.querySelectorAll('.comment_card');
+        const commentsPerPage = 4;
+        let currentPage = 1;
 
-            function showPage(page) {
-                const start = (page - 1) * commentsPerPage;
-                const end = start + commentsPerPage;
+        function showPage(page) {
+            const start = (page - 1) * commentsPerPage;
+            const end = start + commentsPerPage;
 
-                comments.forEach((comment, index) => {
-                    if (index >= start && index < end) {
-                        comment.style.display = 'flex';
-                    } else {
-                        comment.style.display = 'none';
-                    }
-                });
+            comments.forEach((comment, index) => {
+                if (index >= start && index < end) {
+                    comment.style.display = 'flex';
+                } else {
+                    comment.style.display = 'none';
+                }
+            });
 
-                document.getElementById('prev_button').disabled = (page === 1);
-                document.getElementById('next_button').disabled = (end >= comments.length);
+            document.getElementById('prev_button').disabled = (page === 1);
+            document.getElementById('next_button').disabled = (end >= comments.length);
+        }
+
+        document.getElementById('prev_button').addEventListener('click', function () {
+            if (currentPage > 1) {
+                currentPage--;
+                showPage(currentPage);
             }
-
-            document.getElementById('prev_button').addEventListener('click', function () {
-                if (currentPage > 1) {
-                    currentPage--;
-                    showPage(currentPage);
-                }
-            });
-
-            document.getElementById('next_button').addEventListener('click', function () {
-                if ((currentPage * commentsPerPage) < comments.length) {
-                    currentPage++;
-                    showPage(currentPage);
-                }
-            });
-
-            showPage(currentPage);
         });
-    </script>
+
+        document.getElementById('next_button').addEventListener('click', function () {
+            if ((currentPage * commentsPerPage) < comments.length) {
+                currentPage++;
+                showPage(currentPage);
+            }
+        });
+
+        showPage(currentPage);
+    });
+
+    function editCommentInline(commentId) {
+    const commentTextElement = document.getElementById(`comment_text_${commentId}`);
+    const currentText = commentTextElement.textContent;
+    
+    commentTextElement.innerHTML = `
+        <textarea id="edit_comment_text_${commentId}" rows="2">${currentText}</textarea>
+        <button onclick="saveInlineComment(${commentId})">Guardar</button>
+        <button onclick="cancelInlineEdit(${commentId}, '${currentText}')">Cancelar</button>
+    `;
+}
+
+    function cancelInlineEdit(commentId, originalText) {
+        document.getElementById(`comment_text_${commentId}`).innerText = originalText;
+    }
+
+    function saveInlineComment(commentId) {
+        const updatedText = document.getElementById(`edit_comment_text_${commentId}`).value;
+        
+        fetch(`index.php?controlador=movie&action=edit_comment`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ comment_id: commentId, comment: updatedText })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`comment_text_${commentId}`).innerText = updatedText;
+            } else {
+                alert('Error al guardar el comentario.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function deleteComment(commentId) {
+        if (confirm('¿Estás seguro de que deseas eliminar este comentario?')) {
+            fetch(`index.php?controlador=movie&action=delete_comment`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ comment_id: commentId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById(`comment_card_${commentId}`).remove();
+                } else {
+                    alert('Error al eliminar el comentario.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+
+</script>

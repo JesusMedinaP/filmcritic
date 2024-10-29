@@ -64,6 +64,7 @@ textarea{
 
 .comment_card{
     display: flex;
+    flex-direction: row;
     gap: 10px;
     background: var(--body-background);
     padding: 5px 10px;
@@ -73,10 +74,30 @@ textarea{
 
 .comment_author{
     font-weight: bold;
+    display: flex;
+    flex-direction: row;
 }
 
 .comment_author i {
     margin-right: 10px;
+}
+
+.comment_actions{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.fa-pencil, .fa-trash{
+    cursor: pointer;
+}
+
+.fa-pencil{
+    color: var(--background-color);
+}
+
+.fa-trash{
+    color: red;
 }
 
 .movie_picture[src="movies_images/movie_placeholder.png"]{

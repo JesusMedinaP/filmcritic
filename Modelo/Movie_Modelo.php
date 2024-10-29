@@ -55,7 +55,7 @@ class Movie_Modelo
 
     public function get_movie_comments($id)
     {
-        $sql = "SELECT mc.comment, u.name 
+        $sql = "SELECT mc.*, u.name
                 FROM moviecomments mc 
                 JOIN users u ON mc.user_id = u.id 
                 WHERE mc.movie_id = ?";
@@ -101,6 +101,22 @@ class Movie_Modelo
         $consulta = $this->db->prepare($sql);
         $consulta->bind_param("iis", $movieId, $userId, $comment);
         $consulta->execute();
+    }
+
+    // Actualizar comentario
+    public function update_comment($commentId, $newComment) {
+        $query = "UPDATE moviecomments SET comment = ? WHERE comment_id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('si', $newComment, $commentId);
+        return $stmt->execute();
+    }
+
+    // Eliminar comentario
+    public function delete_comment($commentId) {
+        $query = "DELETE FROM moviecomments WHERE comment_id = ?";
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param('i', $commentId);
+        return $stmt->execute();
     }
 
 }
