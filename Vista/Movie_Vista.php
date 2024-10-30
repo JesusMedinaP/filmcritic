@@ -157,9 +157,11 @@
     const currentText = commentTextElement.textContent;
     
     commentTextElement.innerHTML = `
-        <textarea id="edit_comment_text_${commentId}" rows="2">${currentText}</textarea>
-        <button onclick="saveInlineComment(${commentId})">Guardar</button>
-        <button onclick="cancelInlineEdit(${commentId}, '${currentText}')">Cancelar</button>
+        <textarea id="edit_comment_text_${commentId}" rows="8" cols="50">${currentText}</textarea>
+        <div class="edit_buttons_container">
+            <button class="restore-button" onclick="saveInlineComment(${commentId})">Guardar</button>
+            <button class="cancel_button" onclick="cancelInlineEdit(${commentId}, '${currentText}')">Cancelar</button>
+        </div>
     `;
 }
 
@@ -169,6 +171,8 @@
 
     function saveInlineComment(commentId) {
         const updatedText = document.getElementById(`edit_comment_text_${commentId}`).value;
+        console.log("Id del comentario",commentId);
+        console.log("Texto nuevo",updatedText);
         
         fetch(`index.php?controlador=movie&action=edit_comment`, {
             method: 'POST',
@@ -177,8 +181,12 @@
             },
             body: JSON.stringify({ comment_id: commentId, comment: updatedText })
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log("Respuesta del servidor ", response)
+            return response.json() 
+        })
         .then(data => {
+            console.log('Respuesta del servidor:', data); // Agrega esto para depurar
             if (data.success) {
                 document.getElementById(`comment_text_${commentId}`).innerText = updatedText;
             } else {
@@ -199,6 +207,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log('Respuesta del servidor:', data); // Agrega esto para depurar
                 if (data.success) {
                     document.getElementById(`comment_card_${commentId}`).remove();
                 } else {

@@ -69,7 +69,8 @@
 
         function edit_comment()
         {
-            console_log($_POST);
+            header('Content-Type: application/json'); // Indica que la respuesta es JSON
+
             $data = json_decode(file_get_contents('php://input'), true);
             $commentId = $data['comment_id'];
             $newComment = $data['comment'];
@@ -77,18 +78,26 @@
             $movie = new Movie_Modelo();
 
             $result = $movie->update_comment($commentId, $newComment);
+            console_log("Result");
+            var_dump($result);
             echo json_encode(['success' => $result]);
+            exit;
         }
 
         function delete_comment()
         {
+            header('Content-Type: application/json'); // Indica que la respuesta es JSON
+
             $data = json_decode(file_get_contents('php://input'), true);
+            console_log($data);
             $commentId = $data['comment_id'];
 
             $movie = new Movie_Modelo();
         
             $result =$movie->delete_comment($commentId);
+            console_log($result);
             echo json_encode(['success' => $result]);
+            exit;
         }
 
 ?>

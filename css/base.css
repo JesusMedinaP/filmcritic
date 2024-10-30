@@ -119,3 +119,20 @@ button:disabled{
     height: 400px;
     border-radius: 10px;
 }
+
+.restore-button{
+    background-color: var(--background-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.cancel_button{
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 20px;
+    border: none;
+    background-color: var(--movie-background);
+}
