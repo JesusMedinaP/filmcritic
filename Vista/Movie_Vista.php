@@ -89,6 +89,15 @@
                             :
                             </p>
                             <p class="comment" id="comment_text_<?php echo $comment['comment_id'] ?>"><?php echo htmlspecialchars($comment['comment']); ?></p>
+                            <form id="update_comment_form_<?php echo $comment['comment_id'] ?>" class="update_comment_form" method="POST" action="index.php?controlador=movie&action=edit_comment">
+                                <textarea name="comment" id="edit_comment_text_<?php echo $comment['comment_id'] ?>" rows="8" cols="50"></textarea>
+                                <input type="hidden" name="comment_id" value="<?php echo $comment['comment_id'] ?>">
+                                <input type="hidden" name="movie_id" value="<?php echo $movieId ?>">
+                                <div class="edit_buttons_container">
+                                    <button type="submit" class="restore-button">Guardar</button>
+                                    <button type="button" class="cancel_button" onclick="cancelInlineEdit(<?php echo $comment['comment_id'] ?>)">Cancelar</button>
+                                </div>
+                            </form>
                             <?php if(isset($_SESSION['user_id']) && $comment['user_id'] === $_SESSION['user_id']) { ?>
                                 <div class="comment_actions">
                                     <i class="fa-solid fa-pencil hover_scale_mayor" onclick="editCommentInline(<?php echo $comment['comment_id']; ?>)"></i>
@@ -153,48 +162,27 @@
     });
 
     function editCommentInline(commentId) {
+    selectedComent = commentId;
     const commentTextElement = document.getElementById(`comment_text_${commentId}`);
     const currentText = commentTextElement.textContent;
+    commentTextElement.style.display="none"
     
-    commentTextElement.innerHTML = `
-        <textarea id="edit_comment_text_${commentId}" rows="8" cols="50">${currentText}</textarea>
-        <div class="edit_buttons_container">
-            <button class="restore-button" onclick="saveInlineComment(${commentId})">Guardar</button>
-            <button class="cancel_button" onclick="cancelInlineEdit(${commentId}, '${currentText}')">Cancelar</button>
-        </div>
-    `;
+    const form = document.getElementById(`update_comment_form_${commentId}`);
+    form.style.display = "flex"
+    const textArea = document.getElementById(`edit_comment_text_${commentId}`);
+    textArea.textContent = currentText;
 }
 
-    function cancelInlineEdit(commentId, originalText) {
-        document.getElementById(`comment_text_${commentId}`).innerText = originalText;
+    function cancelInlineEdit(commentId) {
+        document.getElementById(`update_comment_form_${commentId}`).style.display = 'none';
+        document.getElementById(`comment_text_${commentId}`).style = 'flex';
     }
 
-    function saveInlineComment(commentId) {
-        const updatedText = document.getElementById(`edit_comment_text_${commentId}`).value;
-        console.log("Id del comentario",commentId);
-        console.log("Texto nuevo",updatedText);
-        
-        fetch(`index.php?controlador=movie&action=edit_comment`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ comment_id: commentId, comment: updatedText })
-        })
-        .then(response => {
-            console.log("Respuesta del servidor ", response)
-            return response.json() 
-        })
-        .then(data => {
-            console.log('Respuesta del servidor:', data); // Agrega esto para depurar
-            if (data.success) {
-                document.getElementById(`comment_text_${commentId}`).innerText = updatedText;
-            } else {
-                alert('Error al guardar el comentario.');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+    /*function saveInlineComment(commentId) {
+        if(commentId){
+            window.location.href = `index.php?controlador=movie&action=destroy_movie&movie_id=${selectedMovie}`;
+        }
+    }*/
 
     function deleteComment(commentId) {
         if (confirm('¿Estás seguro de que deseas eliminar este comentario?')) {

@@ -88,6 +88,17 @@ textarea{
     align-items: center;
 }
 
+.update_comment_form{
+    display: none;
+    gap: 10px;
+}
+
+.edit_buttons_container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .comment_actions{
     display: flex;
     align-items: center;

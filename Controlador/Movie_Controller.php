@@ -69,19 +69,28 @@
 
         function edit_comment()
         {
-            header('Content-Type: application/json'); // Indica que la respuesta es JSON
+            if(isset($_POST['comment_id']) && isset($_POST['comment']) &&  $_POST['movie_id']){
+                $commentId = $_POST['comment_id'];
+                $comment = $_POST['comment'];
+                $movieId = $_POST['movie_id'];
 
-            $data = json_decode(file_get_contents('php://input'), true);
-            $commentId = $data['comment_id'];
-            $newComment = $data['comment'];
-        
-            $movie = new Movie_Modelo();
+                $movie = new Movie_Modelo();
 
-            $result = $movie->update_comment($commentId, $newComment);
-            console_log("Result");
-            var_dump($result);
-            echo json_encode(['success' => $result]);
-            exit;
+                $result = $movie->update_comment($commentId, $comment);
+
+                if($result){
+                    console_log("Estoy aquí");
+                    console_log($movieId);
+                    header('Location: index.php?controlador=movie&id=' . $movieId);
+                }else{
+                    $error = "Algo ha ido mal al editar el comentario";
+                    console_log($error);
+                    header('Location: index.php?controlador=movie&id=' . $movieId);
+                }
+            }else{
+                console_log("Datos insuficientes en el formulario");
+                header('Location: index.php?');
+            }
         }
 
         function delete_comment()
