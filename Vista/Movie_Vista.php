@@ -6,6 +6,7 @@
     <title>Pelis Review - <?php echo $movie['title'] ?></title>
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/movie.css">
+    <link rel="stylesheet" type="text/css" href="css/modal.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
 
@@ -101,7 +102,7 @@
                             <?php if(isset($_SESSION['user_id']) && $comment['user_id'] === $_SESSION['user_id']) { ?>
                                 <div class="comment_actions">
                                     <i class="fa-solid fa-pencil hover_scale_mayor" onclick="editCommentInline(<?php echo $comment['comment_id']; ?>)"></i>
-                                    <i class="fa-solid fa-trash hover_scale_mayor" onclick="deleteComment(<?php echo $comment['comment_id']; ?>)"></i>
+                                    <i class="fa-solid fa-trash hover_scale_mayor" onclick="openDestroyModal(<?php echo $comment['comment_id'] ?>)"></i>
                                 </div>
                             <?php } ?>
                         </div>
@@ -113,6 +114,21 @@
                 </div>
             <?php }else echo '<p>No se han encontado comentarios en la base de datos referentes a esta película.</p>' ?>
 
+        </div>
+
+        <!-- Modal de confirmación para destruir comentario -->
+        <div id="destroyCommentModal" class="destroy_modal">
+            <div class="destroy_modal_content">
+                <span id="closeDestroyModalButton" class="close" onclick="closeDestroyModal()">&times;</span>
+                <div style="text-align: center; column-gap: 10px;">
+                    <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
+                    <p>¿Estás seguro de que deseas eliminar permanentemente este comentario?</p>
+                        <div class="destroy_buttons">
+                            <button id="confirmDestroyButton" class="delete-button">Eliminar</button>
+                            <button onclick="closeDestroyModal()" class="cancel_button">Cancelar</button>
+                        </div>
+                </div>
+            </div>
         </div>
 
     <?php } else { ?>
@@ -161,6 +177,15 @@
         showPage(currentPage);
     });
 
+    // Detectar si se pulsa la tecla Escape para cerrar el modal
+    window.addEventListener('keydown', closeOnEscape);
+
+    function closeOnEscape(event) {
+        if (event.key === 'Escape') {
+            closeDestroyModal();
+        }
+    }
+
     function editCommentInline(commentId) {
     selectedComent = commentId;
     const commentTextElement = document.getElementById(`comment_text_${commentId}`);
@@ -184,26 +209,32 @@
         }
     }*/
 
-    function deleteComment(commentId) {
-        if (confirm('¿Estás seguro de que deseas eliminar este comentario?')) {
-            fetch(`index.php?controlador=movie&action=delete_comment`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ comment_id: commentId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Respuesta del servidor:', data); // Agrega esto para depurar
-                if (data.success) {
-                    document.getElementById(`comment_card_${commentId}`).remove();
-                } else {
-                    alert('Error al eliminar el comentario.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
+    let selectedComment;
+
+    function openDestroyModal(commentId)
+    {
+        document.getElementById("destroyCommentModal").style.display = "flex"
+        // Desactivar el scroll en la página principal
+        document.body.classList.add('no-scroll');
+
+        selectedComment = commentId;
+    }
+
+        // Acción para confirmar la eliminación
+        document.getElementById("confirmDestroyButton").addEventListener("click", function() {
+        if (selectedComment) {
+            // Aquí haces la petición para eliminar la película
+            window.location.href = `index.php?controlador=movie&id=<?php echo $movieId ?>&action=delete_comment&comment=${selectedComment}`;
+        }else{
+            console.log("Error al obtener el comentario");
         }
+        closeDestroyModal();  // Cierra el modal después de la eliminación
+    });
+
+    function closeDestroyModal()
+    {
+        document.getElementById("destroyCommentModal").style.display = "none";
+        document.body.classList.remove('no-scroll');
     }
 
 </script>

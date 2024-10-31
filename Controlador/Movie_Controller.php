@@ -79,8 +79,6 @@
                 $result = $movie->update_comment($commentId, $comment);
 
                 if($result){
-                    console_log("Estoy aquí");
-                    console_log($movieId);
                     header('Location: index.php?controlador=movie&id=' . $movieId);
                 }else{
                     $error = "Algo ha ido mal al editar el comentario";
@@ -95,18 +93,27 @@
 
         function delete_comment()
         {
-            header('Content-Type: application/json'); // Indica que la respuesta es JSON
+            console_log("Entré al controlador");
+            console_log($_GET);
 
-            $data = json_decode(file_get_contents('php://input'), true);
-            console_log($data);
-            $commentId = $data['comment_id'];
+            if(isset($_GET['comment']) && $_GET['id'])
+            {
+                $commentId = $_GET['comment'];
 
-            $movie = new Movie_Modelo();
-        
-            $result =$movie->delete_comment($commentId);
-            console_log($result);
-            echo json_encode(['success' => $result]);
-            exit;
+                $movieId = $_GET['id'];
+
+                $movie = new Movie_Modelo();
+
+                $result = $movie->delete_comment($commentId);
+
+                if($result){
+                    header('Location: index.php?controlador=movie&id=' . $movieId);
+                }else{
+                    $error = "Algo ha ido mal al borrar el comentario";
+                    console_log($error);
+                    header('Location: index.php?controlador=movie&id=' . $movieId);
+                }
+            }
         }
 
 ?>
