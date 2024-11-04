@@ -25,11 +25,11 @@
         <form action="" method="POST">
 
         <div class="input_field">            
-            <input type="text" id="username_login" name="username_login" required placeholder="Nombre de usuario" autocomplete="on">
+            <input type="text" id="username_login" name="username_login" placeholder="Nombre de usuario" autocomplete="on">
         </div>
 
         <div class="input_field">            
-            <input type="password" id="password_login" name="password_login" required placeholder="Clave de acceso">
+            <input type="password" id="password_login" name="password_login" placeholder="Clave de acceso">
             <span toggle="#password_login" class="fa fa-fw fa-eye field-icon toggle_password"></span>
         </div>
                 
@@ -44,14 +44,16 @@
     <div class="form_wrapper" id="registerForm">
     <h3 class="form_title">Registrarse</h3>
     
-        <form action="" method="POST" enctype="multipart/form-data">
+        <form action="" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
 
         <div class="input_field">            
-            <input type="text" id="username_register" name="username_register" required placeholder="Nombre de usuario" autocomplete="on">
+            <input type="text" id="username_register" name="username_register" placeholder="Nombre de usuario" autocomplete="on">
+            <span class="error_message" id="error_username"></span>
         </div>
 
         <div class="input_field">            
-            <input type="number" id="age_register" name="age_register" required placeholder="Edad">
+            <input type="number" id="age_register" name="age_register" placeholder="Edad">
+            <span class="error_message" id="error_age"></span>
         </div>
 
         <div class="input_field" style="height: 100%;">            
@@ -67,10 +69,11 @@
                     <label for="Female">Mujer</label>
                 </div>
             </fieldset>
+            <!--<span class="error_message" id="error_gender"></span>-->
         </div>
 
         <div class="input_field">            
-            <select id="ocupation_register" name="ocupation_register" required>
+            <select id="ocupation_register" name="ocupation_register">
                 <option value="" disabled selected>Selecciona tu ocupación</option>
                 <?php 
                 foreach ($ocupaciones as $ocupacion) {
@@ -78,15 +81,18 @@
                 }
                 ?>
             </select>
+            <span class="error_message" id="error_ocupation"></span>
         </div>
 
         <div class="input_field">            
-            <input type="password" id="password_register" name="password_register" required placeholder="Clave de acceso">
+            <input type="password" id="password_register" name="password_register" placeholder="Clave de acceso">
             <span toggle="#password_register" class="fa fa-fw fa-eye field-icon toggle_password"></span>
+            <span class="error_message" id="error_password"></span>
         </div>
 
-        <div class="input_field">            
+        <div class="input_field" id="pic_field">            
             <input type="file" id="pic_register" name="pic_register" accept="image/png, image/jpeg, image/jpg">
+            <span class="error_message" id="error_pic"></span>
         </div>
                 
         <input type="submit" id="register" name="register" value="Registrarse" class="form_button">
@@ -121,6 +127,61 @@
     input.attr("type", "password");
     }
     });
+
+    function validateForm() {
+        let isValid = true;
+
+        // Validación del nombre de usuario
+        const username = document.getElementById("username_register");
+        if (username.value.trim() === "" || username.value.length < 3) {
+            document.getElementById("error_username").innerText = "El nombre de usuario debe tener al menos 3 caracteres";
+            username.classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById("error_username").innerText = "";
+            username.classList.remove('input-error');
+        }
+
+        // Validación de edad
+        const age = document.getElementById("age_register");
+        if (age.value < 18 || age.value === "") {
+            document.getElementById("error_age").innerText = "Debes ser mayor de 18 años";
+            age.classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById("error_age").innerText = "";
+            age.classList.remove('input-error');
+        }
+
+        // Validación de ocupación
+        const ocupation = document.getElementById("ocupation_register");
+        if (ocupation.value === "") {
+            document.getElementById("error_ocupation").innerText = "Selecciona una ocupación";
+            ocupation.classList.add('input-error');
+            isValid = false;
+        } else {
+            document.getElementById("error_ocupation").innerText = "";
+            ocupation.classList.remove('input-error');
+        }
+
+        // Validación de contraseña
+        const password = document.getElementById("password_register");
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!,.+@#$%^&*])[A-Za-z\d!,.+@#$%^&*]{6,}$/;
+        const picInputField = document.getElementById("pic_register").parentElement;
+
+        if (!passwordRegex.test(password.value)) {
+            document.getElementById("error_password").innerText = "La clave debe tener al menos 6 caracteres, una mayúscula, un número y un símbolo.";
+            password.classList.add('input-error');
+            picInputField.classList.add('margin-top-error');
+            isValid = false;
+        } else {
+            document.getElementById("error_password").innerText = "";
+            password.classList.remove('input-error');
+            picInputField.classList.remove('margin-top-error');
+        }
+
+        return isValid;
+    }
         
-    </script>
+</script>
 </html>

@@ -41,6 +41,8 @@
 
 
     if (isset($_POST['register'])) {
+        console_log("POST REGISTER");
+        console_log($_POST);
         $user = new Users_Modelo();
         
         $nombre = isset($_POST['username_register']) ? $_POST['username_register'] : '';
