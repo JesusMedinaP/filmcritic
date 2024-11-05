@@ -20,24 +20,31 @@
         require_once("Vista/Login_Vista.php");
     }
 
-
-    if (isset($_POST['login'])) {
-        console_log("POST LOGIN");
-        console_log($_POST);
-
-        $user = new Users_Modelo();
-
-        $nombre = isset($_POST['username_login']) ? $_POST['username_login'] : '';
-        $password = isset($_POST['password_login']) ? md5($_POST['password_login']) : '';
-
-        if($user->login($nombre, $password)){
-            header('Location: index.php');
-            exit();
-        }else{
-            $error = "Nombre de usuario o contraseña incorrectos";
-            console_log($error);
+    function login()
+    {
+        if (isset($_POST['login'])) {
+            console_log("POST LOGIN");
+            console_log($_POST);
+    
+            $user = new Users_Modelo();
+    
+            $nombre = isset($_POST['username_login']) ? $_POST['username_login'] : '';
+            $password = isset($_POST['password_login']) ? md5($_POST['password_login']) : '';
+    
+            if($user->login($nombre, $password)){
+                header('Location: index.php');
+                exit();
+            }else{
+                $error = "Nombre de usuario o contraseña incorrectos";
+                console_log($error);
+                $_SESSION['login_failed'] = "Usuario o contraseña incorrectos";
+                header('Location: index.php?controlador=login');
+                exit();
+            }
         }
     }
+
+
 
     function register()
     {

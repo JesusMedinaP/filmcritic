@@ -24,6 +24,10 @@ form{
     font-size: 16px;
 }
 
+#loginForm form{
+    gap: 5px;
+}
+
 select{
     height: 100%;
     border-radius: 25px;

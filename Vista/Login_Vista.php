@@ -54,18 +54,27 @@
             }
         ?>
 
+        <?php 
+            if(isset($_SESSION['login_failed'])) {
+                echo "<script>showToast('" . $_SESSION['login_failed'] . "', 'error');</script>";
+                unset($_SESSION['login_failed']);
+            }
+        ?>
+
     <div class="form_wrapper" id="loginForm">
     <h1 class="form_title">Iniciar sesión</h1>
     
-        <form action="" method="POST">
+        <form action="index.php?controlador=login&action=login" method="POST" onsubmit="return validateLogin()">
 
         <div class="input_field">            
             <input type="text" id="username_login" name="username_login" placeholder="Nombre de usuario" autocomplete="on">
+            <span class="error_message" id="error_username_login"></span>
         </div>
 
         <div class="input_field">            
             <input type="password" id="password_login" name="password_login" placeholder="Clave de acceso">
             <span toggle="#password_login" class="fa fa-fw fa-eye field-icon toggle_password"></span>
+            <span class="error_message" id="error_password_login"></span>
         </div>
                 
         <input type="submit" id="login" name="login" value="Iniciar sesión" class="form_button">
@@ -79,7 +88,7 @@
     <div class="form_wrapper" id="registerForm">
     <h3 class="form_title">Registrarse</h3>
     
-        <form action="index.php?controlador=login&action=register" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <form action="index.php?controlador=login&action=register" method="POST" enctype="multipart/form-data" onsubmit="return validateRegister()">
 
             <div class="input_field">            
                 <input type="text" id="username_register" name="username_register" placeholder="Nombre de usuario" autocomplete="on">

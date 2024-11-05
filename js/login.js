@@ -15,9 +15,8 @@ function showToast(mensaje, tipo) {
     }, 3000);
 }
 
-function validateForm() {
+function validateRegister() {
     let isValid = true;
-
     // Validación del nombre de usuario
     const username = document.getElementById("username_register");
     if (username.value.trim() === "" || username.value.length < 3) {
@@ -117,4 +116,36 @@ function validateForm() {
     });*/
 
     return true; // Prevenir el envío normal del formulario
+}
+
+function validateLogin() {
+    let isValid = true;
+
+    const username = document.getElementById("username_login");
+    if (username.value.trim() === "") {
+        document.getElementById("error_username_login").innerText = "El nombre de usuario es obligatorio";
+        username.classList.add('input-error');
+        isValid = false;
+    } else {
+        document.getElementById("error_username_login").innerText = "";
+        username.classList.remove('input-error');
+    }
+
+    // Validación de contraseña
+    const password = document.getElementById("password_login");
+
+    if (password.value.trim() === "") {
+        document.getElementById("error_password_login").innerText = "La contraseña es obligatoria";
+        password.classList.add('input-error');
+        isValid = false;
+    } else {
+        document.getElementById("error_password_login").innerText = "";
+        password.classList.remove('input-error');
+    }
+
+    if(!isValid){
+        return false;
+    }
+
+    return true;
 }
