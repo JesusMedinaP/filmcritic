@@ -7,10 +7,14 @@
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/admin.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
+    <link rel="stylesheet" type="text/css" href="css/validate.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
 
     <script src="https://kit.fontawesome.com/6ef29524c6.js" crossorigin="anonymous"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/toast.js"></script>
 </head>
 <body>
     
@@ -177,18 +181,20 @@
         <div class="modal_content">
             <span class="close" onclick="closeEditModal()">&times;</span>
             <h2>Editar Película</h2>
-            <form id="editMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=update_movie">
+            <form id="editMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=update_movie" onsubmit="return validateEdit()">
                 <input type="hidden" name="movie_id" id="movie_id">
                 <input type="hidden" name="current_url_pic" id="current_url_pic">
                 
                 <label for="title">Título</label>
-                <input type="text" name="title" id="title" required>
+                <input type="text" name="title" id="title">
+                <span class="error_message" id="error_title_edit"></span>
                 
                 <label for="date">Fecha</label>
                 <input type="date" name="date" id="date" required>
                 
                 <label for="url_imdb">URL IMDB</label>
-                <input type="url" name="url_imdb" id="url_imdb" required>
+                <input type="url" name="url_imdb" id="url_imdb">
+                <span class="error_message" id="error_url_imdb_edit"></span>
                 
                 <label for="url_pic">Imagen</label>
                 <input type="file" name="url_pic" id="url_pic">
@@ -292,6 +298,16 @@
 
     // Función para cerrar el modal
     function closeEditModal() {
+        
+        // Limpiar mensajes de error
+        document.querySelectorAll('.error_message').forEach(error => {
+            error.textContent = '';
+        });
+
+        document.querySelectorAll('.input-error').forEach(input => {
+            input.classList.remove('input-error');
+        });
+
         const modal = document.getElementById('editMovieModal');
         modal.style.display = 'none';
         document.body.classList.remove('no-scroll');

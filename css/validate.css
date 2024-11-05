@@ -1,0 +1,18 @@
+.error_message{
+    display: flex;
+    color: red;
+    font-size: 14px;
+}
+
+.margin-top-error {
+    margin-top: 40px !important;
+}
+
+.input-error {
+    border: 2px solid #ff3333 !important;
+    background-color: #fff0f0;
+}
+
+.input-error:focus {
+    outline-color: #ff3333;
+}
