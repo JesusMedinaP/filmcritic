@@ -72,6 +72,18 @@ class Users_Modelo
         return $this->ocupations;
     }
 
+    public function user_exists($name, $password)
+    {
+        $sql = "SELECT COUNT(*) as count FROM users WHERE name = ? AND passwd = ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("ss", $name, $password);
+        $consulta->execute();
+        $resultado = $consulta->get_result();
+        $row = $resultado->fetch_assoc();
+        
+        return $row['count'] > 0;
+    }
+
     public function register($name, $age, $gender, $ocupation, $pic, $password)
     {
         $sql = "INSERT INTO users(name, edad, sex, ocupacion, pic, passwd) VALUES (?, ?, ?, ?, ?, ?)";

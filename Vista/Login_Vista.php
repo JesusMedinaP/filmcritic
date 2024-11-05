@@ -11,6 +11,7 @@
     
     <script src="https://kit.fontawesome.com/6ef29524c6.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="js/login.js"></script>
 </head>
 <body>
 
@@ -18,6 +19,40 @@
         <?php require_once("header.php") ?>
     </div>
 
+        <!-- Toasts para el feedback -->
+        <div id="toastSuccess" class="toast">
+            <div class="toast-content">
+                <i class="fas fa-check-circle"></i>
+                <div class="message">
+                    <span class="text"></span>
+                </div>
+            </div>
+            <div class="progress"></div>
+        </div>
+
+        <div id="toastError" class="toast">
+            <div class="toast-content">
+                <i class="fas fa-times-circle"></i>
+                <div class="message">
+                    <span class="text"></span>
+                </div>
+            </div>
+            <div class="progress"></div>
+        </div>
+
+        <?php 
+            if(isset($_SESSION['user_exists'])) {
+                echo "<script>showToast('" . $_SESSION['user_exists'] . "', 'error');</script>";
+                unset($_SESSION['user_exists']);
+            }
+        ?>
+
+        <?php 
+            if(isset($_SESSION['user_registered'])) {
+                echo "<script>showToast('" . $_SESSION['user_registered'] . "', 'success');</script>";
+                unset($_SESSION['user_registered']);
+            }
+        ?>
 
     <div class="form_wrapper" id="loginForm">
     <h1 class="form_title">Iniciar sesión</h1>
@@ -44,62 +79,62 @@
     <div class="form_wrapper" id="registerForm">
     <h3 class="form_title">Registrarse</h3>
     
-        <form action="" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <form action="index.php?controlador=login&action=register" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
 
-        <div class="input_field">            
-            <input type="text" id="username_register" name="username_register" placeholder="Nombre de usuario" autocomplete="on">
-            <span class="error_message" id="error_username"></span>
-        </div>
+            <div class="input_field">            
+                <input type="text" id="username_register" name="username_register" placeholder="Nombre de usuario" autocomplete="on">
+                <span class="error_message" id="error_username"></span>
+            </div>
 
-        <div class="input_field">            
-            <input type="number" id="age_register" name="age_register" placeholder="Edad">
-            <span class="error_message" id="error_age"></span>
-        </div>
+            <div class="input_field">            
+                <input type="number" id="age_register" name="age_register" placeholder="Edad">
+                <span class="error_message" id="error_age"></span>
+            </div>
 
-        <div class="input_field" style="height: 100%;">            
-            <fieldset>
-                <legend>Sexo:</legend>
-                <div class="gender_input">
-                    <input type="radio" id="Male" name="gender_register" value="M">
-                    <label for="Male">Hombre</label>
-                </div>
+            <div class="input_field" style="height: 100%;">            
+                <fieldset>
+                    <legend>Sexo:</legend>
+                    <div class="gender_input">
+                        <input type="radio" id="Male" name="gender_register" value="M">
+                        <label for="Male">Hombre</label>
+                    </div>
 
-                <div class="gender_input">
-                    <input type="radio" id="Female" name="gender_register" value="F">
-                    <label for="Female">Mujer</label>
-                </div>
-            </fieldset>
-            <!--<span class="error_message" id="error_gender"></span>-->
-        </div>
+                    <div class="gender_input">
+                        <input type="radio" id="Female" name="gender_register" value="F">
+                        <label for="Female">Mujer</label>
+                    </div>
+                </fieldset>
+                <!--<span class="error_message" id="error_gender"></span>-->
+            </div>
 
-        <div class="input_field">            
-            <select id="ocupation_register" name="ocupation_register">
-                <option value="" disabled selected>Selecciona tu ocupación</option>
-                <?php 
-                foreach ($ocupaciones as $ocupacion) {
-                    echo "<option value=\"$ocupacion\">$ocupacion</option>";
-                }
-                ?>
-            </select>
-            <span class="error_message" id="error_ocupation"></span>
-        </div>
+            <div class="input_field">            
+                <select id="ocupation_register" name="ocupation_register">
+                    <option value="" disabled selected>Selecciona tu ocupación</option>
+                    <?php 
+                    foreach ($ocupaciones as $ocupacion) {
+                        echo "<option value=\"$ocupacion\">$ocupacion</option>";
+                    }
+                    ?>
+                </select>
+                <span class="error_message" id="error_ocupation"></span>
+            </div>
 
-        <div class="input_field">            
-            <input type="password" id="password_register" name="password_register" placeholder="Clave de acceso">
-            <span toggle="#password_register" class="fa fa-fw fa-eye field-icon toggle_password"></span>
-            <span class="error_message" id="error_password"></span>
-        </div>
+            <div class="input_field">            
+                <input type="password" id="password_register" name="password_register" placeholder="Clave de acceso">
+                <span toggle="#password_register" class="fa fa-fw fa-eye field-icon toggle_password"></span>
+                <span class="error_message" id="error_password"></span>
+            </div>
 
-        <div class="input_field" id="pic_field">            
-            <input type="file" id="pic_register" name="pic_register" accept="image/png, image/jpeg, image/jpg">
-            <span class="error_message" id="error_pic"></span>
-        </div>
-                
-        <input type="submit" id="register" name="register" value="Registrarse" class="form_button">
+            <div class="input_field" id="pic_field">            
+                <input type="file" id="pic_register" name="pic_register" accept="image/png, image/jpeg, image/jpg">
+                <span class="error_message" id="error_pic"></span>
+            </div>
+                    
+            <input type="submit" id="register" name="register" value="Registrarse" class="form_button">
 
-        <div class="toogle_form">
-        <span>¿Ya tienes cuenta? <a href="javascript:void(0);" onclick="toggleForm('login')">Iniciar sesión</a></span>
-        </div>
+            <div class="toogle_form">
+            <span>¿Ya tienes cuenta? <a href="javascript:void(0);" onclick="toggleForm('login')">Iniciar sesión</a></span>
+            </div>
         </form>
     </div>
 
@@ -127,61 +162,6 @@
     input.attr("type", "password");
     }
     });
-
-    function validateForm() {
-        let isValid = true;
-
-        // Validación del nombre de usuario
-        const username = document.getElementById("username_register");
-        if (username.value.trim() === "" || username.value.length < 3) {
-            document.getElementById("error_username").innerText = "El nombre de usuario debe tener al menos 3 caracteres";
-            username.classList.add('input-error');
-            isValid = false;
-        } else {
-            document.getElementById("error_username").innerText = "";
-            username.classList.remove('input-error');
-        }
-
-        // Validación de edad
-        const age = document.getElementById("age_register");
-        if (age.value < 18 || age.value === "") {
-            document.getElementById("error_age").innerText = "Debes ser mayor de 18 años";
-            age.classList.add('input-error');
-            isValid = false;
-        } else {
-            document.getElementById("error_age").innerText = "";
-            age.classList.remove('input-error');
-        }
-
-        // Validación de ocupación
-        const ocupation = document.getElementById("ocupation_register");
-        if (ocupation.value === "") {
-            document.getElementById("error_ocupation").innerText = "Selecciona una ocupación";
-            ocupation.classList.add('input-error');
-            isValid = false;
-        } else {
-            document.getElementById("error_ocupation").innerText = "";
-            ocupation.classList.remove('input-error');
-        }
-
-        // Validación de contraseña
-        const password = document.getElementById("password_register");
-        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!,.+@#$%^&*])[A-Za-z\d!,.+@#$%^&*]{6,}$/;
-        const picInputField = document.getElementById("pic_register").parentElement;
-
-        if (!passwordRegex.test(password.value)) {
-            document.getElementById("error_password").innerText = "La clave debe tener al menos 6 caracteres, una mayúscula, un número y un símbolo.";
-            password.classList.add('input-error');
-            picInputField.classList.add('margin-top-error');
-            isValid = false;
-        } else {
-            document.getElementById("error_password").innerText = "";
-            password.classList.remove('input-error');
-            picInputField.classList.remove('margin-top-error');
-        }
-
-        return isValid;
-    }
         
 </script>
 </html>

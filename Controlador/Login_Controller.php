@@ -39,68 +39,89 @@
         }
     }
 
+    function register()
+    {
+        console_log("Estoy en el registro");
+        if (isset($_POST['register'])) {
+            console_log("He entrado al if del register");
 
-    if (isset($_POST['register'])) {
-        console_log("POST REGISTER");
-        console_log($_POST);
-        $user = new Users_Modelo();
+            console_log("POST REGISTER");
+            console_log($_POST);
+            $user = new Users_Modelo();
+                
+            $nombre = isset($_POST['username_register']) ? $_POST['username_register'] : '';
+            $edad = isset($_POST['age_register']) ? $_POST['age_register'] : '';
+            $gender = isset($_POST['gender_register']) ? $_POST['gender_register'] : '';
+            $ocupacion = isset($_POST['ocupation_register']) ? $_POST['ocupation_register'] : '';
+            $password = isset($_POST['password_register']) ? md5($_POST['password_register']) : '';
         
-        $nombre = isset($_POST['username_register']) ? $_POST['username_register'] : '';
-        $edad = isset($_POST['age_register']) ? $_POST['age_register'] : '';
-        $gender = isset($_POST['gender_register']) ? $_POST['gender_register'] : '';
-        $ocupacion = isset($_POST['ocupation_register']) ? $_POST['ocupation_register'] : '';
-        $password = isset($_POST['password_register']) ? md5($_POST['password_register']) : '';
-
-        $pic = '';
+            $pic = '';
         
-        // Primero, registramos al usuario sin la imagen
-        if($user->register($nombre, $edad, $gender, $ocupacion, $pic, $password)) {
-            $userId = $user->get_last_inserted_id(); // Obtenemos el ID del nuevo usuario
-
-            if (isset($_FILES['pic_register']) && $_FILES['pic_register']['tmp_name'] != '') {
-                $target_dir = "imagenes_perfil/";
-                $imageFileType = strtolower(pathinfo($_FILES["pic_register"]["name"], PATHINFO_EXTENSION));
-                $target_file = $target_dir . $userId . '_' . basename($_FILES["pic_register"]["name"]);
-
-                $uploadOk = 1;
-
-                // Check if image file is a actual image or fake image
-                $check = getimagesize($_FILES["pic_register"]["tmp_name"]);
-                if ($check !== false) {
-                    console_log("El archivo es una imagen - " . $check["mime"] . ".");
-                    $uploadOk = 1;
-                } else {
-                    console_log('El archivo no es una imagen');
-                    $uploadOk = 0;
+            console_log("Resultado del exists user");
+            console_log($user->user_exists($nombre, $password));
+            
+            // Verificamos si el usuario ya existe
+            if($user->user_exists($nombre, $password)) {
+                $_SESSION['user_exists'] = "Ya existe un usuario con ese nombre.";
+                header('Location: index.php?controlador=login&action=home');
+                exit();
+            }else{   
+                if(isset($_SESSION['user_exists'])){
+                    unset($_SESSION['user_exists']);
                 }
-
-                // Allow certain file formats
-                if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                    console_log("Los formatos admitidos son: JPG, JPEG, PNG.");
-                    $uploadOk = 0;
-                }
-
-                // Check if $uploadOk is set to 0 by an error
-                if ($uploadOk == 0) {
-                    console_log( "No se ha podido subir el archivo");
-                } else {
-                    if (move_uploaded_file($_FILES["pic_register"]["tmp_name"], $target_file)) {
-                        console_log("The file ". htmlspecialchars( basename( $_FILES["pic_register"]["name"])). " has been uploaded.");
-                        $pic = $userId . '_' . $_FILES['pic_register']['name'];
-
-                        // Actualizamos el usuario con la ruta de la imagen
-                        $user->update_user_pic($userId, $pic);
-                    } else {
-                        console_log("Sorry, there was an error uploading your file.");
+                // Primero, registramos al usuario sin la imagen
+                if($user->register($nombre, $edad, $gender, $ocupacion, $pic, $password)) {
+                    $userId = $user->get_last_inserted_id(); // Obtenemos el ID del nuevo usuario
+            
+                    if (isset($_FILES['pic_register']) && $_FILES['pic_register']['tmp_name'] != '') {
+                        $target_dir = "imagenes_perfil/";
+                        $imageFileType = strtolower(pathinfo($_FILES["pic_register"]["name"], PATHINFO_EXTENSION));
+                        $target_file = $target_dir . $userId . '_' . basename($_FILES["pic_register"]["name"]);
+            
+                        $uploadOk = 1;
+            
+                        // Check if image file is a actual image or fake image
+                        $check = getimagesize($_FILES["pic_register"]["tmp_name"]);
+                        if ($check !== false) {
+                            console_log("El archivo es una imagen - " . $check["mime"] . ".");
+                            $uploadOk = 1;
+                        } else {
+                            console_log('El archivo no es una imagen');
+                            $uploadOk = 0;
+                        }
+            
+                        // Allow certain file formats
+                        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+                            console_log("Los formatos admitidos son: JPG, JPEG, PNG.");
+                            $uploadOk = 0;
+                        }
+            
+                        // Check if $uploadOk is set to 0 by an error
+                        if ($uploadOk == 0) {
+                            console_log( "No se ha podido subir el archivo");
+                        } else {
+                            if (move_uploaded_file($_FILES["pic_register"]["tmp_name"], $target_file)) {
+                                console_log("The file ". htmlspecialchars( basename( $_FILES["pic_register"]["name"])). " has been uploaded.");
+                                $pic = $userId . '_' . $_FILES['pic_register']['name'];
+            
+                                // Actualizamos el usuario con la ruta de la imagen
+                                $user->update_user_pic($userId, $pic);
+                            } else {
+                                console_log("Sorry, there was an error uploading your file.");
+                            }
+                        }
                     }
+                    $error = "Insertado correctamente";
+                } else {
+                    $error = "Error al insertar";
                 }
+                console_log($error);
+                $_SESSION['user_registered'] = "Registrado correctamente.";
+                header('Location: index.php?controlador=login&action=home');
+                exit();
             }
-
-            $error = "Insertado correctamente";
-        } else {
-            $error = "Error al insertar";
+                
         }
-        console_log($error);
     }
 
 ?>
