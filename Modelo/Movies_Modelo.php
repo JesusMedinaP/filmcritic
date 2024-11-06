@@ -182,6 +182,14 @@ class Movies_Modelo
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 
+    public function get_deleted_movies_raw()
+    {
+        $query = "SELECT * FROM movie WHERE deleted_at IS NOT NULL";
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function get_deleted_movie_count($search ='', $genre = null)
     {
         $sql = "SELECT COUNT(DISTINCT m.id) as count 

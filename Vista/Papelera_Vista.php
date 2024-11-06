@@ -3,17 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelis Review - Catálogo</title>
+    <title>Pelis Review - Papelera</title>
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/admin.css">
     <link rel="stylesheet" type="text/css" href="css/papelera.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
+    <link rel="stylesheet" type="text/css" href="css/toast.css">
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
 
     <script src="https://kit.fontawesome.com/6ef29524c6.js" crossorigin="anonymous"></script>
+    <script src="js/toast.js"></script>
 </head>
 <body>
+
+    <!-- Toasts para el feedback -->
+    <div id="toastSuccess" class="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <div class="message">
+                <span class="text"></span>
+            </div>
+        </div>
+        <div class="progress"></div>
+    </div>
+
+    <div id="toastError" class="toast">
+        <div class="toast-content">
+            <i class="fas fa-times-circle"></i>
+                <div class="message">
+                    <span class="text"></span>
+                </div>
+        </div>
+        <div class="progress"></div>
+    </div>
+
+    <?php if(isset($_SESSION['destroy_all_success'])) echo '<script>showToast("' . $_SESSION['destroy_all_success'] . '", "success");</script>'; unset($_SESSION['destroy_all_success']); ?>
+    <?php if(isset($_SESSION['destroy_all_error'])) echo '<script>showToast("' . $_SESSION['destroy_all_error'] . '", "error");</script>'; unset($_SESSION['destroy_all_error']); ?>
 
     <div class="navigation_bar">
             <?php require_once("header.php") ?>
@@ -60,48 +87,57 @@
     </div>
 
     <div class="deleted_container">
-        <h2>Películas Eliminadas</h2>
-        <table class="deleted_table">
-            <thead>
-                <tr>
-                    <th>Película</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if(!empty($deleted_movies)){
-                    foreach($deleted_movies as $movie):
-                    // Ruta de la imagen desde la base de datos
-                    $imagePath = "movies_images/" . $movie['url_pic'];
+        <div class="deleted_header">
+            <h2>Películas Eliminadas</h2>
 
-                    // Comprobar si la imagen existe
-                    if (!file_exists($imagePath) || empty($movie['url_pic'])) {
-                        // Si no existe, usar imagen placeholder
-                        $imagePath = "movies_images/movie_placeholder.png";
-                    }
-                    $movieJson = json_encode(array_merge($movie, ["url_pic" => $imagePath]), JSON_HEX_APOS | JSON_HEX_QUOT);
-                    ?>
+            <?php if(!empty($deleted_movies)): ?>
+                <button class="delete_all_btn hover_scale_minor" onclick="openDestroyAllModal()">
+                    <i class="fa-solid fa-trash-can"></i> Vaciar papelera
+                </button>
+            <?php endif; ?>
+        </div>
+
+        <?php if(!empty($deleted_movies)){ ?>
+            <table class="deleted_table">
+                <thead>
                     <tr>
-                        <td class="deleted_movie_info">
-                            <a href="index.php?controlador=movie&id=<?php echo $movie['id'];?>" class="movie_picture hover_scale_minor">
-                            <img class="movie_picture hover_scale_minor" src="<?php echo $imagePath ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
-                            </a>
-                            <h2 class="movie_title hover_scale"><?php echo $movie['title']; ?></h2>
-                        </td>
-                        <td>
-                            <!--<button onclick="restoreMovie(<?php echo $movie['id']; ?>)"><i class="fa-solid fa-trash-can-arrow-up"></i></button>
-                            <button onclick="deleteMoviePermanently(<?php echo $movie['id']; ?>)"><i class="fa-solid fa-circle-xmark"></i></button>
-                            -->
-                            <div class="actions">
-                                <i onclick="openRestoreModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-trash-can-arrow-up hover_scale_mayor"></i>
-                                <i onclick="openDestroyModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-circle-xmark hover_scale_mayor"></i>
-                            </div>
-                        </td>
+                        <th>Película</th>
+                        <th>Acciones</th>
                     </tr>
-                <?php endforeach;
-                } else {  echo 'No hay películas eliminadas en la base de datos o ha habido algún problema al conectarse'; } ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php foreach($deleted_movies as $movie):
+                        // Ruta de la imagen desde la base de datos
+                        $imagePath = "movies_images/" . $movie['url_pic'];
+
+                        // Comprobar si la imagen existe
+                        if (!file_exists($imagePath) || empty($movie['url_pic'])) {
+                            // Si no existe, usar imagen placeholder
+                            $imagePath = "movies_images/movie_placeholder.png";
+                        }
+                        $movieJson = json_encode(array_merge($movie, ["url_pic" => $imagePath]), JSON_HEX_APOS | JSON_HEX_QUOT);
+                        ?>
+                        <tr>
+                            <td class="deleted_movie_info">
+                                <a href="index.php?controlador=movie&id=<?php echo $movie['id'];?>" class="movie_picture hover_scale_minor">
+                                <img class="movie_picture hover_scale_minor" src="<?php echo $imagePath ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
+                                </a>
+                                <h2 class="movie_title hover_scale"><?php echo $movie['title']; ?></h2>
+                            </td>
+                            <td>
+                                <!--<button onclick="restoreMovie(<?php echo $movie['id']; ?>)"><i class="fa-solid fa-trash-can-arrow-up"></i></button>
+                                <button onclick="deleteMoviePermanently(<?php echo $movie['id']; ?>)"><i class="fa-solid fa-circle-xmark"></i></button>
+                                -->
+                                <div class="actions">
+                                    <i onclick="openRestoreModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-trash-can-arrow-up hover_scale_mayor"></i>
+                                    <i onclick="openDestroyModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-circle-xmark hover_scale_mayor"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php } else {  echo 'No hay películas eliminadas en la base de datos o ha habido algún problema al conectarse'; } ?>
     </div>
 
     <!-- Modal de confirmación para restaurar película -->
@@ -134,6 +170,22 @@
         </div>
     </div>
 
+    <!-- Añadir este nuevo modal al final del archivo, antes del </body> -->
+    <div id="destroyAllMoviesModal" class="destroy_modal">
+        <div class="destroy_modal_content">
+            <span class="close" onclick="closeDestroyAllModal()">&times;</span>
+            <div style="text-align: center; column-gap: 10px;">
+                <h2 style="margin-top: 0px;">Confirmar Eliminación Total</h2>
+                <p>¿Estás seguro de que deseas eliminar permanentemente todas las películas de la papelera?</p>
+                <p><strong>Esta acción no se puede deshacer.</strong></p>
+                <div class="destroy_buttons">
+                    <button onclick="confirmDestroyAll()" class="delete-button">Eliminar Todo</button>
+                    <button onclick="closeDestroyAllModal()" class="cancel_button">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
 <script>
@@ -159,6 +211,7 @@
         if (event.key === 'Escape') {
             closeRestoreModal();
             closeDestroyModal();
+            closeDestroyAllModal();
         }
     }
 
@@ -210,6 +263,20 @@
     {
         document.getElementById("destroyMovieModal").style.display = "none";
         document.body.classList.remove('no-scroll');
+    }
+
+    function openDestroyAllModal() {
+        document.getElementById("destroyAllMoviesModal").style.display = "flex";
+        document.body.classList.add('no-scroll');
+    }
+
+    function closeDestroyAllModal() {
+        document.getElementById("destroyAllMoviesModal").style.display = "none";
+        document.body.classList.remove('no-scroll');
+    }
+
+    function confirmDestroyAll() {
+        window.location.href = 'index.php?controlador=admin&action=destroy_all_movies';
     }
 
 </script>

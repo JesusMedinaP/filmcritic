@@ -235,4 +235,28 @@
             require_once "Vista/Papelera_Vista.php";
         }
     }
+
+    function destroy_all_movies()
+    {
+        $movies = new Movies_Modelo();
+        $error = "";
+
+        $deleted_movies = $movies->get_deleted_movies_raw();
+
+        console_log($deleted_movies);
+
+        try{
+            foreach($deleted_movies as $movie)
+            {
+                $movies->delete_movie_permanently($movie['id']);
+            }
+
+            $_SESSION['destroy_all_success'] = "Películas eliminadas correctamente.";
+            header("Location: index.php?controlador=admin&action=papelera");
+            exit();
+        }catch(Exception $e){
+            $_SESSION['destroy_all_error'] = "No se han podido eliminar las películas.";
+            require_once "Vista/Papelera_Vista.php";
+        }
+    }
 ?>
