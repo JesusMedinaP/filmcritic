@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/admin.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
     <link rel="stylesheet" type="text/css" href="css/validate.css">
+    <link rel="stylesheet" type="text/css" href="css/toast.css">
 
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
@@ -17,6 +18,35 @@
     <script src="js/toast.js"></script>
 </head>
 <body>
+    
+    <!-- Toasts para el feedback -->
+    <div id="toastSuccess" class="toast">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <div class="message">
+                <span class="text"></span>
+            </div>
+        </div>
+        <div class="progress"></div>
+    </div>
+
+    <div id="toastError" class="toast">
+        <div class="toast-content">
+            <i class="fas fa-times-circle"></i>
+                <div class="message">
+                    <span class="text"></span>
+                </div>
+        </div>
+        <div class="progress"></div>
+    </div>
+
+    <?php if(isset($_SESSION['create_success'])) echo '<script>showToast("' . $_SESSION['create_success'] . '", "success");</script>'; unset($_SESSION['create_success']); ?>
+    <?php if(isset($_SESSION['create_error'])) echo '<script>showToast("' . $_SESSION['create_error'] . '", "error");</script>'; unset($_SESSION['create_error']); ?>
+    <?php if(isset($_SESSION['create_genre_error'])) echo '<script>showToast("' . $_SESSION['create_genre_error'] . '", "error");</script>'; unset($_SESSION['create_genre_error']); ?>
+
+    <?php if(isset($_SESSION['update_success'])) echo '<script>showToast("' . $_SESSION['update_success'] . '", "success");</script>'; unset($_SESSION['update_success']); ?>
+    <?php if(isset($_SESSION['update_error'])) echo '<script>showToast("' . $_SESSION['update_error'] . '", "error");</script>'; unset($_SESSION['update_error']); ?>
+
     
     <div class="navigation_bar">
         <?php require_once("header.php") ?>

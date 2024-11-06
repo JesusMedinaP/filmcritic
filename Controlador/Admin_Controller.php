@@ -93,16 +93,31 @@
 
             // Llamar al modelo para insertar la película
             $moviesModel = new Movies_Modelo();
-            $movie_id = $moviesModel->insert_movie($title, $date, $url_imdb, $url_pic, $description);
+            try{
+                $movie_id = $moviesModel->insert_movie($title, $date, $url_imdb, $url_pic, $description);
+            }catch(Exception $e){
+                $_SESSION['create_error'] = "No se pudo insertar la película.";
+                console_log($e);
+                require_once("Vista/Admin_Vista.php");
+                return;
+            }
 
             // Insertar los géneros seleccionados en la tabla moviegenre
-            if ($movie_id && !empty($genres)) {
-                foreach ($genres as $genre) {
+            try{
+                if ($movie_id && !empty($genres)) {
+                    foreach ($genres as $genre) {
                     $moviesModel->insert_movie_genre($movie_id, $genre);
+                    }
                 }
+            }catch(Exception $e){
+                $_SESSION['create_genre_error'] = "No se pudo insertar los géneros.";
+                console_log($e);
+                require_once("Vista/Admin_Vista.php");
+                return;
             }
 
             // Redirigir a la página de administración o mostrar un mensaje de éxito
+            $_SESSION['create_success'] = "Película creada correctamente.";
             header('Location: index.php?controlador=admin&action=home');
             exit();
         }
@@ -159,11 +174,11 @@
 
             if ($resultUpdate && $resultGenre) {
                 // Redirigir a la vista de administrador con éxito
+                $_SESSION['update_success'] = "Película actualizada correctamente.";
                 header("Location: index.php?controlador=admin&action=home");
             } else {
                 // Manejar el error
-                $error = "No se pudo actualizar la película.";
-                console_log($error);
+                $_SESSION['update_error'] = "No se pudo actualizar la película.";
                 require_once("Vista/Admin_Vista.php");
             }
         }
