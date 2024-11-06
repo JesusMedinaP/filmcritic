@@ -144,16 +144,19 @@
         <div class="modal_content">
             <span class="close" onclick="closeAddModal()">&times;</span>
             <h2>Nueva Película</h2>
-            <form id="addMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=add_movie">
+            <form id="addMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=add_movie" onsubmit="return validateCreate()">
 
                 <label for="new_title">Título</label>
-                <input type="text" name="new_title" id="new_title" required>
+                <input type="text" name="new_title" id="new_title">
+                <span class="error_message" id="error_title_add"></span>    
                 
-                <label for="new_date">Fecha</label>
-                <input type="date" name="new_date" id="new_date" required>
+                <label for="new_date">Fecha de estreno</label>
+                <input type="date" name="new_date" id="new_date">
+                <span class="error_message" id="error_date_add"></span>
                 
                 <label for="new_url_imdb">URL IMDB</label>
-                <input type="url" name="new_url_imdb" id="new_url_imdb" required>
+                <input type="url" name="new_url_imdb" id="new_url_imdb">
+                <span class="error_message" id="error_url_imdb_add"></span>
                 
                 <label for="new_url_pic">Imagen</label>
                 <input type="file" name="new_url_pic" id="new_url_pic">
@@ -267,8 +270,19 @@
 
     function closeAddModal()
     {
+        // Limpiar mensajes de error
+        document.querySelectorAll('.error_message').forEach(error => {
+        error.textContent = '';
+        });
+
+        document.querySelectorAll('.input-error').forEach(input => {
+            input.classList.remove('input-error');
+        });
+
         document.getElementById("addMovieModal").style.display = "none";
         document.body.classList.remove('no-scroll');
+
+        document.removeEventListener('keydown', closeOnEscape);
     }
 
     // Función para abrir el modal

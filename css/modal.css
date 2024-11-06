@@ -72,11 +72,16 @@
     flex-direction: row;
     gap: 20px;
     margin-top: 10px;
+    padding: 10px;
 }
 .genreCheckboxes div{
     display: flex;
     column-gap: 5px;
     align-items: center;
+}
+
+.genreCheckboxes div label{
+    margin: 0;
 }
 
 .genreCheckboxes div input, #genreCheckboxes div label{
