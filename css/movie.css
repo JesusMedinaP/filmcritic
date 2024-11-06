@@ -43,6 +43,21 @@
     display: flex;
 }
 
+.movie_genres_list{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+.movie_genres_list li{
+    background: var(--button-background);
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+}
+
 .comment_form{
     display: flex;
     flex-direction: column;

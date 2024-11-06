@@ -4,8 +4,16 @@ function validateEdit()
 
     const title = document.getElementById("title");
     const urlImdb = document.getElementById("url_imdb");
+    const date = document.getElementById("date");
 
-    console.log("Los datos", title, urlImdb);
+    console.log("Los datos");
+    console.log(title.value);
+    console.log(urlImdb.value);
+    console.log(date.value);
+
+    if(date.value === ""){
+        console.log("Es vacía");
+    }
 
     if(title.value.trim() === ""){
         document.getElementById("error_title_edit").innerText = "El título es obligatorio";
@@ -25,5 +33,14 @@ function validateEdit()
         urlImdb.classList.remove('input-error');
     }
 
-    return false;
+    if(date.value === ""){
+        document.getElementById("error_date_edit").innerText = "La fecha de estreno es obligatoria";
+        date.classList.add('input-error');
+        isValid = false;
+    }else{
+        document.getElementById("error_date_edit").innerText = "";
+        date.classList.remove('input-error');
+    }
+
+    return isValid;
 }

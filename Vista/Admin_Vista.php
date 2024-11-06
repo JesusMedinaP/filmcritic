@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelis Review - Catálogo</title>
+    <title>Pelis Review - Admin</title>
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/admin.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
@@ -189,8 +189,9 @@
                 <input type="text" name="title" id="title">
                 <span class="error_message" id="error_title_edit"></span>
                 
-                <label for="date">Fecha</label>
-                <input type="date" name="date" id="date" required>
+                <label for="date">Fecha de estreno</label>
+                <input type="date" name="date" id="date">
+                <span class="error_message" id="error_date_edit"></span>
                 
                 <label for="url_imdb">URL IMDB</label>
                 <input type="url" name="url_imdb" id="url_imdb">

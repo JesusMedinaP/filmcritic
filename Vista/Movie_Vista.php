@@ -31,9 +31,9 @@
                     <h2>Título: <?php echo $movie['title'] ?></h2>
                     <h3>Fecha de estreno: <?php echo $movie['date'] ?></h3>
                     <div class="movie_genres">
-                        <h3>Géneros:</h3>
+                        <!-- <h3>Géneros:</h3> -->
                         <?php if($movieGenres != null) { ?>
-                            <ul>
+                            <ul class="movie_genres_list" type="none">
                                 <?php foreach ($movieGenres as $genre) { ?>
                                     <li><?php echo htmlspecialchars($genre); ?></li>
                                 <?php } ?>
