@@ -14,18 +14,18 @@ class Movie_Modelo
     public function get_movie($id)
     {
         $sql = "SELECT m.*, 
-                       AVG(us.score) AS avg_score, 
-                       COUNT(us.score) AS score_count
-                FROM movie m
-                LEFT JOIN user_score us ON m.id = us.id_movie
-                WHERE m.id = ?
-                GROUP BY m.id";
+                   ms.average_score AS avg_score, 
+                   ms.total_votes AS score_count
+            FROM movie m
+            LEFT JOIN movie_score ms ON m.id = ms.id_movie
+            WHERE m.id = ?";
+    
         $consulta = $this->db->prepare($sql);
         $consulta->bind_param("i", $id);
         $consulta->execute();
-    
+
         $result = $consulta->get_result();
-    
+
         if ($result->num_rows == 1) {
             return $result->fetch_assoc(); // Devuelve el registro como array asociativo
         } else {
