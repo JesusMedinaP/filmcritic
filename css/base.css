@@ -47,7 +47,7 @@ body {
 }
 
 .hover_scale{
-    transition: all .2;
+    transition: all 0.3s;
 }
 
 .hover_scale:hover{

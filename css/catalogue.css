@@ -114,24 +114,6 @@
     display: block;
 }
 
-/* Clase de escala para efecto hover */
-.hover_scale {
-    transition: transform 0.2s;
-}
-
-.hover_scale:hover {
-    transform: scale(1.1);
-}
-
-.hover_scale_minor{
-    transition: transform 0.5s;
-}
-
-.hover_scale_minor:hover{
-    transform: scale(1.05);
-}
-
-
 option{
     font-family: 'Roboto', sans-serif;
 }
