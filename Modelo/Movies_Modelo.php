@@ -26,9 +26,9 @@ class Movies_Modelo
         return $this->genres;
     }
 
-    public function get_movies($offset, $limit = 20, $search = '', $genre = null, $order = "DESC")
+    public function get_movies($offset, $limit = 20, $search = '', $genre = null, $order)
     {
-        $order = ($order == 'DESC') ? 'ASC' : 'DESC'; // Asegura que solo se use 'ASC' o 'DESC'
+        //$order = ($order == 'DESC') ? 'ASC' : 'DESC'; // Asegura que solo se use 'ASC' o 'DESC'
     
         $sql = "SELECT m.id, m.title, m.date, m.url_imdb, m.url_pic, m.desc,
                        ms.average_score AS avg_score, ms.total_votes AS score_count
@@ -40,12 +40,30 @@ class Movies_Modelo
         if ($genre !== null) {
             $sql .= " AND mg.genre = ?";
         }
-        
-        $sql .= " GROUP BY m.id ORDER BY m.id $order LIMIT ?, ?";
+
+        $sql .= " GROUP BY m.id"; // Agrupar por el ID de la película para evitar duplicados
+
+        // Modificar la cláusula ORDER BY en función del filtro
+        switch ($order) {
+            case 'most_votes':
+                $sql .= " ORDER BY ms.total_votes DESC";
+                break;
+            case 'best_score':
+                $sql .= " ORDER BY ms.average_score DESC";
+                break;
+            case 'ASC':
+                $sql .= " ORDER BY m.id ASC";
+                break;
+            default:
+                $sql .= " ORDER BY m.id DESC";
+        }
+
+        $sql .= " LIMIT ?, ?";
     
         $consulta = $this->db->prepare($sql);
         $searchTerm = '%' . $search . '%';
     
+        // Asignar parámetros a la consulta en función de si se pasa el género o no
         if ($genre !== null) {
             $consulta->bind_param("siii", $searchTerm, $genre, $offset, $limit);
         } else {

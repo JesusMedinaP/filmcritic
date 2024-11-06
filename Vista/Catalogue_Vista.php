@@ -61,11 +61,13 @@
                         <?php endforeach; ?>
                     </select>
 
-                    <!-- Orden alfabético -->
-                    <select name="order" id="order" onchange="this.form.submit()">
-                        <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>ASC</option>
-                        <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>DESC</option>
-                    </select>
+                <!-- Orden de id, más votadas y mejor puntuación -->
+                <select name="order" id="order" onchange="this.form.submit()">
+                    <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>DESC</option>
+                    <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>ASC</option>
+                    <option value="most_votes" <?php echo (isset($_GET['order']) && $_GET['order'] == 'most_votes') ? 'selected' : ''; ?>>Más votadas</option>
+                    <option value="best_score" <?php echo (isset($_GET['order']) && $_GET['order'] == 'best_score') ? 'selected' : ''; ?>>Mejor puntuación</option>
+                </select>
                 </form>
             </div>
 
