@@ -79,194 +79,194 @@
     </div>
     <?php
     if(!empty($catalogue))
-    { ?>
-    
-    <div class="filters_container">
-        <div class="filters">
-            <span>Filtros: </span>
-            <div class="genre_filter">
-                <!-- Formulario de Géneros -->
+        { ?>
+        
+        <div class="filters_container">
+            <div class="filters">
+                <span>Filtros: </span>
+                <div class="genre_filter">
+                    <!-- Formulario de Géneros -->
+                    <form method="GET" action="index.php">
+                        <input type="hidden" name="controlador" value="admin">
+                        <select name="genre" onchange="this.form.submit()">
+                            <option value="">Todos los géneros</option>
+                            <?php foreach ($genres as $g): ?>
+                                <option value="<?php echo $g['id']; ?>" <?php if ($g['id'] == $genre) echo 'selected'; ?>>
+                                    <?php echo htmlspecialchars($g['name']); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+
+                        <!-- Orden de id, más votadas y mejor puntuación -->
+                        <select name="order" id="order" onchange="this.form.submit()">
+                            <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>DESC</option>
+                            <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>ASC</option>
+                            <option value="most_votes" <?php echo (isset($_GET['order']) && $_GET['order'] == 'most_votes') ? 'selected' : ''; ?>>Más votadas</option>
+                            <option value="best_score" <?php echo (isset($_GET['order']) && $_GET['order'] == 'best_score') ? 'selected' : ''; ?>>Mejor puntuación</option>
+                        </select>
+                    </form>
+                </div>
+
+                <div class="rate_filter">
+
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination_links">
                 <form method="GET" action="index.php">
                     <input type="hidden" name="controlador" value="admin">
-                    <select name="genre" onchange="this.form.submit()">
-                        <option value="">Todos los géneros</option>
-                        <?php foreach ($genres as $g): ?>
-                            <option value="<?php echo $g['id']; ?>" <?php if ($g['id'] == $genre) echo 'selected'; ?>>
-                                <?php echo htmlspecialchars($g['name']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                    <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
+                    <input type="hidden" name="genre" value="<?php echo htmlspecialchars($genre); ?>">
+                    <input type="hidden" name="order" value="<?php echo htmlspecialchars($order); ?>">
+                    
+                    <button type="submit" name="page" value="<?php echo $page - 1; ?>" <?php echo ($page <= 1) ? 'disabled' : ''; ?>>Anterior</button>
+                    <button type="submit" name="page" value="<?php echo $page + 1; ?>" <?php echo (count($catalogue) < $limit) ? 'disabled' : ''; ?>>Siguiente</button>
+                </form>
+        </div>
 
-                    <!-- Orden de id, más votadas y mejor puntuación -->
-                    <select name="order" id="order" onchange="this.form.submit()">
-                        <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>DESC</option>
-                        <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>ASC</option>
-                        <option value="most_votes" <?php echo (isset($_GET['order']) && $_GET['order'] == 'most_votes') ? 'selected' : ''; ?>>Más votadas</option>
-                        <option value="best_score" <?php echo (isset($_GET['order']) && $_GET['order'] == 'best_score') ? 'selected' : ''; ?>>Mejor puntuación</option>
-                    </select>
+        <div class="movies_container">
+
+            <div>
+                <button onclick="openAddModal()" class="add_button hover_scale"><i class="fa-solid fa-plus"></i> Nueva película</button>
+            </div>
+
+            <?php foreach($catalogue as $movie)
+            {
+                // Ruta de la imagen desde la base de datos
+                $imagePath = "movies_images/" . $movie['url_pic'];
+
+                // Comprobar si la imagen existe
+                if (!file_exists($imagePath) || empty($movie['url_pic'])) {
+                    // Si no existe, usar imagen placeholder
+                    $imagePath = "movies_images/movie_placeholder.png";
+                }
+
+                $movieJson = json_encode(array_merge($movie, ["url_pic" => $imagePath]), JSON_HEX_APOS | JSON_HEX_QUOT);
+                ?>
+                <div class="movie">
+                    <a href="index.php?controlador=movie&id=<?php echo $movie['id'];?>" class="movie_picture hover_scale_minor">
+                    <img class="movie_picture hover_scale_minor" src="<?php echo $imagePath ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
+                    </a>
+                    <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
+                    <p class="movie_score">
+                        <?php if(isset($movie['avg_score'])){ ?>
+                        <i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
+                        <?php }else echo '<i class="fa-solid fa-star"></i> <span class="score">0.0</span> (<span class="score">0</span> votos)</p>' ?>
+                    <div class="movie_description_container">
+                        <p class="movie_description"> 
+                            <?php 
+                                if($movie['desc'] != "" && $movie['desc'] != "N/A") echo ($movie['desc']);
+                                else echo 'No hay descripción para esta película';
+                                ?>
+                        </p>
+                    </div>
+                    <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
+                    <div class="actions_container">
+                        <i onclick='openEditModal(<?php echo $movieJson; ?>)' class="fa-solid fa-pen-to-square hover_scale_mayor"></i>
+                        <i onclick="openDeleteModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-trash hover_scale_mayor"></i>
+                    </div>
+                </div>
+            <?php
+            } ?>
+        </div>
+
+        <!-- Modal para la creación -->
+        <div id="addMovieModal" class="modal">
+            <div class="modal_content">
+                <span class="close" onclick="closeAddModal()">&times;</span>
+                <h2>Nueva Película</h2>
+                <form id="addMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=add_movie" onsubmit="return validateCreate()">
+
+                    <label for="new_title">Título</label>
+                    <input type="text" name="new_title" id="new_title">
+                    <span class="error_message" id="error_title_add"></span>    
+                    
+                    <label for="new_date">Fecha de estreno</label>
+                    <input type="date" name="new_date" id="new_date">
+                    <span class="error_message" id="error_date_add"></span>
+                    
+                    <label for="new_url_imdb">URL IMDB</label>
+                    <input type="url" name="new_url_imdb" id="new_url_imdb">
+                    <span class="error_message" id="error_url_imdb_add"></span>
+                    
+                    <label for="new_url_pic">Imagen</label>
+                    <input type="file" name="new_url_pic" id="new_url_pic">
+                    
+                    <label for="new_desc">Descripción</label>
+                    <textarea name="new_desc" id="new_desc" rows="4" placeholder="Añade un descripción"></textarea>
+
+                    <label for="new_genres">Géneros</label>
+                    <div id="new_genreCheckboxes" class="genreCheckboxes">
+                        <?php foreach ($genres as $genre): ?>
+                            <div>
+                                <input type="checkbox" name="new_genres[]" value="<?php echo $genre['id']; ?>" id="new_genre_<?php echo $genre['id']; ?>">
+                                <label for="new_genre_<?php echo $genre['id']; ?>"><?php echo $genre['name']; ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    
+                    <button type="submit">Añadir película</button>
                 </form>
             </div>
+        </div>
 
-            <div class="rate_filter">
+        <!-- Modal para edición -->
+        <div id="editMovieModal" class="modal">
+            <div class="modal_content">
+                <span class="close" onclick="closeEditModal()">&times;</span>
+                <h2>Editar Película</h2>
+                <form id="editMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=update_movie" onsubmit="return validateEdit()">
+                    <input type="hidden" name="movie_id" id="movie_id">
+                    <input type="hidden" name="current_url_pic" id="current_url_pic">
+                    
+                    <label for="title">Título</label>
+                    <input type="text" name="title" id="title">
+                    <span class="error_message" id="error_title_edit"></span>
+                    
+                    <label for="date">Fecha de estreno</label>
+                    <input type="date" name="date" id="date">
+                    <span class="error_message" id="error_date_edit"></span>
+                    
+                    <label for="url_imdb">URL IMDB</label>
+                    <input type="url" name="url_imdb" id="url_imdb">
+                    <span class="error_message" id="error_url_imdb_edit"></span>
+                    
+                    <label for="url_pic">Imagen</label>
+                    <input type="file" name="url_pic" id="url_pic">
+                    
+                    <label for="desc">Descripción</label>
+                    <textarea name="desc" id="desc" rows="4" placeholder="Añade un descripción"></textarea>
 
+                    <label for="genres">Géneros</label>
+                    <div id="genreCheckboxes" class="genreCheckboxes">
+                        <?php foreach ($genres as $genre): ?>
+                            <div>
+                                <input type="checkbox" name="genres[]" value="<?php echo $genre['id']; ?>" id="genre_<?php echo $genre['id']; ?>">
+                                <label for="genre_<?php echo $genre['id']; ?>"><?php echo $genre['name']; ?></label>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    
+                    <button type="submit">Guardar Cambios</button>
+                </form>
             </div>
         </div>
-    </div>
 
-    <div class="pagination_links">
-            <form method="GET" action="index.php">
-                <input type="hidden" name="controlador" value="admin">
-                <input type="hidden" name="search" value="<?php echo htmlspecialchars($search); ?>">
-                <input type="hidden" name="genre" value="<?php echo htmlspecialchars($genre); ?>">
-                <input type="hidden" name="order" value="<?php echo htmlspecialchars($order); ?>">
-                
-                <button type="submit" name="page" value="<?php echo $page - 1; ?>" <?php echo ($page <= 1) ? 'disabled' : ''; ?>>Anterior</button>
-                <button type="submit" name="page" value="<?php echo $page + 1; ?>" <?php echo (count($catalogue) < $limit) ? 'disabled' : ''; ?>>Siguiente</button>
-            </form>
-    </div>
-
-    <div class="movies_container">
-
-        <div>
-            <button onclick="openAddModal()" class="add_button hover_scale"><i class="fa-solid fa-plus"></i> Nueva película</button>
-        </div>
-
-        <?php foreach ($catalogue as $movie)
-        {
-            // Ruta de la imagen desde la base de datos
-            $imagePath = "movies_images/" . $movie['url_pic'];
-
-            // Comprobar si la imagen existe
-            if (!file_exists($imagePath) || empty($movie['url_pic'])) {
-                // Si no existe, usar imagen placeholder
-                $imagePath = "movies_images/movie_placeholder.png";
-            }
-
-            $movieJson = json_encode(array_merge($movie, ["url_pic" => $imagePath]), JSON_HEX_APOS | JSON_HEX_QUOT);
-            ?>
-            <div class="movie">
-                <a href="index.php?controlador=movie&id=<?php echo $movie['id'];?>" class="movie_picture hover_scale_minor">
-                <img class="movie_picture hover_scale_minor" src="<?php echo $imagePath ?>" alt="<?php echo $movie['title'] ?>" onerror="this.onerror=null; this.src='movies_images/movie_placeholder.png';"/>
-                </a>
-                <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
-                <p class="movie_score">
-                    <?php if(isset($movie['avg_score'])){ ?>
-                    <i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
-                    <?php }else echo '<i class="fa-solid fa-star"></i> <span class="score">0.0</span> (<span class="score">0</span> votos)</p>' ?>
-                <div class="movie_description_container">
-                    <p class="movie_description"> 
-                        <?php 
-                            if($movie['desc'] != "" && $movie['desc'] != "N/A") echo ($movie['desc']);
-                            else echo 'No hay descripción para esta película';
-                            ?>
-                    </p>
-                </div>
-                <h3 class="movie_date"><?php echo $movie['date'] ?></h3>
-                <div class="actions_container">
-                    <i onclick='openEditModal(<?php echo $movieJson; ?>)' class="fa-solid fa-pen-to-square hover_scale_mayor"></i>
-                    <i onclick="openDeleteModal(<?php echo $movie['id']; ?>)" class="fa-solid fa-trash hover_scale_mayor"></i>
-                </div>
-            </div>
-        <?php
-        } ?>
-    </div>
-
-    <!-- Modal para la creación -->
-    <div id="addMovieModal" class="modal">
-        <div class="modal_content">
-            <span class="close" onclick="closeAddModal()">&times;</span>
-            <h2>Nueva Película</h2>
-            <form id="addMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=add_movie" onsubmit="return validateCreate()">
-
-                <label for="new_title">Título</label>
-                <input type="text" name="new_title" id="new_title">
-                <span class="error_message" id="error_title_add"></span>    
-                
-                <label for="new_date">Fecha de estreno</label>
-                <input type="date" name="new_date" id="new_date">
-                <span class="error_message" id="error_date_add"></span>
-                
-                <label for="new_url_imdb">URL IMDB</label>
-                <input type="url" name="new_url_imdb" id="new_url_imdb">
-                <span class="error_message" id="error_url_imdb_add"></span>
-                
-                <label for="new_url_pic">Imagen</label>
-                <input type="file" name="new_url_pic" id="new_url_pic">
-                
-                <label for="new_desc">Descripción</label>
-                <textarea name="new_desc" id="new_desc" rows="4" placeholder="Añade un descripción"></textarea>
-
-                <label for="new_genres">Géneros</label>
-                <div id="new_genreCheckboxes" class="genreCheckboxes">
-                    <?php foreach ($genres as $genre): ?>
-                        <div>
-                            <input type="checkbox" name="new_genres[]" value="<?php echo $genre['id']; ?>" id="new_genre_<?php echo $genre['id']; ?>">
-                            <label for="new_genre_<?php echo $genre['id']; ?>"><?php echo $genre['name']; ?></label>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                
-                <button type="submit">Añadir película</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal para edición -->
-    <div id="editMovieModal" class="modal">
-        <div class="modal_content">
-            <span class="close" onclick="closeEditModal()">&times;</span>
-            <h2>Editar Película</h2>
-            <form id="editMovieForm" method="POST" enctype="multipart/form-data" action="index.php?controlador=admin&action=update_movie" onsubmit="return validateEdit()">
-                <input type="hidden" name="movie_id" id="movie_id">
-                <input type="hidden" name="current_url_pic" id="current_url_pic">
-                
-                <label for="title">Título</label>
-                <input type="text" name="title" id="title">
-                <span class="error_message" id="error_title_edit"></span>
-                
-                <label for="date">Fecha de estreno</label>
-                <input type="date" name="date" id="date">
-                <span class="error_message" id="error_date_edit"></span>
-                
-                <label for="url_imdb">URL IMDB</label>
-                <input type="url" name="url_imdb" id="url_imdb">
-                <span class="error_message" id="error_url_imdb_edit"></span>
-                
-                <label for="url_pic">Imagen</label>
-                <input type="file" name="url_pic" id="url_pic">
-                
-                <label for="desc">Descripción</label>
-                <textarea name="desc" id="desc" rows="4" placeholder="Añade un descripción"></textarea>
-
-                <label for="genres">Géneros</label>
-                <div id="genreCheckboxes" class="genreCheckboxes">
-                    <?php foreach ($genres as $genre): ?>
-                        <div>
-                            <input type="checkbox" name="genres[]" value="<?php echo $genre['id']; ?>" id="genre_<?php echo $genre['id']; ?>">
-                            <label for="genre_<?php echo $genre['id']; ?>"><?php echo $genre['name']; ?></label>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                
-                <button type="submit">Guardar Cambios</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal de confirmación para eliminar película -->
-    <div id="deleteMovieModal" class="delete_modal">
-        <div class="delete_modal_content">
-            <span id="closeDeleteModalButton" class="close" onclick="closeDeleteModal()">&times;</span>
-            <div style="text-align: center; column-gap: 10px;">
-                <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
-                <p>¿Estás seguro de que deseas eliminar esta película?</p>
-                <div class="delete_buttons">
-                    <button id="confirmDeleteButton" class="delete-button">Eliminar</button>
-                    <button onclick="closeDeleteModal()" class="cancel_button">Cancelar</button>
+        <!-- Modal de confirmación para eliminar película -->
+        <div id="deleteMovieModal" class="delete_modal">
+            <div class="delete_modal_content">
+                <span id="closeDeleteModalButton" class="close" onclick="closeDeleteModal()">&times;</span>
+                <div style="text-align: center; column-gap: 10px;">
+                    <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
+                    <p>¿Estás seguro de que deseas eliminar esta película?</p>
+                    <div class="delete_buttons">
+                        <button id="confirmDeleteButton" class="delete-button">Eliminar</button>
+                        <button onclick="closeDeleteModal()" class="cancel_button">Cancelar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
     <?php

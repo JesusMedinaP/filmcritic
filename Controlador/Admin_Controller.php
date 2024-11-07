@@ -20,9 +20,8 @@
             $total_results = $movies->get_movie_count($search, $genre);
             $genres = $movies->get_genres();
 
-            foreach($catalogue as &$movie)
-            {
-                $movie['genres'] = $movies->get_movie_genre($movie['id']);
+            foreach($catalogue as $key => $movie) {
+                $catalogue[$key]['genres'] = $movies->get_movie_genre($movie['id']);
             }
 
             console_log($catalogue);
