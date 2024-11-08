@@ -101,13 +101,6 @@ function validateCreate(){
 
 }
 
-function showTab(tabName) {
-    const tabs = document.querySelectorAll('.tab_content');
-    tabs.forEach(tab => {
-        tab.style.display = 'none';
-    });
-    document.getElementById(tabName).style.display = 'flex';
-}
 
 let currentPage = 1;
 const rowsPerPage = 10;
@@ -161,11 +154,29 @@ function updatePageInfo() {
 
 // Inicializar la paginación cuando se muestre la pestaña de usuarios
 function showTab(tabName) {
+    // Ocultar todas las pestañas
     const tabs = document.querySelectorAll('.tab_content');
     tabs.forEach(tab => {
         tab.style.display = 'none';
     });
+
+    // Eliminar la clase 'active' de todos los botones
+    const buttons = document.querySelectorAll('.tab_button');
+    buttons.forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // Añadir la clase 'active' al botón correspondiente
+    const activeButton = document.getElementById(`${tabName}Tab`);
+    activeButton.classList.add('active');
+
+    // Mostrar el contenido de la pestaña seleccionada
     document.getElementById(tabName).style.display = 'flex';
+
+    // Actualizar la posición y tamaño de la línea activa
+    const activeLine = document.getElementById('activeLine');
+    activeLine.style.width = `${activeButton.offsetWidth}px`;
+    activeLine.style.left = `${activeButton.offsetLeft}px`;
     
     if (tabName === 'users') {
         initializePagination();

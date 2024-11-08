@@ -79,8 +79,9 @@
     </div>
 
     <div class="tab_container">
-        <button class="tab_button" onclick="showTab('movies')">Películas</button>
-        <button class="tab_button" onclick="showTab('users')">Usuarios</button>
+        <button id="moviesTab" class="tab_button active" onclick="showTab('movies')">Películas</button>
+        <button id="usersTab" class="tab_button" onclick="showTab('users')">Usuarios</button>
+        <div id="activeLine" class="tab_active_line"></div>
     </div>
 
     <div id="movies" class="tab_content">
@@ -323,6 +324,12 @@
 </html>
 
 <script>
+
+    // Inicializar la posición de la línea activa
+    document.addEventListener('DOMContentLoaded', () => {
+        showTab('movies');
+    });
+
     function togglePopup() {
             var popup = document.getElementById("userPopup");
             popup.classList.toggle("active");
