@@ -172,5 +172,22 @@ class Users_Modelo
         }
         return $this->users;
     }
+
+    public function search_users($query)
+    {
+        $query = '%' . $query . '%';
+        $sql = "SELECT id, name, edad, ocupacion FROM users WHERE name LIKE ? ORDER BY id DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param("s", $query);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        $users = array();
+        while($row = $result->fetch_assoc()) {
+            $users[] = $row;
+        }
+        console_log($users);
+        return $users;
+    }
 }
 ?>

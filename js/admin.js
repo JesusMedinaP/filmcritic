@@ -201,3 +201,20 @@ function closeDestroyUserModal()
 {
     document.getElementById("destroyUserModal").style.display = "none";
 }
+
+function searchUsers(query, event) {
+    console.log("Evento", event);
+    event.preventDefault();
+    query = query || document.getElementById('userSearchInput').value;
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', `index.php?controlador=admin&action=searchUsers&query=${encodeURIComponent(query)}`, true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Actualizar el cuerpo de la tabla con los resultados
+            document.getElementById('users_table_body').innerHTML = xhr.responseText;
+        }
+    };
+
+    xhr.send();
+}

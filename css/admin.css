@@ -305,3 +305,16 @@ option{
 .user-row i{
     cursor: pointer;
 }
+
+.search_users{
+    align-items: center;
+    justify-content: center;
+}
+
+.search_users button{
+    position: relative;
+}
+
+#userSearchInput{
+    width: 90%;
+}

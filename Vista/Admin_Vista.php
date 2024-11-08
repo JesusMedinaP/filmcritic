@@ -278,18 +278,39 @@
     ?>
     </div>
 
+    <div class="search_bar search_users">
+        <form id="userSearchForm" onsubmit="return false;">
+                <input
+                    type="text"
+                    id="userSearchInput"
+                    placeholder="Buscar usuario..."
+                    onkeyup="searchUsers(this.value, event)"
+                />
+                <button type="button" onclick="searchUsers(document.getElementById('userSearchInput').value, event)">
+                    <i class="fa fa-search"></i>
+                </button>
+        </form>
+    </div>
+
+    <?php if(!empty($users)){ ?>
     <div id="users" class="tab_content" style="display: none;">
         <table class="users_table">
             <thead>
                 <tr>
+                    <th>Id</th>
                     <th>Usuario</th>
+                    <th>Edad</th>
+                    <th>Ocupación</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody id="users_table_body">
                 <?php foreach($users as $user): ?>
                     <tr class="user-row">
+                        <td><?php echo htmlspecialchars($user['id']); ?></td>
                         <td><?php echo htmlspecialchars($user['name']); ?></td>
+                        <td><?php echo htmlspecialchars($user['edad']); ?></td>
+                        <td><?php echo htmlspecialchars($user['ocupacion']); ?></td>
                         <td>
                             <!-- <i onclick="deleteUser(<?php //echo $user['id']; ?>)" class="fa-solid fa-trash hover_scale_mayor"></i> -->
                             <i onclick="openDestroyUserModal(<?php echo $user['id']; ?>)" class="fa-solid fa-trash hover_scale_mayor"></i>
@@ -304,6 +325,7 @@
             <button onclick="nextPage()" id="nextButton" class="pagination-button">Siguiente</button>
         </div>
     </div>
+    <?php }else{ echo 'No hay usuarios en la base de datos';} ?>
 
     <!-- Modal de confirmación para destruir usuario -->
     <div id="destroyUserModal" class="destroy_modal">

@@ -281,4 +281,32 @@
             }
         }
     }
+
+    function searchUsers()
+    {
+        console_log("He entrado");
+        $query = isset($_GET['query']) ? $_GET['query'] : '';
+        $userModel = new Users_Modelo();
+
+        // Obtener los usuarios que coinciden con la búsqueda
+        $users = $userModel->search_users($query);
+        console_log($users);
+
+        // Generar el HTML de respuesta
+        if(!empty($users)){
+            foreach ($users as $user) {
+                echo '<tr class="user-row">';
+                echo '<td>' . htmlspecialchars($user['id']) . '</td>';
+                echo '<td>' . htmlspecialchars($user['name']) . '</td>';
+                echo '<td>' . htmlspecialchars($user['edad']) . '</td>';
+                echo '<td>' . htmlspecialchars($user['ocupacion']) . '</td>';
+                echo '<td>';
+                echo '<i onclick="openDestroyUserModal(' . $user['id'] . ')" class="fa-solid fa-trash hover_scale_mayor"></i>';
+                echo '</td>';
+                echo '</tr>';
+            }
+        }else{
+            echo 'No hay usuarios en la base de datos con ese nombre';
+        }
+    }
 ?>
