@@ -216,7 +216,15 @@ function searchUsers(query, event) {
         if (xhr.readyState === 4 && xhr.status === 200) {
             // Actualizar el cuerpo de la tabla con los resultados
             const tableBody = document.getElementById('users_table_body');
+            const thead = document.querySelector('.users_table thead');
+
             tableBody.innerHTML = xhr.responseText;
+
+            if (xhr.responseText.includes('No hay usuarios en la base de datos con ese nombre.')) {
+                thead.style.display = 'none';
+            } else {
+                thead.style.display = 'table-header-group';
+            }
 
             // Actualizar userRows con las nuevas filas
             userRows = Array.from(document.querySelectorAll('.user-row'));

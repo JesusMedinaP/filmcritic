@@ -28,9 +28,9 @@
                 $catalogue[$key]['genres'] = $movies->get_movie_genre($movie['id']);
             }
 
-            console_log($catalogue);
+            
 
-            console_log($_SESSION);
+            
 
             require_once("Vista/Admin_Vista.php");
     }
@@ -304,7 +304,7 @@
                 echo '</tr>';
             }
         }else{
-            echo 'No hay usuarios en la base de datos con ese nombre';
+            echo 'No hay usuarios en la base de datos con ese nombre.';
         }
     }
 ?>

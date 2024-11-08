@@ -301,7 +301,7 @@
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <div class="pagination_links" style="gap: 10px;">
+        <div class="pagination_links" style="gap: 20px; justify-content: center;">
             <button onclick="previousPage()" id="prevButton" class="pagination-button">Anterior</button>
             <span id="pageInfo"></span>
             <button onclick="nextPage()" id="nextButton" class="pagination-button">Siguiente</button>
