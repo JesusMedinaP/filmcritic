@@ -284,13 +284,11 @@
 
     function searchUsers()
     {
-        console_log("He entrado");
         $query = isset($_GET['query']) ? $_GET['query'] : '';
         $userModel = new Users_Modelo();
 
         // Obtener los usuarios que coinciden con la búsqueda
         $users = $userModel->search_users($query);
-        console_log($users);
 
         // Generar el HTML de respuesta
         if(!empty($users)){

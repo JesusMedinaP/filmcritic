@@ -104,10 +104,13 @@ function validateCreate(){
 
 let currentPage = 1;
 const rowsPerPage = 10;
-let userRows;
+let userRows = Array.from(document.querySelectorAll('.user-row'));
 
 function initializePagination() {
-    userRows = document.getElementsByClassName('user-row');
+    // Recalcular el total de filas
+    userRows = Array.from(document.querySelectorAll('.user-row'));
+    
+    // Mostrar la primera página
     showPage(currentPage);
     updatePageInfo();
 }
@@ -117,7 +120,7 @@ function showPage(page) {
     const end = start + rowsPerPage;
     
     // Ocultar todas las filas
-    Array.from(userRows).forEach((row, index) => {
+    userRows.forEach((row, index) => {
         if (index >= start && index < end) {
             row.style.display = '';
         } else {
@@ -212,7 +215,15 @@ function searchUsers(query, event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             // Actualizar el cuerpo de la tabla con los resultados
-            document.getElementById('users_table_body').innerHTML = xhr.responseText;
+            const tableBody = document.getElementById('users_table_body');
+            tableBody.innerHTML = xhr.responseText;
+
+            // Actualizar userRows con las nuevas filas
+            userRows = Array.from(document.querySelectorAll('.user-row'));
+
+            // Reiniciar la paginación
+            currentPage = 1;
+            initializePagination();
         }
     };
 
