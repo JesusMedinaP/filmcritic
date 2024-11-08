@@ -65,10 +65,10 @@
             $pic = '';
         
             console_log("Resultado del exists user");
-            console_log($user->user_exists($nombre, $password));
+            console_log($user->user_exists($nombre));
             
             // Verificamos si el usuario ya existe
-            if($user->user_exists($nombre, $password)) {
+            if($user->user_exists($nombre)) {
                 $_SESSION['user_exists'] = "Ya existe un usuario con ese nombre.";
                 header('Location: index.php?controlador=login&action=home');
                 exit();

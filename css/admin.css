@@ -295,6 +295,9 @@ option{
 
 #users{
     flex-direction: column;
+    max-width: 60%;
+    width: 100%;
+    align-items: center;
 }
 
 .users_table td{
@@ -313,6 +316,11 @@ option{
 
 .search_users button{
     position: relative;
+}
+
+#userSearchForm{
+    height: 30px;
+    max-height: 30px;
 }
 
 #userSearchInput{

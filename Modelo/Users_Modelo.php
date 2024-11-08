@@ -72,11 +72,11 @@ class Users_Modelo
         return $this->ocupations;
     }
 
-    public function user_exists($name, $password)
+    public function user_exists($name)
     {
-        $sql = "SELECT COUNT(*) as count FROM users WHERE name = ? AND passwd = ?";
+        $sql = "SELECT COUNT(*) as count FROM users WHERE name = ?";
         $consulta = $this->db->prepare($sql);
-        $consulta->bind_param("ss", $name, $password);
+        $consulta->bind_param("s", $name);
         $consulta->execute();
         $resultado = $consulta->get_result();
         $row = $resultado->fetch_assoc();

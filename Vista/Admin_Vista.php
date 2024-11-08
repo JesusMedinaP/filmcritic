@@ -53,7 +53,7 @@
         <div class="search_bar">
             <form method="GET" action="index.php">
                 <input type="hidden" name="controlador" value="admin">
-                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Barra de búsqueda">
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Buscar películas...">
                 <button type="submit">
                 <i class="fa fa-search"></i>
                 </button>
@@ -278,23 +278,24 @@
     ?>
     </div>
 
-    <div class="search_bar search_users">
-        <form id="userSearchForm" onsubmit="return false;">
-                <input
-                    type="text"
-                    id="userSearchInput"
-                    placeholder="Buscar usuario..."
-                    onkeyup="searchUsers(this.value, event)"
-                />
-                <button type="button" onclick="searchUsers(document.getElementById('userSearchInput').value, event)">
-                    <i class="fa fa-search"></i>
-                </button>
-        </form>
-    </div>
 
+    
     <?php if(!empty($users)){ ?>
-    <div id="users" class="tab_content" style="display: none;">
-        <table class="users_table">
+        <div id="users" class="tab_content" style="display: none;">
+            <div class="search_bar search_users">
+                <form id="userSearchForm" onsubmit="return false;">
+                        <input
+                            type="text"
+                            id="userSearchInput"
+                            placeholder="Buscar usuario..."
+                            onkeyup="searchUsers(this.value, event)"
+                        />
+                        <button type="button" onclick="searchUsers(document.getElementById('userSearchInput').value, event)">
+                            <i class="fa fa-search"></i>
+                        </button>
+                </form>
+            </div>
+            <table class="users_table">
             <thead>
                 <tr>
                     <th>Id</th>
