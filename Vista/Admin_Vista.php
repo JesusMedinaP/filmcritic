@@ -77,6 +77,13 @@
             </div>
         </div>
     </div>
+
+    <div class="tab_container">
+        <button class="tab_button" onclick="showTab('movies')">Películas</button>
+        <button class="tab_button" onclick="showTab('users')">Usuarios</button>
+    </div>
+
+    <div id="movies" class="tab_content">
     <?php
     if(!empty($catalogue))
         { ?>
@@ -105,10 +112,6 @@
                             <option value="best_score" <?php echo (isset($_GET['order']) && $_GET['order'] == 'best_score') ? 'selected' : ''; ?>>Mejor puntuación</option>
                         </select>
                     </form>
-                </div>
-
-                <div class="rate_filter">
-
                 </div>
             </div>
         </div>
@@ -272,6 +275,49 @@
     <?php
         }else echo 'No hay películas en la base de datos o ha habido algún problema al conectarse'; 
     ?>
+    </div>
+
+    <div id="users" class="tab_content" style="display: none;">
+        <table class="users_table">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="users_table_body">
+                <?php foreach($users as $user): ?>
+                    <tr class="user-row">
+                        <td><?php echo htmlspecialchars($user['name']); ?></td>
+                        <td>
+                            <!-- <i onclick="deleteUser(<?php //echo $user['id']; ?>)" class="fa-solid fa-trash hover_scale_mayor"></i> -->
+                            <i onclick="openDestroyUserModal(<?php echo $user['id']; ?>)" class="fa-solid fa-trash hover_scale_mayor"></i>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <div class="pagination_links" style="gap: 10px;">
+            <button onclick="previousPage()" id="prevButton" class="pagination-button">Anterior</button>
+            <span id="pageInfo"></span>
+            <button onclick="nextPage()" id="nextButton" class="pagination-button">Siguiente</button>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para destruir usuario -->
+    <div id="destroyUserModal" class="destroy_modal">
+        <div class="destroy_modal_content">
+            <span id="closeDestroyModalButton" class="close" onclick="closeDestroyUserModal()">&times;</span>
+            <div style="text-align: center; column-gap: 10px;">
+                <h2 style="margin-top: 0px;">Confirmar Eliminación</h2>
+                <p>¿Estás seguro de que deseas eliminar permanentemente la cuenta del usuario?</p>
+                    <div class="destroy_buttons">
+                        <button id="confirmDestroyButton" class="delete-button">Eliminar usuario</button>
+                        <button onclick="closeDestroyUserModal()" class="cancel_button">Cancelar</button>
+                    </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
@@ -393,6 +439,7 @@
             closeAddModal()
             closeEditModal();
             closeDeleteModal();
+            closeDestroyUserModal();
         }
     }
 

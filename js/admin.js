@@ -100,3 +100,93 @@ function validateCreate(){
     return isValid;
 
 }
+
+function showTab(tabName) {
+    const tabs = document.querySelectorAll('.tab_content');
+    tabs.forEach(tab => {
+        tab.style.display = 'none';
+    });
+    document.getElementById(tabName).style.display = 'flex';
+}
+
+let currentPage = 1;
+const rowsPerPage = 10;
+let userRows;
+
+function initializePagination() {
+    userRows = document.getElementsByClassName('user-row');
+    showPage(currentPage);
+    updatePageInfo();
+}
+
+function showPage(page) {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    
+    // Ocultar todas las filas
+    Array.from(userRows).forEach((row, index) => {
+        if (index >= start && index < end) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    
+    // Actualizar estado de los botones
+    document.getElementById('prevButton').disabled = page === 1;
+    document.getElementById('nextButton').disabled = end >= userRows.length;
+}
+
+function previousPage() {
+    if (currentPage > 1) {
+        currentPage--;
+        showPage(currentPage);
+        updatePageInfo();
+    }
+}
+
+function nextPage() {
+    const totalPages = Math.ceil(userRows.length / rowsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        showPage(currentPage);
+        updatePageInfo();
+    }
+}
+
+function updatePageInfo() {
+    const totalPages = Math.ceil(userRows.length / rowsPerPage);
+    document.getElementById('pageInfo').textContent = `Página ${currentPage} de ${totalPages}`;
+}
+
+// Inicializar la paginación cuando se muestre la pestaña de usuarios
+function showTab(tabName) {
+    const tabs = document.querySelectorAll('.tab_content');
+    tabs.forEach(tab => {
+        tab.style.display = 'none';
+    });
+    document.getElementById(tabName).style.display = 'flex';
+    
+    if (tabName === 'users') {
+        initializePagination();
+    }
+}
+
+
+function openDestroyUserModal(id)
+    {
+        document.getElementById("destroyUserModal").style.display = "flex"
+        // Desactivar el scroll en la página principal
+        // Acción para confirmar la eliminación
+        document.getElementById("confirmDestroyButton").addEventListener("click", function() {
+            // Aquí haces la petición para eliminar la película
+            window.location.href = `index.php?controlador=admin&action=delete_user&id=${id}`;
+        closeDestroyModal();  // Cierra el modal después de la eliminación
+        });
+    }
+
+
+function closeDestroyUserModal()
+{
+    document.getElementById("destroyUserModal").style.display = "none";
+}

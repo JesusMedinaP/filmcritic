@@ -2,6 +2,7 @@
     session_start();
 
     require_once("Modelo/Movies_Modelo.php");
+    require_once("Modelo/Users_Modelo.php");
 
     function home()
     {
@@ -14,11 +15,14 @@
             $offset = ($page - 1) * $limit;
 
             $movies = new Movies_Modelo();
+            $userModel = new Users_Modelo();
             $error = "";
     
             $catalogue = $movies->get_movies($offset, $limit, $search, $genre, $order);
             $total_results = $movies->get_movie_count($search, $genre);
             $genres = $movies->get_genres();
+
+            $users = $userModel->get_all_users();
 
             foreach($catalogue as $key => $movie) {
                 $catalogue[$key]['genres'] = $movies->get_movie_genre($movie['id']);
@@ -256,6 +260,25 @@
         }catch(Exception $e){
             $_SESSION['destroy_all_error'] = "No se han podido eliminar las películas.";
             require_once "Vista/Papelera_Vista.php";
+        }
+    }
+
+    function delete_user()
+    {
+        if(isset($_GET['id'])){
+            $user_id = $_GET['id'];
+
+            $user = new Users_Modelo();
+
+            $result = $user->delete_user($user_id);
+
+            if($result){
+                header("Location: index.php?controlador=admin&action=home");
+                exit();
+            }else{
+                $error = "No se ha podido eliminar el usuario";
+                require_once "Vista/Admin_Vista.php";
+            }
         }
     }
 ?>

@@ -232,3 +232,47 @@ option{
     background: var(--background-color);
     color: var(--background-color-secondary);
 }
+
+.tab_container {
+    display: flex;
+    justify-content: flex-start;
+    margin: 20px 0px;
+}
+
+.tab_button {
+    background-color: #f1f1f1;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.tab_button:hover {
+    background-color: #ddd;
+}
+
+.tab_content {
+    display: none;
+}
+
+.tab_content.active {
+    display: flex;
+}
+
+#movies{
+    display: flex;
+    flex-direction: column;
+}
+
+#users{
+    flex-direction: column;
+}
+
+.users_table td{
+    text-align: center;
+    padding: 10px;
+}
+
+.user-row i{
+    cursor: pointer;
+}

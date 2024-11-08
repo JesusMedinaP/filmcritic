@@ -160,5 +160,17 @@ class Users_Modelo
             return false;
         }
     }
+
+    public function get_all_users()
+    {
+        $sql = "SELECT * FROM users";
+        $consulta = $this->db->query($sql);
+
+        while($registro = $consulta->fetch_assoc())
+        {
+            $this->users[] = $registro;
+        }
+        return $this->users;
+    }
 }
 ?>
