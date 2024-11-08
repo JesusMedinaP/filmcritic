@@ -23,26 +23,7 @@
         <?php require_once("header.php") ?>
     </div>
 
-        <!-- Toasts para el feedback -->
-        <div id="toastSuccess" class="toast">
-            <div class="toast-content">
-                <i class="fas fa-check-circle"></i>
-                <div class="message">
-                    <span class="text"></span>
-                </div>
-            </div>
-            <div class="progress"></div>
-        </div>
-
-        <div id="toastError" class="toast">
-            <div class="toast-content">
-                <i class="fas fa-times-circle"></i>
-                <div class="message">
-                    <span class="text"></span>
-                </div>
-            </div>
-            <div class="progress"></div>
-        </div>
+    <?php require_once("assets/toast.html"); ?>
 
         <?php 
             if(isset($_SESSION['user_exists'])) {

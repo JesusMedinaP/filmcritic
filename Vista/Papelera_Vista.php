@@ -18,26 +18,7 @@
 </head>
 <body>
 
-    <!-- Toasts para el feedback -->
-    <div id="toastSuccess" class="toast">
-        <div class="toast-content">
-            <i class="fas fa-check-circle"></i>
-            <div class="message">
-                <span class="text"></span>
-            </div>
-        </div>
-        <div class="progress"></div>
-    </div>
-
-    <div id="toastError" class="toast">
-        <div class="toast-content">
-            <i class="fas fa-times-circle"></i>
-                <div class="message">
-                    <span class="text"></span>
-                </div>
-        </div>
-        <div class="progress"></div>
-    </div>
+    <?php require_once("assets/toast.html"); ?>
 
     <?php if(isset($_SESSION['destroy_all_success'])) echo '<script>showToast("' . $_SESSION['destroy_all_success'] . '", "success");</script>'; unset($_SESSION['destroy_all_success']); ?>
     <?php if(isset($_SESSION['destroy_all_error'])) echo '<script>showToast("' . $_SESSION['destroy_all_error'] . '", "error");</script>'; unset($_SESSION['destroy_all_error']); ?>
