@@ -19,7 +19,7 @@
 </head>
 <body>
 
-    <?php require_once("assets/toast.html"); ?>
+    <?php require_once ("assets/toast.html"); ?>
 
     <?php if(isset($_SESSION['create_success'])) echo '<script>showToast("' . $_SESSION['create_success'] . '", "success");</script>'; unset($_SESSION['create_success']); ?>
     <?php if(isset($_SESSION['create_error'])) echo '<script>showToast("' . $_SESSION['create_error'] . '", "error");</script>'; unset($_SESSION['create_error']); ?>
@@ -27,6 +27,12 @@
 
     <?php if(isset($_SESSION['update_success'])) echo '<script>showToast("' . $_SESSION['update_success'] . '", "success");</script>'; unset($_SESSION['update_success']); ?>
     <?php if(isset($_SESSION['update_error'])) echo '<script>showToast("' . $_SESSION['update_error'] . '", "error");</script>'; unset($_SESSION['update_error']); ?>
+
+    <?php if(isset($_SESSION['delete_success'])) echo '<script>showToast("' . $_SESSION['delete_success'] . '", "success");</script>'; unset($_SESSION['delete_success']); ?>
+    <?php if(isset($_SESSION['delete_error'])) echo '<script>showToast("' . $_SESSION['delete_error'] . '", "error");</script>'; unset($_SESSION['delete_error']); ?>
+
+    <?php if(isset($_SESSION['delete_user_success'])) echo '<script>showToast("' . $_SESSION['delete_user_success'] . '", "success");</script>'; unset($_SESSION['delete_user_success']); ?>
+    <?php if(isset($_SESSION['delete_user_error'])) echo '<script>showToast("' . $_SESSION['delete_user_error'] . '", "error");</script>'; unset($_SESSION['delete_user_error']); ?>
 
     
     <div class="navigation_bar">
@@ -74,26 +80,7 @@
             <div class="filters">
                 <span>Filtros: </span>
                 <div class="genre_filter">
-                    <!-- Formulario de Géneros -->
-                    <form method="GET" action="index.php">
-                        <input type="hidden" name="controlador" value="admin">
-                        <select name="genre" onchange="this.form.submit()">
-                            <option value="">Todos los géneros</option>
-                            <?php foreach ($genres as $g): ?>
-                                <option value="<?php echo $g['id']; ?>" <?php if ($g['id'] == $genre) echo 'selected'; ?>>
-                                    <?php echo htmlspecialchars($g['name']); ?>
-                                </option>
-                            <?php endforeach; ?>
-                        </select>
-
-                        <!-- Orden de id, más votadas y mejor puntuación -->
-                        <select name="order" id="order" onchange="this.form.submit()">
-                            <option value="DESC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'DESC') ? 'selected' : ''; ?>>DESC</option>
-                            <option value="ASC" <?php echo (isset($_GET['order']) && $_GET['order'] == 'ASC') ? 'selected' : ''; ?>>ASC</option>
-                            <option value="most_votes" <?php echo (isset($_GET['order']) && $_GET['order'] == 'most_votes') ? 'selected' : ''; ?>>Más votadas</option>
-                            <option value="best_score" <?php echo (isset($_GET['order']) && $_GET['order'] == 'best_score') ? 'selected' : ''; ?>>Mejor puntuación</option>
-                        </select>
-                    </form>
+                    <?php require_once "assets/filters_admin.html"; ?>
                 </div>
             </div>
         </div>
@@ -181,7 +168,7 @@
                     <label for="new_desc">Descripción</label>
                     <textarea name="new_desc" id="new_desc" rows="4" placeholder="Añade un descripción"></textarea>
 
-                    <label for="new_genres">Géneros</label>
+                    <label for="new_genreCheckboxes">Géneros</label>
                     <div id="new_genreCheckboxes" class="genreCheckboxes">
                         <?php foreach ($genres as $genre): ?>
                             <div>
@@ -223,7 +210,7 @@
                     <label for="desc">Descripción</label>
                     <textarea name="desc" id="desc" rows="4" placeholder="Añade un descripción"></textarea>
 
-                    <label for="genres">Géneros</label>
+                    <label for="genreCheckboxes">Géneros</label>
                     <div id="genreCheckboxes" class="genreCheckboxes">
                         <?php foreach ($genres as $genre): ?>
                             <div>

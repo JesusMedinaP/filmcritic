@@ -28,10 +28,6 @@
                 $catalogue[$key]['genres'] = $movies->get_movie_genre($movie['id']);
             }
 
-            
-
-            
-
             require_once("Vista/Admin_Vista.php");
     }
 
@@ -120,7 +116,7 @@
             }
 
             // Redirigir a la página de administración o mostrar un mensaje de éxito
-            $_SESSION['create_success'] = "Película creada correctamente.";
+            $_SESSION['create_success'] = "Película creada.";
             header('Location: index.php?controlador=admin&action=home');
             exit();
         }
@@ -177,7 +173,7 @@
 
             if ($resultUpdate && $resultGenre) {
                 // Redirigir a la vista de administrador con éxito
-                $_SESSION['update_success'] = "Película actualizada correctamente.";
+                $_SESSION['update_success'] = "Película actualizada.";
                 header("Location: index.php?controlador=admin&action=home");
             } else {
                 // Manejar el error
@@ -199,8 +195,9 @@
         if($result)
         {
             header("Location: index.php?controlador=admin&action=home");
+            $_SESSION['delete_success'] = "Película enviada a la papelera";
         }else{
-            $error = "No se ha podido actualizar la película";
+            $_SESSION['delete_error'] = "No se ha podido actualizar la película";
             require_once "Vista/Admin_Vista.php";
         }
 
@@ -217,8 +214,9 @@
 
         if($result){
             header("Location: index.php?controlador=admin&action=papelera");
+            $_SESSION['restore_success'] = "Película restaurada.";
         }else{
-            $error = "No se ha podido restaurar la película";
+            $_SESSION['restore_error'] = "No se ha podido restaurar la película";
             require_once "Vista/Papelera_Vista.php";
         }
     }
@@ -233,8 +231,9 @@
 
         if($result){
             header("Location: index.php?controlador=admin&action=papelera");
+            $_SESSION['destroy_success'] = "Película eliminada";
         }else{
-            $error = "No se ha podido restaurar la película";
+            $_SESSION['destroy_error'] = "No se ha podido elimnar la película de la papelera";
             require_once "Vista/Papelera_Vista.php";
         }
     }
@@ -254,7 +253,7 @@
                 $movies->delete_movie_permanently($movie['id']);
             }
 
-            $_SESSION['destroy_all_success'] = "Películas eliminadas correctamente.";
+            $_SESSION['destroy_all_success'] = "Se ha vaciado la papelera";
             header("Location: index.php?controlador=admin&action=papelera");
             exit();
         }catch(Exception $e){
@@ -274,9 +273,10 @@
 
             if($result){
                 header("Location: index.php?controlador=admin&action=home");
+                $_SESSION['delete_user_success'] = "Usuario eliminado";
                 exit();
             }else{
-                $error = "No se ha podido eliminar el usuario";
+                $_SESSION['delete_user_error'] = "No se ha podido eliminar el usuario";
                 require_once "Vista/Admin_Vista.php";
             }
         }

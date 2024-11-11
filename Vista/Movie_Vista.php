@@ -7,12 +7,24 @@
     <link rel="stylesheet" type="text/css" href="css/base.css">
     <link rel="stylesheet" type="text/css" href="css/movie.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
+    <link rel="stylesheet" type="text/css" href="css/toast.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="favicon.png">
 
     <script src="https://kit.fontawesome.com/6ef29524c6.js" crossorigin="anonymous"></script>
+    <script src="js/toast.js"></script>
 </head>
 <body>
+
+    <?php require_once ("assets/toast.html"); ?>
+
+    <?php if(isset($_SESSION['submit_success'])) echo '<script>showToast("' . $_SESSION['submit_success'] . '", "success");</script>'; unset($_SESSION['submit_success']); ?>
+
+    <?php if(isset($_SESSION['edit_success'])) echo '<script>showToast("' . $_SESSION['edit_success'] . '", "success");</script>'; unset($_SESSION['edit_success']); ?>
+    <?php if(isset($_SESSION['edit_error'])) echo '<script>showToast("' . $_SESSION['edit_error'] . '", "error");</script>'; unset($_SESSION['edit_error']); ?>
+
+    <?php if(isset($_SESSION['delete_success'])) echo '<script>showToast("' . $_SESSION['delete_success'] . '", "success");</script>'; unset($_SESSION['delete_success']); ?>
+    <?php if(isset($_SESSION['delete_error'])) echo '<script>showToast("' . $_SESSION['delete_error'] . '", "error");</script>'; unset($_SESSION['delete_error']); ?>
 
     <div class="navigation_bar">
         <?php require_once("header.php") ?>

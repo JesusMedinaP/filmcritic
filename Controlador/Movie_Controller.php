@@ -64,6 +64,7 @@
             $comment = $_POST['comment'];
 
             $movieModel->submit_comment($userId, $movieId, $comment);
+            $_SESSION['submit_success'] = "Comentario publicado";
             header('Location: index.php?controlador=movie&id=' . $movieId);
         }
 
@@ -79,10 +80,10 @@
                 $result = $movie->update_comment($commentId, $comment);
 
                 if($result){
+                    $_SESSION['edit_success'] = "Comentario actualizado";
                     header('Location: index.php?controlador=movie&id=' . $movieId);
                 }else{
-                    $error = "Algo ha ido mal al editar el comentario";
-                    console_log($error);
+                    $_SESSION['edit_error'] = "No se ha podido actualizar el comentario";
                     header('Location: index.php?controlador=movie&id=' . $movieId);
                 }
             }else{
@@ -108,9 +109,9 @@
 
                 if($result){
                     header('Location: index.php?controlador=movie&id=' . $movieId);
+                    $_SESSION['delete_success'] = "Comentario eliminado";
                 }else{
-                    $error = "Algo ha ido mal al borrar el comentario";
-                    console_log($error);
+                    $_SESSION['delete_error'] = "No se ha podido eliminar el comentario";
                     header('Location: index.php?controlador=movie&id=' . $movieId);
                 }
             }

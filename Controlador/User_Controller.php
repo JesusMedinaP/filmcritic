@@ -111,7 +111,7 @@
                     header("Location: index.php");
                     exit();
                 }else{
-                    $error = "No se ha podido eliminar al usuario";
+                    $_SESSION['delete_error'] = "No se ha podido eliminar al usuario";
                     require_once "Vista/User_Vista.php";
                 }
             }

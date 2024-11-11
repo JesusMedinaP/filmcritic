@@ -20,8 +20,14 @@
 
     <?php require_once("assets/toast.html"); ?>
 
+    <?php if(isset($_SESSION['restore_success'])) echo '<script>showToast("' . $_SESSION['restore_success'] . '", "success");</script>'; unset($_SESSION['restore_success']); ?>
+    <?php if(isset($_SESSION['restore_error'])) echo '<script>showToast("' . $_SESSION['restore_error'] . '", "error");</script>'; unset($_SESSION['restore_error']); ?>
+
     <?php if(isset($_SESSION['destroy_all_success'])) echo '<script>showToast("' . $_SESSION['destroy_all_success'] . '", "success");</script>'; unset($_SESSION['destroy_all_success']); ?>
     <?php if(isset($_SESSION['destroy_all_error'])) echo '<script>showToast("' . $_SESSION['destroy_all_error'] . '", "error");</script>'; unset($_SESSION['destroy_all_error']); ?>
+
+    <?php if(isset($_SESSION['destroy_success'])) echo '<script>showToast("' . $_SESSION['destroy_success'] . '", "success");</script>'; unset($_SESSION['destroy_success']); ?>
+    <?php if(isset($_SESSION['destroy_error'])) echo '<script>showToast("' . $_SESSION['destroy_success'] . '", "error");</script>'; unset($_SESSION['destroy_success']); ?>
 
     <div class="navigation_bar">
             <?php require_once("header.php") ?>
