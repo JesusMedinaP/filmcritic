@@ -48,8 +48,14 @@ class Movies_Modelo
             case 'most_votes':
                 $sql .= " ORDER BY ms.total_votes DESC";
                 break;
+            case 'least_votes':
+                $sql .= " ORDER BY ms.total_votes ASC";
+                break;
             case 'best_score':
                 $sql .= " ORDER BY ms.average_score DESC";
+                break;
+            case 'worst_score':
+                $sql .= " ORDER BY ms.average_score ASC";
                 break;
             case 'ASC':
                 $sql .= " ORDER BY m.id ASC";
