@@ -163,7 +163,7 @@ class Users_Modelo
 
     public function get_all_users()
     {
-        $sql = "SELECT * FROM users";
+        $sql = "SELECT * FROM users ORDER BY id DESC";
         $consulta = $this->db->query($sql);
 
         while($registro = $consulta->fetch_assoc())
