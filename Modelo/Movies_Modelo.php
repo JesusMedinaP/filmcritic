@@ -60,6 +60,12 @@ class Movies_Modelo
             case 'ASC':
                 $sql .= " ORDER BY m.id ASC";
                 break;
+            case 'A-Z':
+                $sql .= " ORDER BY m.title ASC";
+                break;
+            case 'Z-A':
+                $sql .= " ORDER BY m.title DESC";
+                break;
             default:
                 $sql .= " ORDER BY m.id DESC";
         }

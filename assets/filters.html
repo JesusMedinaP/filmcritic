@@ -36,5 +36,13 @@
                 <?php echo (isset($_GET['order']) && $_GET['order'] == 'worst_score') ? 'selected' : ''; ?>>
                 Peor puntuación
             </option>
+            <option value="A-Z"
+                <?php echo (isset($_GET['order']) && $_GET['order'] == 'A-Z') ? 'selected' : ''; ?>>
+                A-Z
+            </option>
+            <option value="Z-A"
+                <?php echo (isset($_GET['order']) && $_GET['order'] == 'Z-A') ? 'selected' : ''; ?>>
+                Z-A
+            </option>
     </select>
 </form>

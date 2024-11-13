@@ -18,5 +18,7 @@
         <option value="least_votes" <?php echo (isset($_GET['order']) && $_GET['order'] == 'least_votes') ? 'selected' : ''; ?>>Menos votadas</option>
         <option value="best_score" <?php echo (isset($_GET['order']) && $_GET['order'] == 'best_score') ? 'selected' : ''; ?>>Mejor puntuación</option>
         <option value="worst_score" <?php echo (isset($_GET['order']) && $_GET['order'] == 'worst_score') ? 'selected' : ''; ?>>Peor puntuación</option>
+        <option value="A-Z" <?php echo (isset($_GET['order']) && $_GET['order'] == 'A-Z') ? 'selected' : ''; ?>>A-Z</option>
+        <option value="Z-A" <?php echo (isset($_GET['order']) && $_GET['order'] == 'Z-A') ? 'selected' : ''; ?>>Z-A</option>
     </select>
 </form>
