@@ -32,6 +32,14 @@
             $password = isset($_POST['password_login']) ? md5($_POST['password_login']) : '';
     
             if($user->login($nombre, $password)){
+
+                $session_token = bin2hex((random_bytes(32)));
+                $_SESSION['session_token'] = $session_token;
+
+                $user->save_session_token($_SESSION['user_id'], $session_token);
+                // Crear la cookie con el token de sesión
+                setcookie('session_token', $session_token, time() + (86400 * 7), "/", "", true, true);
+                
                 header('Location: index.php');
                 exit();
             }else{

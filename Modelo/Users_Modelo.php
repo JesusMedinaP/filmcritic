@@ -189,5 +189,30 @@ class Users_Modelo
         console_log($users);
         return $users;
     }
+
+    public function save_session_token($user_id, $session_token)
+    {
+        $sql = "UPDATE users SET session_token = ? WHERE id = ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("si", $session_token, $user_id);
+        $consulta->execute();
+    }
+
+    public function get_user_by_token($session_token)
+    {
+        $sql = "SELECT id, name, pic, 
+                    (SELECT is_admin FROM users_admin WHERE user_id = users.id) as is_admin
+                FROM users
+                WHERE session_token = ?";
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("s", $session_token);
+        $consulta->execute();
+        $result = $consulta->get_result();
+
+        if ($result->num_rows == 1) {
+            return $result->fetch_assoc();
+        }
+        return null;
+    }
 }
 ?>
