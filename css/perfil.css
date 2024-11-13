@@ -1,0 +1,93 @@
+body{
+    overflow-y: hidden;
+}
+
+.contributions_container{
+    display: flex;
+    flex-direction: row;
+    margin: 2%;
+    padding: 25px;
+    width: 95%;
+    gap: 30px;
+    background: var(--movie-background);
+    border-radius: 10px;
+    flex-wrap: nowrap; /* Asegura que no se envuelvan las tarjetas */
+    overflow: hidden; /* Oculta la barra de scroll */
+    scroll-behavior: smooth; /* Scroll suave */
+}
+
+.contribution_card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 250px; /* Ajusta el ancho aquí */
+    min-width: 250px; /* Asegura que el ancho mínimo sea 250px */
+    height: 350px; /* Ajusta la altura si es necesario */
+}
+
+.movie_title{
+    font-size: 18px;
+    /*margin-top: 15px !important;*/
+    text-align: center;
+    align-self: center;
+    width: 100%;
+}
+
+.movie_title a{
+    text-decoration: none;
+    color: black;
+}
+
+.movie_score{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+}
+
+.movie_score .fa-star.rated {
+    color:var(--background-color); /* Color para estrellas puntuadas */
+}
+
+.movie_score .fa-star.unrated {
+    color: #ccc; /* Color para estrellas no puntuadas */
+}
+
+img{
+    width: 140px;
+    height: 140px;
+}
+
+.total_comments{
+    font-weight: 900;
+}
+
+.scroll_button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.scroll_button.left {
+    left: 10px;
+}
+
+.scroll_button.right {
+    right: 10px;
+}
+
+.scroll_button i {
+    font-size: 18px;
+}

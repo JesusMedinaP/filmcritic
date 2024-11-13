@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelis Review - Mi perfil</title>
+    <link rel="stylesheet" type="text/css" href="css/base.css">
+    <link rel="stylesheet" type="text/css" href="css/user.css">
+    <link rel="stylesheet" type="text/css" href="css/perfil.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+
+    <script src="https://kit.fontawesome.com/6ef29524c6.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+
+    <div class="navigation_bar">
+        <?php require_once("header.php") ?>
+    </div>
+    
+    <?php if ($user) { ?>
+        <h1>Mis contribuciones</h1>
+        <?php if (count($moviesScored) > 0 || count($moviesCommented) > 0): ?>
+
+            <div class="contributions_container">
+                <button class="scroll_button left" onclick="scrollToLeft()"><i class="fa-solid fa-chevron-left"></i></button>
+                    <?php foreach ($moviesScored as $movie): ?>
+                        <div class="contribution_card">
+                            <a href="index.php?controlador=movie&id=<?php echo $movie['movie_id'] ?>" class="hover_scale_mayor">
+                                <img src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>">
+                            </a>
+                            <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['movie_id']; ?>"><?php echo $movie['title']; ?></a></h2>
+                            <p style="margin-bottom: 0;">Puntuación</p>
+                            <p class="movie_score">
+                                <?php
+                                $score = (int)$movie['score'];
+                                for ($i = 1; $i <= 5; $i++) {
+                                    if ($i <= $score) {
+                                        echo '<i class="fa-solid fa-star rated"></i>';
+                                    } else {
+                                        echo '<i class="fa-solid fa-star unrated"></i>';
+                                    }
+                                }
+                                ?>
+                            </p>
+                            <?php
+                                $totalComments = 0;
+                                // Buscar la película en moviesCommented usando el id
+                                foreach ($moviesCommented as $commentedMovie) {
+                                    if ($commentedMovie['movie_id'] == $movie['movie_id']) {
+                                        $totalComments = $commentedMovie['user_comments_count'];
+                                        break;
+                                    }
+                                }
+                            ?>
+                            <?php if ($totalComments > 0): ?>
+                                <p>Has dejado <span class="total_comments"><?php echo $totalComments; ?></span> comentarios</p>
+                            <?php else: ?>
+                                <p>No has dejado ningún comentario</p>
+                            <?php endif; ?>
+                        </div>
+                    <?php endforeach; ?>
+                <button class="scroll_button right" onclick="scrollToRight()"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+
+        <?php else: ?>
+            <p>No has puntuado ninguna película o dejado ningún comentario.</p>
+        <?php endif; ?>
+    <?php } else { ?>
+        <p><?php echo $error ?></p>
+    <?php } ?>
+
+</body>
+</html>
+
+<script>
+    
+    function scrollToLeft() {
+        const container = document.querySelector('.contributions_container');
+        container.scrollBy({ left: -300, behavior: 'smooth' });
+    }
+    
+    function scrollToRight() {
+        const container = document.querySelector('.contributions_container');
+        container.scrollBy({ left: 300, behavior: 'smooth' });
+    }
+
+    function updateScrollButtons() {
+        const container = document.querySelector('.contributions_container');
+        const leftButton = document.querySelector('.scroll_button.left');
+        const rightButton = document.querySelector('.scroll_button.right');
+
+        leftButton.disabled = container.scrollLeft === 0;
+        rightButton.disabled = container.scrollLeft + container.clientWidth >= container.scrollWidth;
+    }
+
+    document.querySelector('.contributions_container').addEventListener('scroll', updateScrollButtons);
+    updateScrollButtons(); // Inicializa el estado de los botones
+</script>

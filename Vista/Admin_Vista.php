@@ -55,6 +55,7 @@
             <div id="userPopup" class="popup">
                 <?php if (isset($_SESSION["user_id"])) { ?>
                     <a href="index.php?controlador=user&action=home">Mi cuenta</a>
+                    <a href="index.php?controlador=user&action=perfil">Mi Perfil</a>
                     <a href="index.php?controlador=catalogue&action=home">Catálogo</a>
                     <a href="index.php?controlador=admin&action=papelera">Papelera</a>
                     <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>

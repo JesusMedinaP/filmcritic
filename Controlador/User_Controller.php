@@ -27,6 +27,42 @@
             require_once("Vista/User_Vista.php");
         }
 
+        function perfil(){
+
+            $userModelo = new Users_Modelo();
+            $error = "";
+
+            console_log("SESSION");
+            console_log($_SESSION);
+            
+            $userId = $_SESSION['user_id'];
+            $user = $userModelo->get_user($userId);
+
+            // Obtener películas comentadas y puntuadas
+            $moviesCommented = $userModelo->get_movies_commented_by_user($userId);
+            $moviesScored = $userModelo->get_movies_scored_by_user($userId);
+            $moviesScored = array_merge($moviesScored, $moviesScored, $moviesScored, $moviesScored, $moviesScored);
+
+            if($user == null)
+            {
+                $error = 'Algo ha salido mal al intentar recuperar al usuario de la base de datos';
+            }
+
+            console_log('USUARIO');
+            console_log($user);
+
+            console_log('Películas Comentadas');
+            console_log($moviesCommented);
+        
+            console_log('Películas Puntuadas');
+            console_log($moviesScored);
+
+            console_log('Error');
+            console_log($error);
+
+            require_once("Vista/Perfil_Vista.php");
+        }
+
         if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['modify'])) {
             console_log($_POST);
             console_log($_FILES);

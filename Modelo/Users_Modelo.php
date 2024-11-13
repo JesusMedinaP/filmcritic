@@ -214,5 +214,63 @@ class Users_Modelo
         }
         return null;
     }
+
+    public function get_movies_commented_by_user($userId) {
+        $sql = "SELECT 
+                m.id AS movie_id,
+                COUNT(mc.comment_id) AS user_comments_count
+            FROM 
+                moviecomments mc
+            JOIN 
+                movie m ON mc.movie_id = m.id
+            WHERE 
+                mc.user_id = ?
+            GROUP BY 
+                m.id, m.title, m.url_pic
+            ORDER BY 
+                m.id ASC
+        ";
+    
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("i", $userId);
+        $consulta->execute();
+        $result = $consulta->get_result();
+    
+        $movies = [];
+        while ($row = $result->fetch_assoc()) {
+            $movies[] = $row;
+        }
+    
+        return $movies;
+    }
+
+    public function get_movies_scored_by_user($userId) {
+        $sql = "SELECT 
+                m.id AS movie_id,
+                m.title,
+                m.url_pic,
+                us.score
+            FROM 
+                user_score us
+            JOIN 
+                movie m ON us.id_movie = m.id
+            WHERE 
+                us.id_user = ?
+            ORDER BY 
+                us.id_movie ASC
+        ";
+    
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("i", $userId);
+        $consulta->execute();
+        $result = $consulta->get_result();
+    
+        $movies = [];
+        while ($row = $result->fetch_assoc()) {
+            $movies[] = $row;
+        }
+    
+        return $movies;
+    }
 }
 ?>

@@ -32,6 +32,7 @@
             <div id="userPopup" class="popup">
                 <?php if (isset($_SESSION["user_id"])) { ?>
                     <a href="index.php?controlador=user&action=home">Mi cuenta</a>
+                    <a href="index.php?controlador=user&action=perfil">Mi Perfil</a>
                     <?php if($_SESSION['is_admin']){
                         echo '<a href="index.php?controlador=admin&action=home">Panel administración</a>';
                     }?>
