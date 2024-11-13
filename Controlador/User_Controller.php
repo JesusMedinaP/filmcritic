@@ -41,7 +41,6 @@
             // Obtener películas comentadas y puntuadas
             $moviesCommented = $userModelo->get_movies_commented_by_user($userId);
             $moviesScored = $userModelo->get_movies_scored_by_user($userId);
-            $moviesScored = array_merge($moviesScored, $moviesScored, $moviesScored, $moviesScored, $moviesScored);
 
             if($user == null)
             {

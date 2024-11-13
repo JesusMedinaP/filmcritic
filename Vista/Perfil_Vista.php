@@ -25,11 +25,12 @@
         <h1>Mis contribuciones</h1>
         <?php if (count($moviesScored) > 0 || count($moviesCommented) > 0): ?>
 
-            <div class="contributions_container">
+            <div class="contributions_wrapper">
                 <button class="scroll_button left" onclick="scrollToLeft()"><i class="fa-solid fa-chevron-left"></i></button>
+                <div class="contributions_container">
                     <?php foreach ($moviesScored as $movie): ?>
                         <div class="contribution_card">
-                            <a href="index.php?controlador=movie&id=<?php echo $movie['movie_id'] ?>" class="hover_scale_mayor">
+                            <a href="index.php?controlador=movie&id=<?php echo $movie['movie_id'] ?>" class="hover_scale_minor">
                                 <img src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>">
                             </a>
                             <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['movie_id']; ?>"><?php echo $movie['title']; ?></a></h2>
@@ -63,6 +64,7 @@
                             <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
+                </div>
                 <button class="scroll_button right" onclick="scrollToRight()"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
 
@@ -80,12 +82,14 @@
     
     function scrollToLeft() {
         const container = document.querySelector('.contributions_container');
-        container.scrollBy({ left: -300, behavior: 'smooth' });
+        container.scrollBy({ left: -900, behavior: 'smooth' });
+        updateScrollButtons();
     }
     
     function scrollToRight() {
         const container = document.querySelector('.contributions_container');
-        container.scrollBy({ left: 300, behavior: 'smooth' });
+        container.scrollBy({ left: 900, behavior: 'smooth' });
+        updateScrollButtons();
     }
 
     function updateScrollButtons() {
@@ -95,6 +99,18 @@
 
         leftButton.disabled = container.scrollLeft === 0;
         rightButton.disabled = container.scrollLeft + container.clientWidth >= container.scrollWidth;
+    }
+
+    function updateScrollButtons() {
+    const container = document.querySelector('.contributions_container');
+    const leftButton = document.querySelector('.scroll_button.left');
+    const rightButton = document.querySelector('.scroll_button.right');
+
+    const scrollLeft = Math.ceil(container.scrollLeft);
+    const maxScrollLeft = Math.ceil(container.scrollWidth - container.clientWidth);
+
+    leftButton.disabled = scrollLeft === 0;
+    rightButton.disabled = scrollLeft >= maxScrollLeft;
     }
 
     document.querySelector('.contributions_container').addEventListener('scroll', updateScrollButtons);

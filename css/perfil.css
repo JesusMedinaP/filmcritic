@@ -1,5 +1,14 @@
 body{
-    overflow-y: hidden;
+    overflow-y: auto;
+}
+
+.contributions_wrapper {
+    position: relative;
+    width: 100%;
+    margin: 2% auto;
+    
+    display: flex;
+    align-items: center;
 }
 
 .contributions_container{
@@ -7,7 +16,7 @@ body{
     flex-direction: row;
     margin: 2%;
     padding: 25px;
-    width: 95%;
+    width: 100%;
     gap: 30px;
     background: var(--movie-background);
     border-radius: 10px;
@@ -70,7 +79,7 @@ img{
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--background-color);
     color: white;
     border: none;
     border-radius: 50%;
