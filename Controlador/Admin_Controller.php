@@ -6,6 +6,26 @@
 
     function home()
     {
+
+            // Restaurar sesión si no está establecida
+            if (!isset($_SESSION['user_id']) && isset($_COOKIE['session_token'])) {
+                $user = new Users_Modelo();
+                $session_token = $_COOKIE['session_token'];
+                $userData = $user->get_user_by_token($session_token);
+        
+                if ($userData) {
+                    $_SESSION['user_id'] = $userData['id'];
+                    $_SESSION['user_name'] = $userData['name'];
+                    $_SESSION['user_pic'] = $userData['pic'];
+                    $_SESSION['is_admin'] = $userData['is_admin'];
+                }
+            }
+
+            if(!$_SESSION['is_admin']){
+                header("Location: index.php");
+                exit();
+            }
+
             $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
             $search = isset($_GET['search']) ? $_GET['search'] : '';
             $genre = isset($_GET['genre']) && $_GET['genre'] !== '' ? (int)$_GET['genre'] : null;
@@ -33,26 +53,45 @@
 
     function papelera()
     {
-            $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-            $search = isset($_GET['search']) ? $_GET['search'] : '';
-            $genre = isset($_GET['genre']) && $_GET['genre'] !== '' ? (int)$_GET['genre'] : null;
-            $order = isset($_GET['order']) ? $_GET['order'] : 'ASC';
+        // Restaurar sesión si no está establecida
+        if (!isset($_SESSION['user_id']) && isset($_COOKIE['session_token'])) {
+            $user = new Users_Modelo();
+            $session_token = $_COOKIE['session_token'];
+            $userData = $user->get_user_by_token($session_token);
+            
+            if ($userData) {
+                $_SESSION['user_id'] = $userData['id'];
+                $_SESSION['user_name'] = $userData['name'];
+                $_SESSION['user_pic'] = $userData['pic'];
+                $_SESSION['is_admin'] = $userData['is_admin'];
+            }
+        }
+        
+        if(!$_SESSION['user_id']){
+                header("Location: index.php");
+                exit();
+            }else{
+                $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                $search = isset($_GET['search']) ? $_GET['search'] : '';
+                $genre = isset($_GET['genre']) && $_GET['genre'] !== '' ? (int)$_GET['genre'] : null;
+                $order = isset($_GET['order']) ? $_GET['order'] : 'ASC';
 
-            $limit = 20;
-            $offset = ($page - 1) * $limit;
+                $limit = 20;
+                $offset = ($page - 1) * $limit;
 
-            $movies = new Movies_Modelo();
-            $error = "";
-    
-            $deleted_movies = $movies->get_deleted_movies($search, $offset, $limit);
+                $movies = new Movies_Modelo();
+                $error = "";
+        
+                $deleted_movies = $movies->get_deleted_movies($search, $offset, $limit);
 
-            $total_results = $movies->get_deleted_movie_count($search, $genre);
+                $total_results = $movies->get_deleted_movie_count($search, $genre);
 
-            console_log($deleted_movies);
+                console_log($deleted_movies);
 
-            console_log($_SESSION);
+                console_log($_SESSION);
 
-            require_once("Vista/Papelera_Vista.php");
+                require_once("Vista/Papelera_Vista.php");
+            }
     }
 
     function desconectar()

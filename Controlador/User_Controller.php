@@ -5,61 +5,98 @@
     $userModelo = new Users_Modelo();
         function home()
         {
-
-            $userModelo = new Users_Modelo();
-            $error = "";
-
-            console_log("SESSION");
-            console_log($_SESSION);
+            // Restaurar sesión si no está establecida
+            if (!isset($_SESSION['user_id']) && isset($_COOKIE['session_token'])) {
+                $user = new Users_Modelo();
+                $session_token = $_COOKIE['session_token'];
+                $userData = $user->get_user_by_token($session_token);
             
-            $userId = $_SESSION['user_id'];
-            $user = $userModelo->get_user($userId);
-            $ocupaciones = $userModelo->get_ocupations();
-
-            if($user == null)
-            {
-                $error = 'Algo ha salido mal al intentar recuperar al usuario de la base de datos';
+                if ($userData) {
+                    $_SESSION['user_id'] = $userData['id'];
+                    $_SESSION['user_name'] = $userData['name'];
+                    $_SESSION['user_pic'] = $userData['pic'];
+                    $_SESSION['is_admin'] = $userData['is_admin'];
+                }
             }
 
+            if(!$_SESSION['user_id']){
+                header("Location: index.php");
+                exit();
+            }else{
+                $userModelo = new Users_Modelo();
+                $error = "";
+    
+                console_log("SESSION");
+                console_log($_SESSION);
+                
+                $userId = $_SESSION['user_id'];
+                $user = $userModelo->get_user($userId);
+                $ocupaciones = $userModelo->get_ocupations();
+    
+                if($user == null)
+                {
+                    $error = 'Algo ha salido mal al intentar recuperar al usuario de la base de datos';
+                }
+    
+                console_log('USUARIO');
+                console_log($user);
+                require_once("Vista/User_Vista.php");
+            }
 
-            console_log('USUARIO');
-            console_log($user);
-            require_once("Vista/User_Vista.php");
         }
 
         function perfil(){
 
-            $userModelo = new Users_Modelo();
-            $error = "";
-
-            console_log("SESSION");
-            console_log($_SESSION);
+            // Restaurar sesión si no está establecida
+            if (!isset($_SESSION['user_id']) && isset($_COOKIE['session_token'])) {
+                $user = new Users_Modelo();
+                $session_token = $_COOKIE['session_token'];
+                $userData = $user->get_user_by_token($session_token);
             
-            $userId = $_SESSION['user_id'];
-            $user = $userModelo->get_user($userId);
-
-            // Obtener películas comentadas y puntuadas
-            $moviesCommented = $userModelo->get_movies_commented_by_user($userId);
-            $moviesScored = $userModelo->get_movies_scored_by_user($userId);
-
-            if($user == null)
-            {
-                $error = 'Algo ha salido mal al intentar recuperar al usuario de la base de datos';
+                if ($userData) {
+                    $_SESSION['user_id'] = $userData['id'];
+                    $_SESSION['user_name'] = $userData['name'];
+                    $_SESSION['user_pic'] = $userData['pic'];
+                    $_SESSION['is_admin'] = $userData['is_admin'];
+                }
             }
+            
+            if(!$_SESSION['user_id']){
+                header("Location: index.php");
+                exit();
+            }else{
+                $userModelo = new Users_Modelo();
+                $error = "";
 
-            console_log('USUARIO');
-            console_log($user);
+                console_log("SESSION");
+                console_log($_SESSION);
+                
+                $userId = $_SESSION['user_id'];
+                $user = $userModelo->get_user($userId);
 
-            console_log('Películas Comentadas');
-            console_log($moviesCommented);
-        
-            console_log('Películas Puntuadas');
-            console_log($moviesScored);
+                // Obtener películas comentadas y puntuadas
+                $moviesCommented = $userModelo->get_movies_commented_by_user($userId);
+                $moviesScored = $userModelo->get_movies_scored_by_user($userId);
 
-            console_log('Error');
-            console_log($error);
+                if($user == null)
+                {
+                    $error = 'Algo ha salido mal al intentar recuperar al usuario de la base de datos';
+                }
 
-            require_once("Vista/Perfil_Vista.php");
+                console_log('USUARIO');
+                console_log($user);
+
+                console_log('Películas Comentadas');
+                console_log($moviesCommented);
+            
+                console_log('Películas Puntuadas');
+                console_log($moviesScored);
+
+                console_log('Error');
+                console_log($error);
+
+                require_once("Vista/Perfil_Vista.php");
+        }
         }
 
         if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['modify'])) {

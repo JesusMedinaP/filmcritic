@@ -6,6 +6,20 @@
         function home()
         {
 
+            // Restaurar sesión si no está establecida
+            if (!isset($_SESSION['user_id']) && isset($_COOKIE['session_token'])) {
+                $user = new Users_Modelo();
+                $session_token = $_COOKIE['session_token'];
+                $userData = $user->get_user_by_token($session_token);
+
+                if ($userData) {
+                    $_SESSION['user_id'] = $userData['id'];
+                    $_SESSION['user_name'] = $userData['name'];
+                    $_SESSION['user_pic'] = $userData['pic'];
+                    $_SESSION['is_admin'] = $userData['is_admin'];
+                }
+            }
+
             $movieModel = new Movie_Modelo();
             $error = "";
             $movieId = $_GET['id'];

@@ -4,20 +4,27 @@
 
     function home()
     {
-        $user = new Users_Modelo();
-        $error = "";
 
-        $ocupaciones = $user->get_ocupations();
-        console_log("SESSION");
-        console_log( $_SESSION);
-
-        if(isset($_SESSION['user_id']))
-        {
+        if(isset($_SESSION['user_id'])){
             header("Location: index.php");
             exit();
-        }
+        }else{
 
-        require_once("Vista/Login_Vista.php");
+            $user = new Users_Modelo();
+            $error = "";
+
+            $ocupaciones = $user->get_ocupations();
+            console_log("SESSION");
+            console_log( $_SESSION);
+
+            if(isset($_SESSION['user_id']))
+            {
+                header("Location: index.php");
+                exit();
+            }
+
+            require_once("Vista/Login_Vista.php");
+        }
     }
 
     function login()
