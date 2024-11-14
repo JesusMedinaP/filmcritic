@@ -89,7 +89,9 @@ class Movie_Modelo
     {
         $timestamp = date('Y-m-d H:i:s');
 
-        $sql = "REPLACE INTO user_score(id_user, id_movie, score, time) VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO user_score(id_user, id_movie, score, time) 
+                VALUES (?, ?, ?, ?)
+                ON DUPLICATE KEY UPDATE score = VALUES(score), time = VALUES(time)";
         $consulta = $this->db->prepare($sql);
         $consulta->bind_param("iiis", $userId, $movieId, $score, $timestamp);
         $consulta->execute();
