@@ -75,9 +75,6 @@
                 $user = $userModelo->get_user($userId);
 
                 // Obtener películas comentadas y puntuadas
-                //$moviesCommented = $userModelo->get_movies_commented_by_user($userId);
-                //$moviesScored = $userModelo->get_movies_scored_by_user($userId);
-
                 $userContributions = $userModelo->get_user_contributions($userId);
 
                 if($user == null)

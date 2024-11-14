@@ -50,7 +50,7 @@
                                     ?>
                                 </p>
                             <?php else: ?>
-                                <p>No has puntuado esta película</p>
+                                <p class="movie_score">No has puntuado esta película</p>
                             <?php endif; ?>
 
                             <!-- Mostrar cantidad de comentarios -->
