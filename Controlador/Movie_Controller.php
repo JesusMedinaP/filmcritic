@@ -67,6 +67,7 @@
             $score = $_POST['score'];
 
             $movieModel->submit_score($userId, $movieId, $score);
+            $_SESSION['submit_success'] = "Puntuación enviada";
             header('Location: index.php?controlador=movie&id=' . $movieId);
         }
 

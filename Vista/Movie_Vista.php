@@ -75,16 +75,21 @@
                 <?php if(isset($_SESSION['user_id'])) { ?>
     
                     <h3>Puntuar película:</h3>
-                    <form action="index.php?controlador=movie&action=submit_score" method="POST">
+                    <form action="index.php?controlador=movie&action=submit_score" method="POST" onsubmit="return validateScore()">
                         <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
-                        <input type="number" name="score" min="1" max="5" required>
+                        <input type="number" name="score" min="1" max="5" id="score_input">
                         <button class="form_button" type="submit">Puntuar</button>
                     </form>
     
                     <h3>Comentar:</h3>
-                    <form action="index.php?controlador=movie&action=submit_comment" method="POST" class="comment_form">
+                    <form
+                        action="index.php?controlador=movie&action=submit_comment" 
+                        method="POST" 
+                        class="comment_form" 
+                        onsubmit="return validateNewComment()"
+                    >
                         <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
-                        <textarea name="comment" rows="4" cols="50" placeholder="Escribe tu comentario" required></textarea>
+                        <textarea id="new_comment_form" name="comment" rows="4" cols="50" placeholder="Escribe tu comentario"></textarea>
                         <button class="form_button" type="submit" style="align-self: flex-start;">Comentar</button>
                     </form>
                 <?php }else{ ?>
@@ -102,7 +107,12 @@
                             :
                             </p>
                             <p class="comment" id="comment_text_<?php echo $comment['comment_id'] ?>"><?php echo htmlspecialchars($comment['comment']); ?></p>
-                            <form id="update_comment_form_<?php echo $comment['comment_id'] ?>" class="update_comment_form" method="POST" action="index.php?controlador=movie&action=edit_comment">
+                            <form 
+                                id="update_comment_form_<?php echo $comment['comment_id'] ?>" 
+                                class="update_comment_form" method="POST" 
+                                action="index.php?controlador=movie&action=edit_comment"
+                                onsubmit="return validateComment(<?php echo $comment['comment_id'] ?>)"
+                                >
                                 <textarea name="comment" id="edit_comment_text_<?php echo $comment['comment_id'] ?>" rows="8" cols="50"></textarea>
                                 <input type="hidden" name="comment_id" value="<?php echo $comment['comment_id'] ?>">
                                 <input type="hidden" name="movie_id" value="<?php echo $movieId ?>">
@@ -199,19 +209,20 @@
     }
 
     function editCommentInline(commentId) {
-    selectedComent = commentId;
-    const commentTextElement = document.getElementById(`comment_text_${commentId}`);
-    const currentText = commentTextElement.textContent;
-    commentTextElement.style.display="none"
-    
-    const form = document.getElementById(`update_comment_form_${commentId}`);
-    form.style.display = "flex"
-    const textArea = document.getElementById(`edit_comment_text_${commentId}`);
-    textArea.textContent = currentText;
-}
+        selectedComent = commentId;
+        const commentTextElement = document.getElementById(`comment_text_${commentId}`);
+        const currentText = commentTextElement.textContent;
+        commentTextElement.style.display="none"
+        
+        const form = document.getElementById(`update_comment_form_${commentId}`);
+        form.style.display = "flex"
+        const textArea = document.getElementById(`edit_comment_text_${commentId}`);
+        textArea.textContent = currentText;
+    }
 
     function cancelInlineEdit(commentId) {
         document.getElementById(`update_comment_form_${commentId}`).style.display = 'none';
+        document.getElementById(`edit_comment_text_${commentId}`).value = document.getElementById(`comment_text_${commentId}`).textContent;
         document.getElementById(`comment_text_${commentId}`).style = 'flex';
     }
 
@@ -247,6 +258,42 @@
     {
         document.getElementById("destroyCommentModal").style.display = "none";
         document.body.classList.remove('no-scroll');
+    }
+
+    function validateComment(commentId){
+        const textArea = document.getElementById(`edit_comment_text_${commentId}`);
+        const comment = textArea.value.trim();
+
+        if(comment === ''){
+            showToast('El comentario no puede estar vacío', 'error');
+            return false;
+        }
+
+        return true;
+    }
+
+    function validateNewComment(){
+        const textArea = document.getElementById('new_comment_form');
+        const comment = textArea.value.trim();
+
+        if(comment === ''){
+            showToast('El comentario no puede estar vacío', 'error');
+            return false;
+        }   
+
+        return true;
+    }
+
+    function validateScore(){
+        const scoreInput = document.getElementById('score_input');
+        const score = scoreInput.value.trim();
+
+        if(score === ''){
+            showToast('Debes introducir una puntuación', 'error');
+            return false;
+        }
+
+        return true;
     }
 
 </script>
