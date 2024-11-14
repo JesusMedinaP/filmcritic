@@ -75,8 +75,10 @@
                 $user = $userModelo->get_user($userId);
 
                 // Obtener películas comentadas y puntuadas
-                $moviesCommented = $userModelo->get_movies_commented_by_user($userId);
-                $moviesScored = $userModelo->get_movies_scored_by_user($userId);
+                //$moviesCommented = $userModelo->get_movies_commented_by_user($userId);
+                //$moviesScored = $userModelo->get_movies_scored_by_user($userId);
+
+                $userContributions = $userModelo->get_user_contributions($userId);
 
                 if($user == null)
                 {
@@ -86,11 +88,11 @@
                 console_log('USUARIO');
                 console_log($user);
 
-                console_log('Películas Comentadas');
-                console_log($moviesCommented);
-            
-                console_log('Películas Puntuadas');
-                console_log($moviesScored);
+                console_log('Películas Contribuidas');
+                console_log($userContributions);
+
+                /*console_log('Películas Puntuadas');
+                console_log($moviesScored);*/
 
                 console_log('Error');
                 console_log($error);

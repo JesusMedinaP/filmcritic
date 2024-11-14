@@ -228,7 +228,7 @@ class Users_Modelo
             GROUP BY 
                 m.id, m.title, m.url_pic
             ORDER BY 
-                m.id ASC
+                m.id DESC
         ";
     
         $consulta = $this->db->prepare($sql);
@@ -257,11 +257,45 @@ class Users_Modelo
             WHERE 
                 us.id_user = ?
             ORDER BY 
-                us.id_movie ASC
+                us.id_movie DESC
         ";
     
         $consulta = $this->db->prepare($sql);
         $consulta->bind_param("i", $userId);
+        $consulta->execute();
+        $result = $consulta->get_result();
+    
+        $movies = [];
+        while ($row = $result->fetch_assoc()) {
+            $movies[] = $row;
+        }
+    
+        return $movies;
+    }
+
+    public function get_user_contributions($userId) {
+        $sql = "SELECT 
+                m.id AS movie_id,
+                m.title,
+                m.url_pic,
+                COALESCE(us.score, NULL) AS score,
+                COUNT(mc.comment_id) AS user_comments_count
+            FROM 
+                movie m
+            LEFT JOIN 
+                user_score us ON us.id_movie = m.id AND us.id_user = ?
+            LEFT JOIN 
+                moviecomments mc ON mc.movie_id = m.id AND mc.user_id = ?
+            WHERE 
+                us.id_user = ? OR mc.user_id = ?
+            GROUP BY 
+                m.id, m.title, m.url_pic, us.score
+            ORDER BY 
+                m.id DESC
+        ";
+    
+        $consulta = $this->db->prepare($sql);
+        $consulta->bind_param("iiii", $userId, $userId, $userId, $userId);
         $consulta->execute();
         $result = $consulta->get_result();
     

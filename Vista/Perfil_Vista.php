@@ -23,42 +23,39 @@
     
     <?php if ($user) { ?>
         <h1>Mis contribuciones</h1>
-        <?php if (count($moviesScored) > 0 || count($moviesCommented) > 0): ?>
-
+        <?php if (count($userContributions) > 0): ?>
             <div class="contributions_wrapper">
                 <button class="scroll_button left" onclick="scrollToLeft()"><i class="fa-solid fa-chevron-left"></i></button>
                 <div class="contributions_container">
-                    <?php foreach ($moviesScored as $movie): ?>
+                    <?php foreach ($userContributions as $movie): ?>
                         <div class="contribution_card">
                             <a href="index.php?controlador=movie&id=<?php echo $movie['movie_id'] ?>" class="hover_scale_minor">
                                 <img src="movies_images/<?php echo $movie['url_pic'] ?>" alt="<?php echo $movie['title'] ?>">
                             </a>
                             <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['movie_id']; ?>"><?php echo $movie['title']; ?></a></h2>
+                            
                             <p style="margin-bottom: 0;">Puntuación</p>
-                            <p class="movie_score">
-                                <?php
-                                $score = (int)$movie['score'];
-                                for ($i = 1; $i <= 5; $i++) {
-                                    if ($i <= $score) {
-                                        echo '<i class="fa-solid fa-star rated"></i>';
-                                    } else {
-                                        echo '<i class="fa-solid fa-star unrated"></i>';
+                            <!-- Mostrar puntuación si existe -->
+                            <?php if ($movie['score'] !== null): ?>
+                                <p class="movie_score">
+                                    <?php
+                                    $score = (int)$movie['score'];
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        if ($i <= $score) {
+                                            echo '<i class="fa-solid fa-star rated"></i>';
+                                        } else {
+                                            echo '<i class="fa-solid fa-star unrated"></i>';
+                                        }
                                     }
-                                }
-                                ?>
-                            </p>
-                            <?php
-                                $totalComments = 0;
-                                // Buscar la película en moviesCommented usando el id
-                                foreach ($moviesCommented as $commentedMovie) {
-                                    if ($commentedMovie['movie_id'] == $movie['movie_id']) {
-                                        $totalComments = $commentedMovie['user_comments_count'];
-                                        break;
-                                    }
-                                }
-                            ?>
-                            <?php if ($totalComments > 0): ?>
-                                <p>Has dejado <span class="total_comments"><?php echo $totalComments; ?></span> comentarios</p>
+                                    ?>
+                                </p>
+                            <?php else: ?>
+                                <p>No has puntuado esta película</p>
+                            <?php endif; ?>
+
+                            <!-- Mostrar cantidad de comentarios -->
+                            <?php if ($movie['user_comments_count'] > 0): ?>
+                                <p>Has dejado <span class="total_comments"><?php echo $movie['user_comments_count']; ?></span> comentarios</p>
                             <?php else: ?>
                                 <p>No has dejado ningún comentario</p>
                             <?php endif; ?>
@@ -67,7 +64,6 @@
                 </div>
                 <button class="scroll_button right" onclick="scrollToRight()"><i class="fa-solid fa-chevron-right"></i></button>
             </div>
-
         <?php else: ?>
             <p>No has puntuado ninguna película o dejado ningún comentario.</p>
         <?php endif; ?>
