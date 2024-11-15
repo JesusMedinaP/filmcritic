@@ -23,7 +23,7 @@
                 </button>
             </form>
 
-           <?php echo '<p>' . $total_results . ' resultados.</p>'?>
+           <?php echo '<p class="total_results">' . $total_results . ' resultados.</p>'?>
         </div>
         <div class="user_menu">
             <?php if(isset($_SESSION['user_pic']) &&  $_SESSION['user_pic'] != "") {?>
@@ -55,6 +55,8 @@
             </div>
         </div>
     </div>
+
+    <?php echo '<p class="total_results_mobile">' . $total_results . ' resultados.</p>'?>
 
     <div class="pagination_links">
             <form method="GET" action="index.php">
