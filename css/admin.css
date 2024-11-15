@@ -1,3 +1,73 @@
+@media screen and (width < 749px) {
+
+    .total_results{
+        display: none;
+    }
+
+    .search_bar form{
+        min-width: 100%;
+        display: flex;
+        align-items: center;
+        height: 30px;
+    }
+
+    .filters{
+        column-gap: 10px !important;
+    }
+
+    .movies_container{
+        align-items: center;
+        padding: 0px !important;
+    }
+
+    .movie{
+        column-gap: 10px !important;
+        width: 90% !important;
+    }
+
+    .movie_description_container{
+        display: none;
+    }
+
+    .movie_picture{
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .total_results_mobile{
+        display: block;
+        text-align: center;
+    }
+}
+
+@media screen and (width < 549px) {
+
+    .user_pic{
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .title{
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+    }
+
+    .score_count{
+        display: none;
+    }
+}
+
+@media screen and (width > 750px) {
+    .total_results{
+        display: block;
+    }
+
+    .total_results_mobile{
+        display: none;
+    }
+}
+
 .filters_container{
     display: flex;
     align-items: center;

@@ -46,7 +46,7 @@
                 </button>
             </form>
 
-           <?php echo '<p>' . $total_results . ' resultados.</p>'?>
+           <?php echo '<p class="total_results">' . $total_results . ' resultados.</p>'?>
         </div>
         <div class="user_menu">
             <?php if(isset($_SESSION['user_pic']) &&  $_SESSION['user_pic'] != "") {?>
@@ -86,6 +86,8 @@
             </div>
         </div>
 
+        <?php echo '<p class="total_results_mobile">' . $total_results . ' resultados.</p>'?>
+
         <div class="pagination_links">
                 <form method="GET" action="index.php">
                     <input type="hidden" name="controlador" value="admin">
@@ -124,8 +126,9 @@
                     <h2 class="movie_title hover_scale"><a href="index.php?controlador=movie&id=<?php echo $movie['id']; ?>"><?php echo $movie['title']; ?></a></h2>
                     <p class="movie_score">
                         <?php if(isset($movie['avg_score'])){ ?>
-                        <i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</p>
-                        <?php }else echo '<i class="fa-solid fa-star"></i> <span class="score">0.0</span> (<span class="score">0</span> votos)</p>' ?>
+                        <i class="fa-solid fa-star"></i> <span class="score"><?php echo number_format($movie['avg_score'], 1); ?></span> <span class="score_count"> (<span class="score"><?php echo $movie['score_count']; ?></span> votos)</span>
+                        <?php }else echo '<i class="fa-solid fa-star"></i> <span class="score">0.0</span> <span class="score_count"> (<span class="score">0</span> votos)</span>' ?>
+                    </p>
                     <div class="movie_description_container">
                         <p class="movie_description"> 
                             <?php 
