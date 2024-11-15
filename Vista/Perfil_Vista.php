@@ -78,13 +78,13 @@
     
     function scrollToLeft() {
         const container = document.querySelector('.contributions_container');
-        container.scrollBy({ left: -900, behavior: 'smooth' });
+        container.scrollBy({ left: -300, behavior: 'smooth' });
         updateScrollButtons();
     }
     
     function scrollToRight() {
         const container = document.querySelector('.contributions_container');
-        container.scrollBy({ left: 900, behavior: 'smooth' });
+        container.scrollBy({ left: 300, behavior: 'smooth' });
         updateScrollButtons();
     }
 

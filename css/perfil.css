@@ -1,3 +1,15 @@
+@media screen and (width < 549px) {
+    img{
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .contribution_card{
+        min-width: 200px !important;
+        height: 300px !important;
+    }
+}
+
 body{
     overflow-y: auto;
 }
