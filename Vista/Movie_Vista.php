@@ -63,79 +63,80 @@
                 </div>
             </div>
 
-            <p class="movie_description">
-                Descripción: 
-                        <?php 
-                            if($movie['desc'] != "" && $movie['desc'] != "N/A") echo $movie['desc'];
-                            else echo 'No hay descripción para esta película';
-                        ?>
-            </p>
+            <div class="movie_desciption_mobile">
+                <p class="movie_description">
+                    Descripción: 
+                            <?php 
+                                if($movie['desc'] != "" && $movie['desc'] != "N/A") echo $movie['desc'];
+                                else echo 'No hay descripción para esta película';
+                            ?>
+                </p>
 
-            <div>
-                <?php if(isset($_SESSION['user_id'])) { ?>
-    
-                    <h3>Puntuar película:</h3>
-                    <form action="index.php?controlador=movie&action=submit_score" method="POST" onsubmit="return validateScore()">
-                        <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
-                        <input type="number" name="score" min="1" max="5" id="score_input">
-                        <button class="form_button" type="submit">Puntuar</button>
-                    </form>
-    
-                    <h3>Comentar:</h3>
-                    <form
-                        action="index.php?controlador=movie&action=submit_comment" 
-                        method="POST" 
-                        class="comment_form" 
-                        onsubmit="return validateNewComment()"
-                    >
-                        <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
-                        <textarea id="new_comment_form" name="comment" rows="4" cols="50" placeholder="Escribe tu comentario"></textarea>
-                        <button class="form_button" type="submit" style="align-self: flex-start;">Comentar</button>
-                    </form>
-                <?php }else{ ?>
-                    <p>Debes iniciar sesión para poder puntuar y comentar la película</p>
-                    <?php } ?>
+                <div>
+                    <?php if(isset($_SESSION['user_id'])) { ?>
+        
+                        <h3>Puntuar película:</h3>
+                        <form action="index.php?controlador=movie&action=submit_score" method="POST" onsubmit="return validateScore()">
+                            <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
+                            <input type="number" name="score" min="1" max="5" id="score_input">
+                            <button class="form_button" type="submit">Puntuar</button>
+                        </form>
+        
+                        <h3>Comentar:</h3>
+                        <form
+                            action="index.php?controlador=movie&action=submit_comment" 
+                            method="POST" 
+                            class="comment_form" 
+                            onsubmit="return validateNewComment()"
+                        >
+                            <input type="hidden" name="movie_id" value="<?php echo htmlspecialchars($movieId); ?>"/>
+                            <textarea id="new_comment_form" name="comment" rows="4" cols="50" placeholder="Escribe tu comentario"></textarea>
+                            <button class="form_button" type="submit" style="align-self: flex-start;">Comentar</button>
+                        </form>
+                    <?php }else{ ?>
+                        <p>Debes iniciar sesión para poder puntuar y comentar la película</p>
+                        <?php } ?>
+                </div>
+
+                <h3>Comentarios:</h3>
+                <?php if($movieComments != null) { ?>
+                    <div id="comments_container" class="comments_container">
+                        <?php foreach ($movieComments as $comment): ?>
+                            <div class="comment_card" id="comment_card_<?php echo $comment['comment_id'] ?>">
+                                <p class="comment_author"> <i class="fa fa-user user_icon"></i><?php echo htmlspecialchars($comment['name']); ?>
+                                <?php if(isset($_SESSION['user_id']) && $comment['user_id'] === $_SESSION['user_id']) echo '(Tú)' ?>
+                                :
+                                </p>
+                                <p class="comment" id="comment_text_<?php echo $comment['comment_id'] ?>"><?php echo htmlspecialchars($comment['comment']); ?></p>
+                                <form 
+                                    id="update_comment_form_<?php echo $comment['comment_id'] ?>" 
+                                    class="update_comment_form" method="POST" 
+                                    action="index.php?controlador=movie&action=edit_comment"
+                                    onsubmit="return validateComment(<?php echo $comment['comment_id'] ?>)"
+                                    >
+                                    <textarea name="comment" id="edit_comment_text_<?php echo $comment['comment_id'] ?>" rows="8" cols="50"></textarea>
+                                    <input type="hidden" name="comment_id" value="<?php echo $comment['comment_id'] ?>">
+                                    <input type="hidden" name="movie_id" value="<?php echo $movieId ?>">
+                                    <div class="edit_buttons_container">
+                                        <button type="submit" class="restore-button">Guardar</button>
+                                        <button type="button" class="cancel_button" onclick="cancelInlineEdit(<?php echo $comment['comment_id'] ?>)">Cancelar</button>
+                                    </div>
+                                </form>
+                                <?php if(isset($_SESSION['user_id']) && $comment['user_id'] === $_SESSION['user_id']) { ?>
+                                    <div id="comment_actions" class="comment_actions">
+                                        <i class="fa-solid fa-pencil hover_scale_mayor" onclick="editCommentInline(<?php echo $comment['comment_id']; ?>)"></i>
+                                        <i class="fa-solid fa-trash hover_scale_mayor" onclick="openDestroyModal(<?php echo $comment['comment_id'] ?>)"></i>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="pagination_links">
+                        <button id="prev_button" disabled>Anterior</button>
+                        <button id="next_button">Siguiente</button>
+                    </div>
+                <?php }else echo '<p>No se han encontado comentarios en la base de datos referentes a esta película.</p>' ?>
             </div>
-
-            <h3>Comentarios:</h3>
-            <?php if($movieComments != null) { ?>
-                <div id="comments_container" class="comments_container">
-                    <?php foreach ($movieComments as $comment): ?>
-                        <div class="comment_card" id="comment_card_<?php echo $comment['comment_id'] ?>">
-                            <p class="comment_author"> <i class="fa fa-user user_icon"></i><?php echo htmlspecialchars($comment['name']); ?>
-                            <?php if(isset($_SESSION['user_id']) && $comment['user_id'] === $_SESSION['user_id']) echo '(Tú)' ?>
-                            :
-                            </p>
-                            <p class="comment" id="comment_text_<?php echo $comment['comment_id'] ?>"><?php echo htmlspecialchars($comment['comment']); ?></p>
-                            <form 
-                                id="update_comment_form_<?php echo $comment['comment_id'] ?>" 
-                                class="update_comment_form" method="POST" 
-                                action="index.php?controlador=movie&action=edit_comment"
-                                onsubmit="return validateComment(<?php echo $comment['comment_id'] ?>)"
-                                >
-                                <textarea name="comment" id="edit_comment_text_<?php echo $comment['comment_id'] ?>" rows="8" cols="50"></textarea>
-                                <input type="hidden" name="comment_id" value="<?php echo $comment['comment_id'] ?>">
-                                <input type="hidden" name="movie_id" value="<?php echo $movieId ?>">
-                                <div class="edit_buttons_container">
-                                    <button type="submit" class="restore-button">Guardar</button>
-                                    <button type="button" class="cancel_button" onclick="cancelInlineEdit(<?php echo $comment['comment_id'] ?>)">Cancelar</button>
-                                </div>
-                            </form>
-                            <?php if(isset($_SESSION['user_id']) && $comment['user_id'] === $_SESSION['user_id']) { ?>
-                                <div class="comment_actions">
-                                    <i class="fa-solid fa-pencil hover_scale_mayor" onclick="editCommentInline(<?php echo $comment['comment_id']; ?>)"></i>
-                                    <i class="fa-solid fa-trash hover_scale_mayor" onclick="openDestroyModal(<?php echo $comment['comment_id'] ?>)"></i>
-                                </div>
-                            <?php } ?>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-                <div class="pagination_links">
-                    <button id="prev_button" disabled>Anterior</button>
-                    <button id="next_button">Siguiente</button>
-                </div>
-            <?php }else echo '<p>No se han encontado comentarios en la base de datos referentes a esta película.</p>' ?>
-
         </div>
 
         <!-- Modal de confirmación para destruir comentario -->
@@ -209,6 +210,7 @@
     }
 
     function editCommentInline(commentId) {
+        document.getElementById("comment_actions").style.display = "none";
         selectedComent = commentId;
         const commentTextElement = document.getElementById(`comment_text_${commentId}`);
         const currentText = commentTextElement.textContent;
@@ -221,6 +223,7 @@
     }
 
     function cancelInlineEdit(commentId) {
+        document.getElementById("comment_actions").style.display = "flex";
         document.getElementById(`update_comment_form_${commentId}`).style.display = 'none';
         document.getElementById(`edit_comment_text_${commentId}`).value = document.getElementById(`comment_text_${commentId}`).textContent;
         document.getElementById(`comment_text_${commentId}`).style = 'flex';
