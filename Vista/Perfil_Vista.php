@@ -18,7 +18,7 @@
 
 
     <div class="navigation_bar">
-        <?php require_once("header.php") ?>
+        <?php require_once("assets/header.php") ?>
     </div>
     
     <?php if ($user) { ?>

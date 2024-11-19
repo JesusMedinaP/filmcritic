@@ -27,7 +27,7 @@
     <?php if(isset($_SESSION['delete_error'])) echo '<script>showToast("' . $_SESSION['delete_error'] . '", "error");</script>'; unset($_SESSION['delete_error']); ?>
 
     <div class="navigation_bar">
-        <?php require_once("header.php") ?>
+        <?php require_once("assets/header.php") ?>
     </div>
     
     <?php if ($movie) { ?>

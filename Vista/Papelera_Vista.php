@@ -30,34 +30,34 @@
     <?php if(isset($_SESSION['destroy_error'])) echo '<script>showToast("' . $_SESSION['destroy_success'] . '", "error");</script>'; unset($_SESSION['destroy_success']); ?>
 
     <div class="navigation_bar">
-            <?php require_once("header.php") ?>
-            <div class="search_bar">
-                <form method="GET" action="index.php">
-                    <input type="hidden" name="controlador" value="admin">
-                    <input type="hidden" name="action" value="papelera">
-                    <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Barra de búsqueda">
-                    <button type="submit">
+        <?php require_once("assets/header.php") ?>
+        <div class="search_bar">
+            <form method="GET" action="index.php">
+                <input type="hidden" name="controlador" value="admin">
+                <input type="hidden" name="action" value="papelera">
+                <input type="text" name="search" value="<?php echo htmlspecialchars($search); ?>" placeholder="Barra de búsqueda">
+                <button type="submit">
                     <i class="fa fa-search"></i>
-                    </button>
-                </form>
+                </button>
+            </form>
 
             <?php echo '<p>' . $total_results . ' resultados.</p>'?>
+        </div>
+        <div class="user_menu">
+            <?php if(isset($_SESSION['user_pic']) &&  $_SESSION['user_pic'] != "") {?>
+                    <img onclick=togglePopup() class="hover_scale user_pic" src="imagenes_perfil/<?php echo $_SESSION['user_pic'] ?>"/>
+            <?php }else echo '<i class="fa fa-user user_icon hover_scale" onclick=togglePopup()></i>' ?>
+            <div id="userPopup" class="popup">
+                <?php if (isset($_SESSION["user_id"])) { ?>
+                    <a href="index.php?controlador=user&action=home">Mi cuenta</a>
+                    <a href="index.php?controlador=catalogue&action=home">Catálogo</a>
+                    <a href="index.php?controlador=admin&action=papelera">Papelera</a>
+                    <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
+                <?php } else { ?>
+                    <a href="index.php?controlador=login">Iniciar sesión</a>
+                <?php } ?>
             </div>
-            <div class="user_menu">
-                <?php if(isset($_SESSION['user_pic']) &&  $_SESSION['user_pic'] != "") {?>
-                        <img onclick=togglePopup() class="hover_scale user_pic" src="imagenes_perfil/<?php echo $_SESSION['user_pic'] ?>"/>
-                <?php }else echo '<i class="fa fa-user user_icon hover_scale" onclick=togglePopup()></i>' ?>
-                <div id="userPopup" class="popup">
-                    <?php if (isset($_SESSION["user_id"])) { ?>
-                        <a href="index.php?controlador=user&action=home">Mi cuenta</a>
-                        <a href="index.php?controlador=catalogue&action=home">Catálogo</a>
-                        <a href="index.php?controlador=admin&action=papelera">Papelera</a>
-                        <a href="index.php?controlador=catalogue&action=desconectar">Desconectar</a>
-                    <?php } else { ?>
-                        <a href="index.php?controlador=login">Iniciar sesión</a>
-                    <?php } ?>
-                </div>
-            </div>
+        </div>
     </div>
 
     <div class="pagination_links">

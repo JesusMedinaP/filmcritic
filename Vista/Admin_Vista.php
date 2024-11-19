@@ -36,7 +36,7 @@
 
     
     <div class="navigation_bar">
-        <?php require_once("header.php") ?>
+        <?php require_once("assets/header.php") ?>
         <div class="search_bar">
             <form method="GET" action="index.php">
                 <input type="hidden" name="controlador" value="admin">
