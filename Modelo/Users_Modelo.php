@@ -91,7 +91,7 @@ class Users_Modelo
         $consulta->bind_param("sissss", $name, $age, $gender, $ocupation, $pic, $password);
 
         if($consulta->execute()){
-            return true;
+            return $this->db->insert_id; // Devuelve el ID del usuario insertado
         }else{
             return false;
         }

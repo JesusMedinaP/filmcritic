@@ -91,10 +91,9 @@
                 if(isset($_SESSION['user_exists'])){
                     unset($_SESSION['user_exists']);
                 }
-                // Primero, registramos al usuario sin la imagen
-                if($user->register($nombre, $edad, $gender, $ocupacion, $pic, $password)) {
-                    $userId = $user->get_last_inserted_id(); // Obtenemos el ID del nuevo usuario
-            
+                // Primero, registramos al usuario sin la imagen en la carpeta
+                $userId = $user->register($nombre, $edad, $gender, $ocupacion, $pic, $password);
+                if($userId) {
                     if (isset($_FILES['pic_register']) && $_FILES['pic_register']['tmp_name'] != '') {
                         $target_dir = "imagenes_perfil/";
                         $imageFileType = strtolower(pathinfo($_FILES["pic_register"]["name"], PATHINFO_EXTENSION));
