@@ -5,6 +5,8 @@ echo '<script>';
 echo 'console.log('. json_encode( $data ) .')';
 echo '</script>';
 }
+//Nombre de la App
+define('APP_NAME', 'FilmCritic');
 //La carpeta donde buscaremos los controladores
 define ('CONTROLLERS_FOLDER', "Controlador/");
 //Si no se indica un controlador, este es el controlador que se usará por defecto
